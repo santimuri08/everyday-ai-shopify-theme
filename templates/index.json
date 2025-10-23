@@ -5,21 +5,13 @@
       "settings": {
         "title": "Everyday AI",
         "subtitle": "WITH KEITH WILLIAMS",
-        "description": "Free Monthly Town Hall • Newark, NJ & Online",
+        "description": "Free Monthly Town Hall - Newark, NJ & Online",
         "show_cta": true,
         "cta_text": "Shop Merch",
         "cta_link": "/collections/all",
         "show_secondary_cta": true,
         "secondary_cta_text": "Learn More",
-        "secondary_cta_link": "/pages/about-keith"
-      }
-    },
-    "about": {
-      "type": "about-keith",
-      "settings": {
-        "name": "Keith Williams",
-        "title": "Founder of Everyday AI",
-        "show_social": true
+        "secondary_cta_link": "/pages/about"
       }
     },
     "featured_collection": {
@@ -32,7 +24,7 @@
   },
   "order": [
     "hero",
-    "about",
+
     "featured_collection"
   ]
 }
