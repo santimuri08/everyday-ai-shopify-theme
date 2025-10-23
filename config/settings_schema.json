@@ -1,11 +1,40 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "Dawn",
+    "theme_name": "Everyday AI Theme",
     "theme_version": "15.4.0",
-    "theme_author": "Shopify",
-    "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
-    "theme_support_url": "https://support.shopify.com/"
+    "theme_author": "Ssntiago Murillo Londono",
+    "theme_documentation_url": "https://github.com/santimuri08/everyday-ai-theme",
+    "theme_support_url": "https://github.com/santimuri08/everyday-ai-theme/issues"
+  },
+  {
+    "name": "Brand Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "brand_primary",
+        "label": "Primary Color (Forest Teal)",
+        "default": "#1d4035"
+      },
+      {
+        "type": "color",
+        "id": "brand_accent",
+        "label": "Accent Color (Burnt Sienna)",
+        "default": "#b85a1f"
+      },
+      {
+        "type": "color",
+        "id": "brand_warm_white",
+        "label": "Background Color (Warm White)",
+        "default": "#fefdfb"
+      },
+      {
+        "type": "color",
+        "id": "brand_cream",
+        "label": "Surface Color (Cream)",
+        "default": "#f7f5f0"
+      }
+    ]
   },
   {
     "name": "t:settings_schema.logo.name",
