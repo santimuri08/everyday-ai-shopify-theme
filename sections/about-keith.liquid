@@ -1,0 +1,85 @@
+<section class="about-section">
+  <div class="about-container">
+    {% if section.settings.image %}
+      <div class="about-image-wrapper">
+        <img src="{{ section.settings.image | img_url: 'large' }}" 
+             alt="{{ section.settings.name }}">
+      </div>
+    {% endif %}
+    
+    <div class="about-content">
+      <h2>{{ section.settings.name }}</h2>
+      <p class="about-title">{{ section.settings.title }}</p>
+      <div class="about-bio">
+        {{ section.settings.bio }}
+      </div>
+      
+      {% if section.settings.show_social %}
+        <div class="social-links">
+          {% if section.settings.linkedin_url %}
+            <a href="{{ section.settings.linkedin_url }}" target="_blank">
+              <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+          {% endif %}
+          {% if section.settings.twitter_url %}
+            <a href="{{ section.settings.twitter_url }}" target="_blank">
+              <i class="fab fa-twitter"></i> Twitter
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About Keith Williams",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Profile Image"
+    },
+    {
+      "type": "text",
+      "id": "name",
+      "label": "Name",
+      "default": "Keith Williams"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Founder of Everyday AI"
+    },
+    {
+      "type": "richtext",
+      "id": "bio",
+      "label": "Biography",
+      "default": "<p>Keith Williams is the founder of Everyday AI, bringing practical artificial intelligence education to communities across the nation.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "label": "Show Social Links",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "linkedin_url",
+      "label": "LinkedIn URL"
+    },
+    {
+      "type": "url",
+      "id": "twitter_url",
+      "label": "Twitter URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Keith Williams"
+    }
+  ]
+}
+{% endschema %}
