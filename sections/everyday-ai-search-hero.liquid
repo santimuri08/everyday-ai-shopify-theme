@@ -1,0 +1,970 @@
+{% comment %}
+  Everyday AI Search Hero Section
+  Includes search bar with real-time autocomplete
+{% endcomment %}
+
+<section class="search-hero">
+  <div class="search-hero-background"></div>
+  <div class="page-width">
+    <div class="search-hero-content">
+      <h1 class="search-hero-title">{{ section.settings.title }}</h1>
+      {% if section.settings.subtitle != blank %}
+        <p class="search-hero-subtitle">{{ section.settings.subtitle }}</p>
+      {% endif %}
+      
+      <!-- Main Search Form with Autocomplete -->
+      <div class="search-form-container">
+        <form action="{{ routes.search_url }}" method="get" class="search-form" id="main-search-form">
+          <div class="search-input-wrapper">
+            <div class="search-icon-wrapper">
+              <svg class="search-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            
+            <input 
+              type="search" 
+              name="q" 
+              id="search-input"
+              value="{{ search.terms | escape }}"
+              placeholder="Search for products, articles, pages..." 
+              class="search-input"
+              autocomplete="off"
+              aria-label="Search"
+              aria-expanded="false"
+              aria-controls="search-autocomplete"
+            >
+            
+            <button 
+              type="button" 
+              class="search-clear-btn" 
+              id="search-clear"
+              aria-label="Clear search"
+              style="display: none;"
+            >
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+          
+          <!-- Search Type Filters -->
+          <div class="search-type-filters">
+            <label class="search-type-option">
+              <input type="radio" name="type" value="" checked>
+              <span class="type-label">All Results</span>
+            </label>
+            <label class="search-type-option">
+              <input type="radio" name="type" value="product">
+              <span class="type-label">Products</span>
+            </label>
+            <label class="search-type-option">
+              <input type="radio" name="type" value="article">
+              <span class="type-label">Articles</span>
+            </label>
+            <label class="search-type-option">
+              <input type="radio" name="type" value="page">
+              <span class="type-label">Pages</span>
+            </label>
+          </div>
+          
+          <button type="submit" class="search-submit-btn">
+            <span>Search</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </form>
+        
+        <!-- Autocomplete Dropdown -->
+        <div class="search-autocomplete" id="search-autocomplete" style="display: none;" role="listbox">
+          <div class="autocomplete-loading" id="autocomplete-loading">
+            <div class="loading-spinner"></div>
+            <span>Searching...</span>
+          </div>
+          
+          <div class="autocomplete-results" id="autocomplete-results" style="display: none;">
+            <!-- Products Section -->
+            <div class="autocomplete-section" id="products-section" style="display: none;">
+              <h3 class="autocomplete-section-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+                  <path d="M3 9H21" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                Products
+              </h3>
+              <div class="autocomplete-items" id="products-list"></div>
+            </div>
+            
+            <!-- Articles Section -->
+            <div class="autocomplete-section" id="articles-section" style="display: none;">
+              <h3 class="autocomplete-section-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M19 20H5C3.89543 20 3 19.1046 3 18V6C3 4.89543 3.89543 4 5 4H19C20.1046 4 21 4.89543 21 6V18C21 19.1046 20.1046 20 19 20Z" stroke="currentColor" stroke-width="2"/>
+                  <path d="M7 8H17M7 12H17M7 16H13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                Articles
+              </h3>
+              <div class="autocomplete-items" id="articles-list"></div>
+            </div>
+            
+            <!-- Pages Section -->
+            <div class="autocomplete-section" id="pages-section" style="display: none;">
+              <h3 class="autocomplete-section-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M9 12H15M9 16H15M17 21H7C5.89543 21 5 20.1046 5 19V5C5 3.89543 5.89543 3 7 3H12.5858C12.851 3 13.1054 3.10536 13.2929 3.29289L18.7071 8.70711C18.8946 8.89464 19 9.149 19 9.41421V19C19 20.1046 18.1046 21 17 21Z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                Pages
+              </h3>
+              <div class="autocomplete-items" id="pages-list"></div>
+            </div>
+            
+            <!-- View All Results -->
+            <div class="autocomplete-view-all">
+              <button type="button" class="view-all-btn" id="view-all-results">
+                View all results
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                  <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          
+          <!-- No Results -->
+          <div class="autocomplete-no-results" id="no-results" style="display: none;">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+              <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+              <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M8 11H14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <p>No results found for "<span id="no-results-query"></span>"</p>
+            <p class="no-results-hint">Try different keywords or check your spelling</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Trending Searches -->
+      {% if section.settings.show_trending_searches %}
+      <div class="trending-searches">
+        <span class="trending-label">Trending:</span>
+        <div class="trending-tags">
+          {% if section.settings.trending_1 != blank %}
+            <a href="{{ routes.search_url }}?q={{ section.settings.trending_1 | url_encode }}" class="trending-tag">
+              {{ section.settings.trending_1 }}
+            </a>
+          {% endif %}
+          {% if section.settings.trending_2 != blank %}
+            <a href="{{ routes.search_url }}?q={{ section.settings.trending_2 | url_encode }}" class="trending-tag">
+              {{ section.settings.trending_2 }}
+            </a>
+          {% endif %}
+          {% if section.settings.trending_3 != blank %}
+            <a href="{{ routes.search_url }}?q={{ section.settings.trending_3 | url_encode }}" class="trending-tag">
+              {{ section.settings.trending_3 }}
+            </a>
+          {% endif %}
+          {% if section.settings.trending_4 != blank %}
+            <a href="{{ routes.search_url }}?q={{ section.settings.trending_4 | url_encode }}" class="trending-tag">
+              {{ section.settings.trending_4 }}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  'use strict';
+  
+  const searchInput = document.getElementById('search-input');
+  const searchClear = document.getElementById('search-clear');
+  const autocompleteContainer = document.getElementById('search-autocomplete');
+  const autocompleteLoading = document.getElementById('autocomplete-loading');
+  const autocompleteResults = document.getElementById('autocomplete-results');
+  const noResults = document.getElementById('no-results');
+  const viewAllBtn = document.getElementById('view-all-results');
+  const searchForm = document.getElementById('main-search-form');
+  
+  let searchTimeout;
+  let currentQuery = '';
+  
+  if (!searchInput) return;
+  
+  // Handle input changes
+  searchInput.addEventListener('input', function(e) {
+    const query = e.target.value.trim();
+    
+    // Show/hide clear button
+    searchClear.style.display = query ? 'flex' : 'none';
+    
+    // Clear timeout
+    clearTimeout(searchTimeout);
+    
+    if (query.length >= 2) {
+      // Show loading state
+      autocompleteContainer.style.display = 'block';
+      autocompleteLoading.style.display = 'flex';
+      autocompleteResults.style.display = 'none';
+      noResults.style.display = 'none';
+      searchInput.setAttribute('aria-expanded', 'true');
+      
+      // Debounce search
+      searchTimeout = setTimeout(() => {
+        currentQuery = query;
+        fetchSuggestions(query);
+      }, 300);
+    } else {
+      hideAutocomplete();
+    }
+  });
+  
+  // Clear search
+  searchClear.addEventListener('click', function() {
+    searchInput.value = '';
+    searchClear.style.display = 'none';
+    hideAutocomplete();
+    searchInput.focus();
+  });
+  
+  // View all results
+  if (viewAllBtn) {
+    viewAllBtn.addEventListener('click', function() {
+      searchForm.submit();
+    });
+  }
+  
+  // Fetch suggestions from Shopify Predictive Search API
+  function fetchSuggestions(query) {
+    const searchUrl = `/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product,article,page&resources[limit]=5&resources[options][unavailable_products]=last&resources[options][fields]=title,product_type,variants.title,vendor,tag`;
+    
+    fetch(searchUrl)
+      .then(response => response.json())
+      .then(data => {
+        displaySuggestions(data.resources.results, query);
+      })
+      .catch(error => {
+        console.error('Search error:', error);
+        hideAutocomplete();
+      });
+  }
+  
+  // Display suggestions
+  function displaySuggestions(results, query) {
+    autocompleteLoading.style.display = 'none';
+    
+    const productsList = document.getElementById('products-list');
+    const articlesList = document.getElementById('articles-list');
+    const pagesList = document.getElementById('pages-list');
+    const productsSection = document.getElementById('products-section');
+    const articlesSection = document.getElementById('articles-section');
+    const pagesSection = document.getElementById('pages-section');
+    
+    // Clear previous results
+    productsList.innerHTML = '';
+    articlesList.innerHTML = '';
+    pagesList.innerHTML = '';
+    
+    let hasResults = false;
+    
+    // Display products
+    if (results.products && results.products.length > 0) {
+      hasResults = true;
+      productsSection.style.display = 'block';
+      results.products.forEach(product => {
+        productsList.appendChild(createProductItem(product));
+      });
+    } else {
+      productsSection.style.display = 'none';
+    }
+    
+    // Display articles
+    if (results.articles && results.articles.length > 0) {
+      hasResults = true;
+      articlesSection.style.display = 'block';
+      results.articles.forEach(article => {
+        articlesList.appendChild(createArticleItem(article));
+      });
+    } else {
+      articlesSection.style.display = 'none';
+    }
+    
+    // Display pages
+    if (results.pages && results.pages.length > 0) {
+      hasResults = true;
+      pagesSection.style.display = 'block';
+      results.pages.forEach(page => {
+        pagesList.appendChild(createPageItem(page));
+      });
+    } else {
+      pagesSection.style.display = 'none';
+    }
+    
+    if (hasResults) {
+      autocompleteResults.style.display = 'block';
+      noResults.style.display = 'none';
+    } else {
+      autocompleteResults.style.display = 'none';
+      noResults.style.display = 'flex';
+      document.getElementById('no-results-query').textContent = query;
+    }
+  }
+  
+  // Create product item
+  function createProductItem(product) {
+    const item = document.createElement('a');
+    item.className = 'autocomplete-item';
+    item.href = product.url;
+    item.setAttribute('role', 'option');
+    
+    const imageUrl = product.image ? product.image : '';
+    const price = product.price ? formatMoney(product.price) : '';
+    const comparePrice = product.compare_at_price && product.compare_at_price > product.price 
+      ? formatMoney(product.compare_at_price) 
+      : '';
+    
+    item.innerHTML = `
+      ${imageUrl ? `
+        <div class="autocomplete-item-image">
+          <img src="${imageUrl}" alt="${escapeHtml(product.title)}" loading="lazy">
+        </div>
+      ` : ''}
+      <div class="autocomplete-item-info">
+        <div class="autocomplete-item-title">${highlightQuery(product.title, currentQuery)}</div>
+        ${price ? `
+          <div class="autocomplete-item-price">
+            ${comparePrice ? `<span class="price-compare">${comparePrice}</span>` : ''}
+            <span class="price-current">${price}</span>
+          </div>
+        ` : ''}
+        ${product.vendor ? `<div class="autocomplete-item-vendor">${escapeHtml(product.vendor)}</div>` : ''}
+      </div>
+    `;
+    
+    return item;
+  }
+  
+  // Create article item
+  function createArticleItem(article) {
+    const item = document.createElement('a');
+    item.className = 'autocomplete-item';
+    item.href = article.url;
+    item.setAttribute('role', 'option');
+    
+    item.innerHTML = `
+      <div class="autocomplete-item-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M19 20H5C3.89543 20 3 19.1046 3 18V6C3 4.89543 3.89543 4 5 4H19C20.1046 4 21 4.89543 21 6V18C21 19.1046 20.1046 20 19 20Z" stroke="currentColor" stroke-width="2"/>
+          <path d="M7 8H17M7 12H17M7 16H13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="autocomplete-item-info">
+        <div class="autocomplete-item-title">${highlightQuery(article.title, currentQuery)}</div>
+        ${article.published_at ? `<div class="autocomplete-item-date">Published ${formatDate(article.published_at)}</div>` : ''}
+      </div>
+    `;
+    
+    return item;
+  }
+  
+  // Create page item
+  function createPageItem(page) {
+    const item = document.createElement('a');
+    item.className = 'autocomplete-item';
+    item.href = page.url;
+    item.setAttribute('role', 'option');
+    
+    item.innerHTML = `
+      <div class="autocomplete-item-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M9 12H15M9 16H15M17 21H7C5.89543 21 5 20.1046 5 19V5C5 3.89543 5.89543 3 7 3H12.5858C12.851 3 13.1054 3.10536 13.2929 3.29289L18.7071 8.70711C18.8946 8.89464 19 9.149 19 9.41421V19C19 20.1046 18.1046 21 17 21Z" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="autocomplete-item-info">
+        <div class="autocomplete-item-title">${highlightQuery(page.title, currentQuery)}</div>
+      </div>
+    `;
+    
+    return item;
+  }
+  
+  // Helper functions
+  function formatMoney(cents) {
+    return '{{ shop.money_format }}'.replace('{{amount}}', (cents / 100).toFixed(2));
+  }
+  
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+  }
+  
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+  
+  function highlightQuery(text, query) {
+    const escapedText = escapeHtml(text);
+    const escapedQuery = escapeHtml(query);
+    const regex = new RegExp(`(${escapedQuery})`, 'gi');
+    return escapedText.replace(regex, '<mark>$1</mark>');
+  }
+  
+  function hideAutocomplete() {
+    autocompleteContainer.style.display = 'none';
+    searchInput.setAttribute('aria-expanded', 'false');
+  }
+  
+  // Close autocomplete when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!searchInput.contains(e.target) && 
+        !autocompleteContainer.contains(e.target) &&
+        !searchClear.contains(e.target)) {
+      hideAutocomplete();
+    }
+  });
+  
+  // Keyboard navigation
+  searchInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      hideAutocomplete();
+    }
+  });
+})();
+</script>
+
+<style>
+  .search-hero {
+    position: relative;
+    padding: 120px 0 80px;
+    overflow: hidden;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .search-hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, var(--primary, #1d4035) 0%, var(--accent, #b85a1f) 100%);
+    z-index: 0;
+  }
+  
+  .search-hero-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
+  }
+  
+  .search-hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .search-hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  
+  .search-hero-subtitle {
+    font-size: 1.5rem;
+    color: rgba(255,255,255,0.95);
+    margin-bottom: 48px;
+    font-weight: 400;
+  }
+  
+  .search-form-container {
+    position: relative;
+    max-width: 700px;
+    margin: 0 auto 32px;
+  }
+  
+  .search-form {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+  
+  .search-input-wrapper {
+    position: relative;
+    margin-bottom: 24px;
+  }
+  
+  .search-icon-wrapper {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary, #1d4035);
+    pointer-events: none;
+    z-index: 2;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 18px 56px 18px 56px;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 1.125rem;
+    outline: none;
+    transition: all 0.3s ease;
+    background: #f9fafb;
+  }
+  
+  .search-input:focus {
+    border-color: var(--primary, #1d4035);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(29, 64, 53, 0.1);
+  }
+  
+  .search-clear-btn {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--accent, #b85a1f);
+    color: white;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 2;
+  }
+  
+  .search-clear-btn:hover {
+    background: var(--primary, #1d4035);
+    transform: translateY(-50%) scale(1.1);
+  }
+  
+  .search-type-filters {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .search-type-option {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  .search-type-option input[type="radio"] {
+    display: none;
+  }
+  
+  .type-label {
+    padding: 10px 20px;
+    border: 2px solid #e5e7eb;
+    border-radius: 25px;
+    color: #6b7280;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    transition: all 0.3s ease;
+    background: white;
+  }
+  
+  .search-type-option input[type="radio"]:checked + .type-label {
+    background: var(--primary, #1d4035);
+    color: white;
+    border-color: var(--primary, #1d4035);
+  }
+  
+  .search-type-option:hover .type-label {
+    border-color: var(--primary, #1d4035);
+    transform: translateY(-2px);
+  }
+  
+  .search-submit-btn {
+    width: 100%;
+    padding: 18px;
+    background: var(--accent, #b85a1f);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.125rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+  }
+  
+  .search-submit-btn:hover {
+    background: var(--primary, #1d4035);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+  
+  /* Autocomplete Dropdown */
+  .search-autocomplete {
+    position: absolute;
+    top: calc(100% + 16px);
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    max-height: 600px;
+    overflow-y: auto;
+    z-index: 1000;
+  }
+  
+  .autocomplete-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 40px;
+    color: var(--primary, #1d4035);
+    font-weight: 600;
+  }
+  
+  .loading-spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid #e5e7eb;
+    border-top-color: var(--accent, #b85a1f);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  .autocomplete-section {
+    padding: 20px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .autocomplete-section:last-child {
+    border-bottom: none;
+  }
+  
+  .autocomplete-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--accent, #b85a1f);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+  }
+  
+  .autocomplete-items {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .autocomplete-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #1f2937;
+    transition: all 0.2s ease;
+  }
+  
+  .autocomplete-item:hover {
+    background: #f9fafb;
+    transform: translateX(4px);
+  }
+  
+  .autocomplete-item-image {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f3f4f6;
+  }
+  
+  .autocomplete-item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .autocomplete-item-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f3f4f6;
+    border-radius: 8px;
+    color: var(--accent, #b85a1f);
+  }
+  
+  .autocomplete-item-info {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .autocomplete-item-title {
+    font-weight: 600;
+    color: var(--primary, #1d4035);
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .autocomplete-item-title mark {
+    background: rgba(184, 90, 31, 0.2);
+    color: inherit;
+    font-weight: 700;
+  }
+  
+  .autocomplete-item-price {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    color: var(--accent, #b85a1f);
+    font-size: 0.9375rem;
+  }
+  
+  .price-compare {
+    text-decoration: line-through;
+    color: #9ca3af;
+    font-size: 0.875rem;
+    font-weight: 400;
+  }
+  
+  .autocomplete-item-vendor,
+  .autocomplete-item-date {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-top: 4px;
+  }
+  
+  .autocomplete-view-all {
+    padding: 16px 20px;
+    background: #f9fafb;
+  }
+  
+  .view-all-btn {
+    width: 100%;
+    padding: 12px;
+    background: white;
+    border: 2px solid var(--primary, #1d4035);
+    color: var(--primary, #1d4035);
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+  }
+  
+  .view-all-btn:hover {
+    background: var(--primary, #1d4035);
+    color: white;
+  }
+  
+  .autocomplete-no-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    color: #6b7280;
+    text-align: center;
+  }
+  
+  .autocomplete-no-results svg {
+    color: #d1d5db;
+    margin-bottom: 16px;
+  }
+  
+  .autocomplete-no-results p {
+    margin: 8px 0;
+    font-size: 1rem;
+  }
+  
+  .autocomplete-no-results p:first-of-type {
+    font-weight: 600;
+    color: #374151;
+  }
+  
+  .no-results-hint {
+    font-size: 0.875rem;
+  }
+  
+  /* Trending Searches */
+  .trending-searches {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  
+  .trending-label {
+    color: rgba(255,255,255,0.9);
+    font-weight: 600;
+    font-size: 0.9375rem;
+  }
+  
+  .trending-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  
+  .trending-tag {
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    color: white;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .trending-tag:hover {
+    background: white;
+    color: var(--primary, #1d4035);
+    transform: translateY(-2px);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .search-hero {
+      padding: 80px 0 60px;
+    }
+    
+    .search-hero-title {
+      font-size: 2.5rem;
+    }
+    
+    .search-hero-subtitle {
+      font-size: 1.125rem;
+    }
+    
+    .search-form {
+      padding: 24px;
+    }
+    
+    .search-input {
+      font-size: 1rem;
+      padding: 16px 48px 16px 48px;
+    }
+    
+    .search-type-filters {
+      gap: 8px;
+    }
+    
+    .type-label {
+      padding: 8px 16px;
+      font-size: 0.875rem;
+    }
+    
+    .trending-searches {
+      flex-direction: column;
+      gap: 12px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Everyday AI Search Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Search Our Store"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Find exactly what you're looking for"
+    },
+    {
+      "type": "header",
+      "content": "Trending Searches"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trending_searches",
+      "label": "Show Trending Searches",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "trending_1",
+      "label": "Trending Search 1",
+      "default": "AI Tools"
+    },
+    {
+      "type": "text",
+      "id": "trending_2",
+      "label": "Trending Search 2",
+      "default": "Merchandise"
+    },
+    {
+      "type": "text",
+      "id": "trending_3",
+      "label": "Trending Search 3",
+      "default": "Tutorials"
+    },
+    {
+      "type": "text",
+      "id": "trending_4",
+      "label": "Trending Search 4",
+      "default": "Events"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Everyday AI Search Hero"
+    }
+  ]
+}
+{% endschema %}
