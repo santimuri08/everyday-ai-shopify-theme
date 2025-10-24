@@ -1,0 +1,130 @@
+{% comment %}
+  Customer Wishlist Button
+  Usage: {% render 'customer-wishlist-button', product: product %}
+{% endcomment %}
+
+<button 
+  type="button"
+  class="wishlist-btn" 
+  data-product-id="{{ product.id }}"
+  data-product-title="{{ product.title | escape }}"
+  data-product-url="{{ product.url }}"
+  data-product-image="{% if product.featured_image %}{{ product.featured_image | image_url: width: 300 }}{% endif %}"
+  data-product-price="{{ product.price | money }}"
+  data-product-price-value="{{ product.price }}"
+  data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+  onclick="toggleWishlist(this)"
+  aria-label="Add to wishlist"
+>
+  <svg class="wishlist-icon wishlist-icon-empty" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+  </svg>
+  <svg class="wishlist-icon wishlist-icon-filled" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" style="display: none;">
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+  </svg>
+  <span class="wishlist-btn-text">Add to Wishlist</span>
+</button>
+
+<style>
+  .wishlist-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: white;
+    border: 2px solid var(--accent, #b85a1f);
+    color: var(--accent, #b85a1f);
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  
+  .wishlist-btn:hover {
+    background: var(--accent, #b85a1f);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(184, 90, 31, 0.3);
+  }
+  
+  .wishlist-btn.in-wishlist {
+    background: var(--accent, #b85a1f);
+    color: white;
+    border-color: var(--accent, #b85a1f);
+  }
+  
+  .wishlist-btn.in-wishlist:hover {
+    background: #dc2626;
+    border-color: #dc2626;
+  }
+  
+  .wishlist-icon {
+    transition: all 0.3s ease;
+  }
+  
+  .wishlist-btn.in-wishlist .wishlist-icon-empty {
+    display: none;
+  }
+  
+  .wishlist-btn.in-wishlist .wishlist-icon-filled {
+    display: block;
+    animation: heartbeat 0.6s ease;
+  }
+  
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.3); }
+    50% { transform: scale(1.1); }
+    75% { transform: scale(1.2); }
+  }
+  
+  /* Compact version for product cards */
+  .wishlist-btn-compact {
+    padding: 10px;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    justify-content: center;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    z-index: 10;
+  }
+  
+  .wishlist-btn-compact .wishlist-btn-text {
+    display: none;
+  }
+  
+  .wishlist-btn-compact:hover {
+    transform: scale(1.1);
+  }
+  
+  @media (max-width: 640px) {
+    .wishlist-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+
+<script>
+  // Initialize wishlist button state on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    const buttons = document.querySelectorAll('.wishlist-btn');
+    const wishlist = JSON.parse(localStorage.getItem('everydayai_wishlist') || '[]');
+    
+    buttons.forEach(button => {
+      const productId = button.getAttribute('data-product-id');
+      if (wishlist.some(item => item.id === productId)) {
+        button.classList.add('in-wishlist');
+        button.querySelector('.wishlist-icon-empty').style.display = 'none';
+        button.querySelector('.wishlist-icon-filled').style.display = 'block';
+        button.querySelector('.wishlist-btn-text').textContent = 'Remove from Wishlist';
+      }
+    });
+  });
+</script>

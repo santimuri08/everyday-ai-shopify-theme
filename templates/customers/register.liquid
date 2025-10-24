@@ -1,0 +1,686 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{ settings.brand_primary | default: '#1d4035' }}">
+    
+    <title>{{ 'customer.register.title' | t }} - {{ shop.name }}</title>
+    
+    <link rel="canonical" href="{{ canonical_url }}">
+    
+    {{ content_for_header }}
+    
+    <link rel="stylesheet" href="{{ 'everyday-ai-branding.css' | asset_url }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      :root {
+        --primary: {{ settings.brand_primary | default: '#1d4035' }};
+        --accent: {{ settings.brand_accent | default: '#b85a1f' }};
+        --background: {{ settings.brand_warm_white | default: '#fefdfb' }};
+        --surface: {{ settings.brand_cream | default: '#f7f5f0' }};
+      }
+      
+      body {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      
+      .register-page-container {
+        width: 100%;
+        max-width: 520px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        overflow: hidden;
+        margin: 40px 0;
+      }
+      
+      .register-header {
+        background: var(--primary);
+        padding: 40px 32px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .register-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        animation: rotate 20s linear infinite;
+      }
+      
+      @keyframes rotate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      .register-logo {
+        max-width: 160px;
+        height: auto;
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 1;
+      }
+      
+      .register-title {
+        font-size: 2rem;
+        color: white;
+        font-weight: 700;
+        margin-bottom: 8px;
+        position: relative;
+        z-index: 1;
+      }
+      
+      .register-subtitle {
+        color: rgba(255,255,255,0.9);
+        font-size: 1rem;
+        position: relative;
+        z-index: 1;
+      }
+      
+      .register-content {
+        padding: 40px 32px;
+      }
+      
+      .form-message {
+        padding: 16px;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        font-size: 0.9375rem;
+        line-height: 1.5;
+      }
+      
+      .form-message-error {
+        background: #fee;
+        border: 2px solid #fcc;
+        color: #c00;
+      }
+      
+      .form-message svg {
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+      
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+      
+      .form-group {
+        margin-bottom: 24px;
+      }
+      
+      .form-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--primary);
+        font-weight: 600;
+        margin-bottom: 8px;
+        font-size: 0.9375rem;
+      }
+      
+      .form-label svg {
+        width: 16px;
+        height: 16px;
+      }
+      
+      .form-label-optional {
+        color: #6b7280;
+        font-weight: 400;
+        font-size: 0.875rem;
+      }
+      
+      .form-input {
+        width: 100%;
+        padding: 14px 16px;
+        border: 2px solid #e5e7eb;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: #f9fafb;
+      }
+      
+      .form-input:focus {
+        outline: none;
+        border-color: var(--primary);
+        background: white;
+        box-shadow: 0 0 0 4px rgba(29, 64, 53, 0.1);
+      }
+      
+      .form-input::placeholder {
+        color: #9ca3af;
+      }
+      
+      .password-toggle {
+        position: relative;
+      }
+      
+      .password-toggle-btn {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #6b7280;
+        cursor: pointer;
+        padding: 8px;
+        transition: color 0.3s ease;
+      }
+      
+      .password-toggle-btn:hover {
+        color: var(--primary);
+      }
+      
+      /* Password Strength Meter */
+      .password-strength {
+        margin-top: 12px;
+      }
+      
+      .strength-meter {
+        height: 6px;
+        background: #e5e7eb;
+        border-radius: 3px;
+        overflow: hidden;
+        margin-bottom: 12px;
+      }
+      
+      .strength-meter-fill {
+        height: 100%;
+        width: 0%;
+        transition: all 0.3s ease;
+        border-radius: 3px;
+      }
+      
+      .strength-weak {
+        width: 33%;
+        background: #ef4444;
+      }
+      
+      .strength-medium {
+        width: 66%;
+        background: #f59e0b;
+      }
+      
+      .strength-strong {
+        width: 100%;
+        background: #10b981;
+      }
+      
+      .password-requirements {
+        list-style: none;
+        font-size: 0.875rem;
+        color: #6b7280;
+      }
+      
+      .password-requirements li {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+      }
+      
+      .password-requirements li svg {
+        width: 16px;
+        height: 16px;
+        color: #d1d5db;
+      }
+      
+      .password-requirements li.met {
+        color: #10b981;
+      }
+      
+      .password-requirements li.met svg {
+        color: #10b981;
+      }
+      
+      .form-checkbox {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin: 24px 0;
+      }
+      
+      .form-checkbox input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        accent-color: var(--accent);
+        margin-top: 2px;
+      }
+      
+      .form-checkbox label {
+        flex: 1;
+        font-size: 0.9375rem;
+        color: #374151;
+        line-height: 1.5;
+        cursor: pointer;
+      }
+      
+      .form-checkbox a {
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 600;
+      }
+      
+      .form-checkbox a:hover {
+        text-decoration: underline;
+      }
+      
+      .form-actions {
+        margin-top: 32px;
+      }
+      
+      .btn-register {
+        width: 100%;
+        padding: 16px;
+        background: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+      
+      .btn-register:hover:not(:disabled) {
+        background: var(--primary);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      }
+      
+      .btn-register:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      
+      .btn-register:active:not(:disabled) {
+        transform: translateY(0);
+      }
+      
+      .login-section {
+        text-align: center;
+        padding: 24px 32px;
+        background: var(--surface);
+        border-top: 1px solid #e5e7eb;
+      }
+      
+      .login-text {
+        color: #6b7280;
+        margin-bottom: 16px;
+      }
+      
+      .btn-login {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 24px;
+        background: white;
+        color: var(--primary);
+        border: 2px solid var(--primary);
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+      
+      .btn-login:hover {
+        background: var(--primary);
+        color: white;
+        transform: translateY(-2px);
+      }
+      
+      /* Responsive */
+      @media (max-width: 640px) {
+        .register-header {
+          padding: 32px 24px;
+        }
+        
+        .register-title {
+          font-size: 1.75rem;
+        }
+        
+        .register-content,
+        .login-section {
+          padding-left: 24px;
+          padding-right: 24px;
+        }
+        
+        .form-row {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+      }
+    </style>
+  </head>
+  
+  <body class="template-customers-register">
+    <div class="register-page-container">
+      <!-- Header -->
+      <div class="register-header">
+        {% if shop.brand.logo %}
+          <img 
+            src="{{ shop.brand.logo | image_url: width: 320 }}" 
+            alt="{{ shop.name }}" 
+            class="register-logo"
+            width="160"
+            height="auto"
+          >
+        {% else %}
+          <h1 class="register-title">{{ shop.name }}</h1>
+        {% endif %}
+        <h2 class="register-title">Create Account</h2>
+        <p class="register-subtitle">Join the Everyday AI community</p>
+      </div>
+      
+      <!-- Register Form -->
+      <div class="register-content">
+        {% form 'create_customer' %}
+          {% if form.errors %}
+            <div class="form-message form-message-error">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 8V12M12 16H12.01"/>
+              </svg>
+              <div>
+                {{ form.errors | default_errors }}
+              </div>
+            </div>
+          {% endif %}
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="first_name" class="form-label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+                First Name
+              </label>
+              <input
+                type="text"
+                name="customer[first_name]"
+                id="first_name"
+                autocomplete="given-name"
+                class="form-input"
+                placeholder="John"
+                required
+                {% if form.first_name %}value="{{ form.first_name }}"{% endif %}
+              >
+            </div>
+            
+            <div class="form-group">
+              <label for="last_name" class="form-label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+                Last Name
+              </label>
+              <input
+                type="text"
+                name="customer[last_name]"
+                id="last_name"
+                autocomplete="family-name"
+                class="form-input"
+                placeholder="Doe"
+                required
+                {% if form.last_name %}value="{{ form.last_name }}"{% endif %}
+              >
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="register_email" class="form-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="5" width="18" height="14" rx="2"/>
+                <path d="M3 7L12 13L21 7"/>
+              </svg>
+              Email Address
+            </label>
+            <input
+              type="email"
+              name="customer[email]"
+              id="register_email"
+              autocomplete="email"
+              class="form-input"
+              placeholder="you@example.com"
+              required
+              {% if form.email %}value="{{ form.email }}"{% endif %}
+            >
+          </div>
+          
+          <div class="form-group">
+            <label for="register_password" class="form-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="5" y="11" width="14" height="10" rx="2"/>
+                <path d="M12 17V17.01M8 11V7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7V11"/>
+              </svg>
+              Password
+            </label>
+            <div class="password-toggle">
+              <input
+                type="password"
+                name="customer[password]"
+                id="register_password"
+                autocomplete="new-password"
+                class="form-input"
+                placeholder="Create a strong password"
+                required
+                minlength="8"
+              >
+              <button type="button" class="password-toggle-btn" onclick="togglePassword('register_password', this)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            
+            <!-- Password Strength Meter -->
+            <div class="password-strength">
+              <div class="strength-meter">
+                <div class="strength-meter-fill" id="strength-meter"></div>
+              </div>
+              <ul class="password-requirements" id="password-requirements">
+                <li id="req-length">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                  </svg>
+                  At least 8 characters
+                </li>
+                <li id="req-uppercase">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                  </svg>
+                  One uppercase letter
+                </li>
+                <li id="req-number">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                  </svg>
+                  One number
+                </li>
+                <li id="req-special">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                  </svg>
+                  One special character
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          <!-- Terms and Conditions -->
+          <div class="form-checkbox">
+            <input type="checkbox" id="agree_terms" required>
+            <label for="agree_terms">
+              I agree to the <a href="/pages/terms-of-service" target="_blank">Terms of Service</a> 
+              and <a href="/pages/privacy-policy" target="_blank">Privacy Policy</a>
+            </label>
+          </div>
+          
+          <!-- Marketing Opt-in -->
+          <div class="form-checkbox">
+            <input 
+              type="checkbox" 
+              id="customer_accepts_marketing" 
+              name="customer[accepts_marketing]"
+              value="true"
+            >
+            <label for="customer_accepts_marketing">
+              Send me emails about new products, tips, and exclusive offers
+            </label>
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" class="btn-register" id="submit-btn">
+              Create Account
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+        {% endform %}
+      </div>
+      
+      <!-- Login Section -->
+      <div class="login-section">
+        <p class="login-text">Already have an account?</p>
+        <a href="{{ routes.account_login_url }}" class="btn-login">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/>
+          </svg>
+          Sign In
+        </a>
+      </div>
+    </div>
+    
+    <script>
+      // Toggle password visibility
+      function togglePassword(inputId, button) {
+        const input = document.getElementById(inputId);
+        const svg = button.querySelector('svg');
+        
+        if (input.type === 'password') {
+          input.type = 'text';
+          svg.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
+        } else {
+          input.type = 'password';
+          svg.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+        }
+      }
+      
+      // Password strength checker
+      document.addEventListener('DOMContentLoaded', function() {
+        const passwordInput = document.getElementById('register_password');
+        const strengthMeter = document.getElementById('strength-meter');
+        const reqLength = document.getElementById('req-length');
+        const reqUppercase = document.getElementById('req-uppercase');
+        const reqNumber = document.getElementById('req-number');
+        const reqSpecial = document.getElementById('req-special');
+        const submitBtn = document.getElementById('submit-btn');
+        
+        if (!passwordInput) return;
+        
+        passwordInput.addEventListener('input', function() {
+          const password = this.value;
+          let strength = 0;
+          let requirementsMet = 0;
+          
+          // Check length (8+ characters)
+          if (password.length >= 8) {
+            strength += 25;
+            requirementsMet++;
+            reqLength.classList.add('met');
+            reqLength.querySelector('svg').innerHTML = '<circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/>';
+          } else {
+            reqLength.classList.remove('met');
+            reqLength.querySelector('svg').innerHTML = '<circle cx="12" cy="12" r="10"/>';
+          }
+          
+          // Check uppercase
+          if (/[A-Z]/.test(password)) {
+            strength += 25;
+            requirementsMet++;
+            reqUppercase.classList.add('met');
+            reqUppercase.querySelector('svg').innerHTML = '<circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/>';
+          } else {
+            reqUppercase.classList.remove('met');
+            reqUppercase.querySelector('svg').innerHTML = '<circle cx="12" cy="12" r="10"/>';
+          }
+          
+          // Check number
+          if (/[0-9]/.test(password)) {
+            strength += 25;
+            requirementsMet++;
+            reqNumber.classList.add('met');
+            reqNumber.querySelector('svg').innerHTML = '<circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/>';
+          } else {
+            reqNumber.classList.remove('met');
+            reqNumber.querySelector('svg').innerHTML = '<circle cx="12" cy="12" r="10"/>';
+          }
+          
+          // Check special character
+          if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+            strength += 25;
+            requirementsMet++;
+            reqSpecial.classList.add('met');
+            reqSpecial.querySelector('svg').innerHTML = '<circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/>';
+          } else {
+            reqSpecial.classList.remove('met');
+            reqSpecial.querySelector('svg').innerHTML = '<circle cx="12" cy="12" r="10"/>';
+          }
+          
+          // Update strength meter
+          strengthMeter.className = 'strength-meter-fill';
+          if (requirementsMet === 1 || requirementsMet === 2) {
+            strengthMeter.classList.add('strength-weak');
+          } else if (requirementsMet === 3) {
+            strengthMeter.classList.add('strength-medium');
+          } else if (requirementsMet === 4) {
+            strengthMeter.classList.add('strength-strong');
+          }
+          
+          // Enable/disable submit button based on minimum requirements
+          // Minimum: 8 characters + at least 2 other requirements
+          if (password.length >= 8 && requirementsMet >= 3) {
+            submitBtn.disabled = false;
+          } else {
+            submitBtn.disabled = true;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

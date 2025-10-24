@@ -1,0 +1,411 @@
+{% comment %}
+  Main Search Results Section
+  Displays search results with filtering and sorting
+{% endcomment %}
+
+<section class="main-search-results">
+  <div class="page-width">
+    {% if search.performed %}
+      <div class="search-results-header">
+        <div class="results-summary">
+          <h2 class="results-title">
+            {% if search.results_count == 0 %}
+              No results found for "{{ search.terms }}"
+            {% else %}
+              {{ search.results_count }} 
+              {% if search.results_count == 1 %}
+                result
+              {% else %}
+                results
+              {% endif %}
+              for "{{ search.terms }}"
+            {% endif %}
+          </h2>
+          
+          {% if search.results_count > 0 %}
+            <p class="results-count">Showing {{ search.results.size }} of {{ search.results_count }} results</p>
+          {% endif %}
+        </div>
+        
+        {% if search.results_count > 0 %}
+          <div class="search-controls">
+            <!-- Sort Dropdown -->
+            {% if section.settings.enable_sorting %}
+              <div class="sort-dropdown">
+                <label for="search-sort" class="sort-label">Sort by:</label>
+                <select id="search-sort" class="sort-select">
+                  <option value="relevance">Relevance</option>
+                  <option value="title-ascending">A-Z</option>
+                  <option value="title-descending">Z-A</option>
+                  <option value="price-ascending">Price: Low to High</option>
+                  <option value="price-descending">Price: High to Low</option>
+                  <option value="created-descending">Newest First</option>
+                  <option value="created-ascending">Oldest First</option>
+                </select>
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+      
+      {% if search.results_count > 0 %}
+        <!-- Results Grid -->
+        <div class="search-results-grid" id="search-results-grid">
+          {% for item in search.results %}
+            {% if item.object_type == 'product' %}
+              <article class="search-result-card product-card" 
+                       data-type="product" 
+                       data-price="{{ item.price | divided_by: 100 }}"
+                       data-available="{{ item.available }}">
+                <a href="{{ item.url }}" class="card-link">
+                  {% if item.featured_image %}
+                    <div class="card-image">
+                      <img 
+                        src="{{ item.featured_image | image_url: width: 600 }}"
+                        alt="{{ item.featured_image.alt | escape }}"
+                        loading="lazy"
+                        width="600"
+                        height="600"
+                      >
+                      {% unless item.available %}
+                        <div class="sold-out-badge">Sold Out</div>
+                      {% endunless %}
+                    </div>
+                  {% endif %}
+                  
+                  <div class="card-content">
+                    {% if section.settings.show_vendor and item.vendor %}
+                      <p class="card-vendor">{{ item.vendor }}</p>
+                    {% endif %}
+                    
+                    <h3 class="card-title">{{ item.title }}</h3>
+                    
+                    {% if section.settings.show_product_type and item.type %}
+                      <p class="card-product-type">{{ item.type }}</p>
+                    {% endif %}
+                    
+                    <div class="card-price">
+                      {% if item.compare_at_price > item.price %}
+                        <span class="price-compare">{{ item.compare_at_price | money }}</span>
+                        <span class="price-sale">{{ item.price | money }}</span>
+                        <span class="sale-badge">Sale</span>
+                      {% else %}
+                        <span class="price-regular">{{ item.price | money }}</span>
+                      {% endif %}
+                    </div>
+                    
+                    <button class="btn-view-product">View Product</button>
+                  </div>
+                </a>
+              </article>
+              
+            {% elsif item.object_type == 'article' %}
+              <article class="search-result-card article-card" data-type="article">
+                <a href="{{ item.url }}" class="card-link">
+                  {% if item.image %}
+                    <div class="card-image">
+                      <img 
+                        src="{{ item.image | image_url: width: 600 }}"
+                        alt="{{ item.image.alt | escape }}"
+                        loading="lazy"
+                        width="600"
+                        height="400"
+                      >
+                    </div>
+                  {% endif %}
+                  
+                  <div class="card-content">
+                    <div class="card-meta">
+                      <span class="card-badge">Article</span>
+                      <span class="card-date">{{ item.published_at | date: '%B %d, %Y' }}</span>
+                    </div>
+                    
+                    <h3 class="card-title">{{ item.title }}</h3>
+                    
+                    {% if item.excerpt != blank %}
+                      <p class="card-excerpt">{{ item.excerpt | strip_html | truncate: 120 }}</p>
+                    {% endif %}
+                    
+                    {% if item.author %}
+                      <p class="card-author">By {{ item.author }}</p>
+                    {% endif %}
+                    
+                    <span class="btn-read-more">Read More →</span>
+                  </div>
+                </a>
+              </article>
+              
+            {% elsif item.object_type == 'page' %}
+              <article class="search-result-card page-card" data-type="page">
+                <a href="{{ item.url }}" class="card-link">
+                  <div class="card-content">
+                    <div class="card-meta">
+                      <span class="card-badge">Page</span>
+                    </div>
+                    
+                    <h3 class="card-title">{{ item.title }}</h3>
+                    
+                    {% if item.content != blank %}
+                      <p class="card-excerpt">{{ item.content | strip_html | truncate: 150 }}</p>
+                    {% endif %}
+                    
+                    <span class="btn-read-more">View Page →</span>
+                  </div>
+                </a>
+              </article>
+            {% endif %}
+          {% endfor %}
+        </div>
+        
+      {% else %}
+        <!-- No Results State -->
+        <div class="no-results-state">
+          <svg width="120" height="120" viewBox="0 0 24 24" fill="none">
+            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M8 11H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <h3>No results found for "{{ search.terms }}"</h3>
+          <p>Try adjusting your search terms or browse our collections</p>
+          <div class="no-results-actions">
+            <a href="{{ routes.all_products_collection_url }}" class="btn-primary">Browse Products</a>
+            <a href="/blogs/news" class="btn-secondary">Read Articles</a>
+          </div>
+        </div>
+      {% endif %}
+      
+    {% else %}
+      <!-- Initial State (No Search Performed) -->
+      <div class="search-empty-state">
+        <svg width="120" height="120" viewBox="0 0 24 24" fill="none">
+          <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <h3>Start Your Search</h3>
+        <p>Enter a search term above to find products, articles, and pages</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .main-search-results {
+    padding: 60px 0;
+    background: var(--background, #fefdfb);
+  }
+  
+  .search-results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 40px;
+    gap: 24px;
+  }
+  
+  .results-summary {
+    flex: 1;
+  }
+  
+  .results-title {
+    font-size: 2rem;
+    color: var(--primary, #1d4035);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  
+  .results-count {
+    color: #6b7280;
+    font-size: 1rem;
+  }
+  
+  .search-controls {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  
+  .sort-dropdown {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .sort-label {
+    color: #6b7280;
+    font-weight: 600;
+    font-size: 0.9375rem;
+  }
+  
+  .sort-select {
+    padding: 12px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--primary, #1d4035);
+    background: white;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  .search-results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  
+  .search-result-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+  }
+  
+  .search-result-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+  }
+  
+  .card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  
+  .card-image {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+    background: #f3f4f6;
+    overflow: hidden;
+  }
+  
+  .card-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .card-content {
+    padding: 20px;
+  }
+  
+  .card-vendor {
+    font-size: 0.875rem;
+    color: var(--accent, #b85a1f);
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  
+  .card-title {
+    font-size: 1.125rem;
+    color: var(--primary, #1d4035);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  
+  .card-price {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  
+  .price-regular,
+  .price-sale {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent, #b85a1f);
+  }
+  
+  .price-compare {
+    font-size: 1rem;
+    color: #9ca3af;
+    text-decoration: line-through;
+  }
+  
+  .btn-view-product {
+    width: 100%;
+    padding: 12px;
+    background: var(--accent, #b85a1f);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .card-badge {
+    padding: 4px 12px;
+    background: var(--primary, #1d4035);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 4px;
+  }
+  
+  .no-results-state,
+  .search-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 80px 20px;
+    text-align: center;
+  }
+  
+  .no-results-state svg,
+  .search-empty-state svg {
+    color: #d1d5db;
+    margin-bottom: 24px;
+  }
+  
+  @media (max-width: 768px) {
+    .search-results-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Main Search Results",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show product vendor",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_type",
+      "label": "Show product type",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "label": "Enable sorting",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Main Search Results"
+    }
+  ]
+}
+{% endschema %}
