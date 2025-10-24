@@ -1,528 +1,1167 @@
-{{ 'template-collection.css' | asset_url | stylesheet_tag }}
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
-{{ 'component-price.css' | asset_url | stylesheet_tag }}
-{{ 'component-search.css' | asset_url | stylesheet_tag }}
+{% comment %}
+  Main Search Results Section
+  Displays search results with filtering and sorting
+{% endcomment %}
 
-{%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
-  {{ 'component-facets.css' | asset_url | stylesheet_tag }}
-  <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
-{%- endif -%}
+<section class="main-search-results">
+  <div class="page-width">
+    {% if search.performed %}
+      <div class="search-results-header">
+        <div class="results-summary">
+          <h2 class="results-title">
+            {% if search.results_count == 0 %}
+              No results found for "{{ search.terms }}"
+            {% else %}
+              {{ search.results_count }} 
+              {% if search.results_count == 1 %}
+                result
+              {% else %}
+                results
+              {% endif %}
+              for "{{ search.terms }}"
+            {% endif %}
+          </h2>
+          
+          {% if search.results_count > 0 %}
+            <p class="results-count">Showing {{ search.results.size }} of {{ search.results_count }} results</p>
+          {% endif %}
+        </div>
+        
+        {% if search.results_count > 0 %}
+          <div class="search-controls">
+            <!-- Filter Toggle (Mobile) -->
+            <button type="button" class="filters-toggle-btn" id="filters-toggle">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              Filters
+            </button>
+            
+            <!-- Sort Dropdown -->
+            {% if section.settings.enable_sorting %}
+              <div class="sort-dropdown">
+                <label for="search-sort" class="sort-label">Sort by:</label>
+                <select id="search-sort" class="sort-select">
+                  <option value="relevance">Relevance</option>
+                  <option value="title-ascending">A-Z</option>
+                  <option value="title-descending">Z-A</option>
+                  <option value="price-ascending">Price: Low to High</option>
+                  <option value="price-descending">Price: High to Low</option>
+                  <option value="created-descending">Newest First</option>
+                  <option value="created-ascending">Oldest First</option>
+                </select>
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+      
+      {% if search.results_count > 0 %}
+        <div class="search-results-container">
+          <!-- Filters Sidebar -->
+          {% if section.settings.enable_filtering %}
+            <aside class="search-filters" id="search-filters">
+              <div class="filters-header">
+                <h3 class="filters-title">Filters</h3>
+                <button type="button" class="filters-close" id="filters-close">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              </div>
+              
+              <!-- Resource Type Filter -->
+              <div class="filter-group">
+                <h4 class="filter-group-title">Content Type</h4>
+                <div class="filter-options">
+                  <label class="filter-checkbox">
+                    <input type="checkbox" name="type" value="product" data-filter-type="type">
+                    <span>Products</span>
+                    <span class="filter-count" id="count-products">0</span>
+                  </label>
+                  <label class="filter-checkbox">
+                    <input type="checkbox" name="type" value="article" data-filter-type="type">
+                    <span>Articles</span>
+                    <span class="filter-count" id="count-articles">0</span>
+                  </label>
+                  <label class="filter-checkbox">
+                    <input type="checkbox" name="type" value="page" data-filter-type="type">
+                    <span>Pages</span>
+                    <span class="filter-count" id="count-pages">0</span>
+                  </label>
+                </div>
+              </div>
+              
+              <!-- Product Type Filter -->
+              {% if section.settings.show_product_type %}
+                <div class="filter-group" id="product-type-filter">
+                  <h4 class="filter-group-title">Product Type</h4>
+                  <div class="filter-options" id="product-type-options">
+                    <!-- Will be populated dynamically -->
+                  </div>
+                </div>
+              {% endif %}
+              
+              <!-- Vendor Filter -->
+              {% if section.settings.show_vendor %}
+                <div class="filter-group" id="vendor-filter">
+                  <h4 class="filter-group-title">Brand</h4>
+                  <div class="filter-options" id="vendor-options">
+                    <!-- Will be populated dynamically -->
+                  </div>
+                </div>
+              {% endif %}
+              
+              <!-- Price Range Filter (Products Only) -->
+              <div class="filter-group" id="price-filter">
+                <h4 class="filter-group-title">Price Range</h4>
+                <div class="filter-options">
+                  <label class="filter-checkbox">
+                    <input type="checkbox" name="price" value="0-25" data-filter-type="price">
+                    <span>Under $25</span>
+                  </label>
+                  <label class="filter-checkbox">
+                    <input type="checkbox" name="price" value="25-50" data-filter-type="price">
+                    <span>$25 - $50</span>
+                  </label>
+                  <label class="filter-checkbox">
+                    <input type="checkbox" name="price" value="50-100" data-filter-type="price">
+                    <span>$50 - $100</span>
+                  </label>
+                  <label class="filter-checkbox">
+                    <input type="checkbox" name="price" value="100-200" data-filter-type="price">
+                    <span>$100 - $200</span>
+                  </label>
+                  <label class="filter-checkbox">
+                    <input type="checkbox" name="price" value="200-plus" data-filter-type="price">
+                    <span>Over $200</span>
+                  </label>
+                </div>
+              </div>
+              
+              <!-- Availability Filter -->
+              <div class="filter-group" id="availability-filter">
+                <h4 class="filter-group-title">Availability</h4>
+                <div class="filter-options">
+                  <label class="filter-checkbox">
+                    <input type="checkbox" name="availability" value="in-stock" data-filter-type="availability">
+                    <span>In Stock</span>
+                  </label>
+                  <label class="filter-checkbox">
+                    <input type="checkbox" name="availability" value="out-of-stock" data-filter-type="availability">
+                    <span>Out of Stock</span>
+                  </label>
+                </div>
+              </div>
+              
+              <div class="filter-actions">
+                <button type="button" class="btn-clear-filters" id="clear-filters">
+                  Clear All Filters
+                </button>
+              </div>
+            </aside>
+          {% endif %}
+          
+          <!-- Results Grid -->
+          <div class="search-results-grid" id="search-results-grid">
+            {% for item in search.results %}
+              {% if item.object_type == 'product' %}
+                <article class="search-result-card product-card" 
+                         data-type="product" 
+                         data-price="{{ item.price | divided_by: 100 }}"
+                         data-product-type="{{ item.type | handleize }}"
+                         data-vendor="{{ item.vendor | handleize }}"
+                         data-available="{{ item.available }}">
+                  <a href="{{ item.url }}" class="card-link">
+                    {% if item.featured_image %}
+                      <div class="card-image">
+                        <img 
+                          src="{{ item.featured_image | image_url: width: 600 }}"
+                          alt="{{ item.featured_image.alt | escape }}"
+                          loading="lazy"
+                          width="600"
+                          height="600"
+                        >
+                        {% unless item.available %}
+                          <div class="sold-out-badge">Sold Out</div>
+                        {% endunless %}
+                      </div>
+                    {% endif %}
+                    
+                    <div class="card-content">
+                      {% if section.settings.show_vendor and item.vendor %}
+                        <p class="card-vendor">{{ item.vendor }}</p>
+                      {% endif %}
+                      
+                      <h3 class="card-title">{{ item.title }}</h3>
+                      
+                      {% if section.settings.show_product_type and item.type %}
+                        <p class="card-product-type">{{ item.type }}</p>
+                      {% endif %}
+                      
+                      <div class="card-price">
+                        {% if item.compare_at_price > item.price %}
+                          <span class="price-compare">{{ item.compare_at_price | money }}</span>
+                          <span class="price-sale">{{ item.price | money }}</span>
+                          <span class="sale-badge">Sale</span>
+                        {% else %}
+                          <span class="price-regular">{{ item.price | money }}</span>
+                        {% endif %}
+                      </div>
+                      
+                      <button class="btn-view-product">View Product</button>
+                    </div>
+                  </a>
+                </article>
+                
+              {% elsif item.object_type == 'article' %}
+                <article class="search-result-card article-card" data-type="article">
+                  <a href="{{ item.url }}" class="card-link">
+                    {% if item.image %}
+                      <div class="card-image">
+                        <img 
+                          src="{{ item.image | image_url: width: 600 }}"
+                          alt="{{ item.image.alt | escape }}"
+                          loading="lazy"
+                          width="600"
+                          height="400"
+                        >
+                      </div>
+                    {% endif %}
+                    
+                    <div class="card-content">
+                      <div class="card-meta">
+                        <span class="card-badge">Article</span>
+                        <span class="card-date">{{ item.published_at | date: '%B %d, %Y' }}</span>
+                      </div>
+                      
+                      <h3 class="card-title">{{ item.title }}</h3>
+                      
+                      {% if item.excerpt != blank %}
+                        <p class="card-excerpt">{{ item.excerpt | strip_html | truncate: 120 }}</p>
+                      {% endif %}
+                      
+                      {% if item.author %}
+                        <p class="card-author">By {{ item.author }}</p>
+                      {% endif %}
+                      
+                      <span class="btn-read-more">Read More →</span>
+                    </div>
+                  </a>
+                </article>
+                
+              {% elsif item.object_type == 'page' %}
+                <article class="search-result-card page-card" data-type="page">
+                  <a href="{{ item.url }}" class="card-link">
+                    <div class="card-content">
+                      <div class="card-meta">
+                        <span class="card-badge">Page</span>
+                      </div>
+                      
+                      <h3 class="card-title">{{ item.title }}</h3>
+                      
+                      {% if item.content != blank %}
+                        <p class="card-excerpt">{{ item.content | strip_html | truncate: 150 }}</p>
+                      {% endif %}
+                      
+                      <span class="btn-read-more">View Page →</span>
+                    </div>
+                  </a>
+                </article>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        
+        <!-- Pagination -->
+        {% if paginate.pages > 1 %}
+          <div class="search-pagination">
+            {% if paginate.previous %}
+              <a href="{{ paginate.previous.url }}" class="pagination-btn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M12.5 5L7.5 10L12.5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                Previous
+              </a>
+            {% endif %}
+            
+            <span class="pagination-info">
+              Page {{ paginate.current_page }} of {{ paginate.pages }}
+            </span>
+            
+            {% if paginate.next %}
+              <a href="{{ paginate.next.url }}" class="pagination-btn">
+                Next
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M7.5 5L12.5 10L7.5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+        
+      {% else %}
+        <!-- No Results State -->
+        <div class="no-results-state">
+          <svg width="120" height="120" viewBox="0 0 24 24" fill="none">
+            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M8 11H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <h3>No results found for "{{ search.terms }}"</h3>
+          <p>Try adjusting your search terms or browse our collections</p>
+          <div class="no-results-actions">
+            <a href="{{ routes.all_products_collection_url }}" class="btn-primary">Browse Products</a>
+            <a href="/blogs/news" class="btn-secondary">Read Articles</a>
+          </div>
+        </div>
+      {% endif %}
+      
+    {% else %}
+      <!-- Initial State (No Search Performed) -->
+      <div class="search-empty-state">
+        <svg width="120" height="120" viewBox="0 0 24 24" fill="none">
+          <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <h3>Start Your Search</h3>
+        <p>Enter a search term above to find products, articles, and pages</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
 
-{% if section.settings.image_shape == 'blob' %}
-  {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
-{%- endif -%}
-
-<script src="{{ 'main-search.js' | asset_url }}" defer="defer"></script>
-
-<style>
-  .template-search__header {
-    margin-bottom: 3rem;
+<script>
+(function() {
+  'use strict';
+  
+  const filtersToggle = document.getElementById('filters-toggle');
+  const filtersPanel = document.getElementById('search-filters');
+  const filtersClose = document.getElementById('filters-close');
+  const clearFilters = document.getElementById('clear-filters');
+  const sortSelect = document.getElementById('search-sort');
+  const resultsGrid = document.getElementById('search-results-grid');
+  
+  // Initialize
+  initializeFilters();
+  initializeCounts();
+  
+  // Toggle filters (mobile)
+  if (filtersToggle && filtersPanel) {
+    filtersToggle.addEventListener('click', () => {
+      filtersPanel.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
   }
-
-  .template-search__search {
-    margin: 0 auto 3.5rem;
-    max-width: 74.1rem;
+  
+  if (filtersClose) {
+    filtersClose.addEventListener('click', () => {
+      filtersPanel.classList.remove('active');
+      document.body.style.overflow = '';
+    });
   }
-
-  .template-search__search .search {
-    margin-top: 3rem;
+  
+  // Clear all filters
+  if (clearFilters) {
+    clearFilters.addEventListener('click', () => {
+      document.querySelectorAll('.filter-checkbox input[type="checkbox"]').forEach(checkbox => {
+        checkbox.checked = false;
+      });
+      applyFilters();
+    });
   }
-
-  .template-search--empty {
-    padding-bottom: 18rem;
+  
+  // Filter change handler
+  function initializeFilters() {
+    document.querySelectorAll('.filter-checkbox input[type="checkbox"]').forEach(checkbox => {
+      checkbox.addEventListener('change', applyFilters);
+    });
   }
-
-  @media screen and (min-width: 750px) {
-    .template-search__header {
-      margin-bottom: 5rem;
+  
+  // Apply filters
+  function applyFilters() {
+    const activeFilters = {
+      type: [],
+      productType: [],
+      vendor: [],
+      price: [],
+      availability: []
+    };
+    
+    // Collect active filters
+    document.querySelectorAll('.filter-checkbox input[type="checkbox"]:checked').forEach(checkbox => {
+      const filterType = checkbox.getAttribute('data-filter-type');
+      const value = checkbox.value;
+      
+      if (filterType && activeFilters[filterType]) {
+        activeFilters[filterType].push(value);
+      }
+    });
+    
+    // Filter results
+    const cards = resultsGrid.querySelectorAll('.search-result-card');
+    let visibleCount = 0;
+    
+    cards.forEach(card => {
+      let show = true;
+      
+      // Type filter
+      if (activeFilters.type.length > 0) {
+        const cardType = card.getAttribute('data-type');
+        show = show && activeFilters.type.includes(cardType);
+      }
+      
+      // Product type filter
+      if (show && activeFilters.productType.length > 0) {
+        const productType = card.getAttribute('data-product-type');
+        show = show && activeFilters.productType.includes(productType);
+      }
+      
+      // Vendor filter
+      if (show && activeFilters.vendor.length > 0) {
+        const vendor = card.getAttribute('data-vendor');
+        show = show && activeFilters.vendor.includes(vendor);
+      }
+      
+      // Price filter
+      if (show && activeFilters.price.length > 0) {
+        const price = parseFloat(card.getAttribute('data-price'));
+        show = show && activeFilters.price.some(range => {
+          if (range === '0-25') return price < 25;
+          if (range === '25-50') return price >= 25 && price < 50;
+          if (range === '50-100') return price >= 50 && price < 100;
+          if (range === '100-200') return price >= 100 && price < 200;
+          if (range === '200-plus') return price >= 200;
+          return false;
+        });
+      }
+      
+      // Availability filter
+      if (show && activeFilters.availability.length > 0) {
+        const available = card.getAttribute('data-available') === 'true';
+        show = show && activeFilters.availability.some(status => {
+          if (status === 'in-stock') return available;
+          if (status === 'out-of-stock') return !available;
+          return false;
+        });
+      }
+      
+      // Show/hide card
+      if (show) {
+        card.style.display = '';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+    
+    // Update results count
+    updateResultsCount(visibleCount);
+  }
+  
+  // Initialize filter counts
+  function initializeCounts() {
+    const cards = resultsGrid.querySelectorAll('.search-result-card');
+    const counts = {
+      product: 0,
+      article: 0,
+      page: 0
+    };
+    
+    const productTypes = new Set();
+    const vendors = new Set();
+    
+    cards.forEach(card => {
+      const type = card.getAttribute('data-type');
+      if (counts[type] !== undefined) {
+        counts[type]++;
+      }
+      
+      const productType = card.getAttribute('data-product-type');
+      if (productType) productTypes.add(productType);
+      
+      const vendor = card.getAttribute('data-vendor');
+      if (vendor) vendors.add(vendor);
+    });
+    
+    // Update count displays
+    const countProducts = document.getElementById('count-products');
+    const countArticles = document.getElementById('count-articles');
+    const countPages = document.getElementById('count-pages');
+    
+    if (countProducts) countProducts.textContent = counts.product;
+    if (countArticles) countArticles.textContent = counts.article;
+    if (countPages) countPages.textContent = counts.page;
+    
+    // Populate dynamic filters
+    populateProductTypeFilter(productTypes);
+    populateVendorFilter(vendors);
+  }
+  
+  // Populate product type filter
+  function populateProductTypeFilter(types) {
+    const container = document.getElementById('product-type-options');
+    if (!container || types.size === 0) return;
+    
+    types.forEach(type => {
+      const label = document.createElement('label');
+      label.className = 'filter-checkbox';
+      label.innerHTML = `
+        <input type="checkbox" name="product-type" value="${type}" data-filter-type="productType">
+        <span>${capitalizeWords(type.replace(/-/g, ' '))}</span>
+      `;
+      container.appendChild(label);
+      
+      label.querySelector('input').addEventListener('change', applyFilters);
+    });
+  }
+  
+  // Populate vendor filter
+  function populateVendorFilter(vendors) {
+    const container = document.getElementById('vendor-options');
+    if (!container || vendors.size === 0) return;
+    
+    vendors.forEach(vendor => {
+      const label = document.createElement('label');
+      label.className = 'filter-checkbox';
+      label.innerHTML = `
+        <input type="checkbox" name="vendor" value="${vendor}" data-filter-type="vendor">
+        <span>${capitalizeWords(vendor.replace(/-/g, ' '))}</span>
+      `;
+      container.appendChild(label);
+      
+      label.querySelector('input').addEventListener('change', applyFilters);
+    });
+  }
+  
+  // Sort functionality
+  if (sortSelect) {
+    sortSelect.addEventListener('change', function() {
+      const sortValue = this.value;
+      const cards = Array.from(resultsGrid.querySelectorAll('.search-result-card'));
+      
+      cards.sort((a, b) => {
+        switch(sortValue) {
+          case 'title-ascending':
+            return a.querySelector('.card-title').textContent.localeCompare(b.querySelector('.card-title').textContent);
+          case 'title-descending':
+            return b.querySelector('.card-title').textContent.localeCompare(a.querySelector('.card-title').textContent);
+          case 'price-ascending':
+            return parseFloat(a.getAttribute('data-price') || 0) - parseFloat(b.getAttribute('data-price') || 0);
+          case 'price-descending':
+            return parseFloat(b.getAttribute('data-price') || 0) - parseFloat(a.getAttribute('data-price') || 0);
+          default:
+            return 0;
+        }
+      });
+      
+      cards.forEach(card => resultsGrid.appendChild(card));
+    });
+  }
+  
+  // Helper functions
+  function updateResultsCount(count) {
+    const countElement = document.querySelector('.results-count');
+    if (countElement) {
+      countElement.textContent = `Showing ${count} results`;
     }
   }
+  
+  function capitalizeWords(str) {
+    return str.replace(/\b\w/g, l => l.toUpperCase());
+  }
+})();
+</script>
 
-  .search__button .icon {
-    height: 1.8rem;
+<style>
+  .main-search-results {
+    padding: 60px 0;
+    background: var(--background, #fefdfb);
+  }
+  
+  .search-results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 40px;
+    gap: 24px;
+  }
+  
+  .results-summary {
+    flex: 1;
+  }
+  
+  .results-title {
+    font-size: 2rem;
+    color: var(--primary, #1d4035);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  
+  .results-count {
+    color: #6b7280;
+    font-size: 1rem;
+  }
+  
+  .search-controls {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  
+  .filters-toggle-btn {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    color: var(--primary, #1d4035);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .filters-toggle-btn:hover {
+    border-color: var(--primary, #1d4035);
+  }
+  
+  .sort-dropdown {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .sort-label {
+    color: #6b7280;
+    font-weight: 600;
+    font-size: 0.9375rem;
+  }
+  
+  .sort-select {
+    padding: 12px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--primary, #1d4035);
+    background: white;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+  
+  .sort-select:focus {
+    border-color: var(--primary, #1d4035);
+  }
+  
+  .search-results-container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 40px;
+  }
+  
+  /* Filters Sidebar */
+  .search-filters {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    position: sticky;
+    top: 20px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+  }
+  
+  .filters-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #e5e7eb;
+  }
+  
+  .filters-title {
+    font-size: 1.5rem;
+    color: var(--primary, #1d4035);
+    font-weight: 700;
+    margin: 0;
+  }
+  
+  .filters-close {
+    display: none;
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 4px;
+  }
+  
+  .filter-group {
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .filter-group:last-of-type {
+    border-bottom: none;
+  }
+  
+  .filter-group-title {
+    font-size: 1rem;
+    color: var(--primary, #1d4035);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  
+  .filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .filter-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+  }
+  
+  .filter-checkbox:hover {
+    background: #f9fafb;
+  }
+  
+  .filter-checkbox input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--accent, #b85a1f);
+  }
+  
+  .filter-checkbox span:first-of-type {
+    flex: 1;
+    color: #374151;
+    font-size: 0.9375rem;
+  }
+  
+  .filter-count {
+    color: #9ca3af;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  
+  .filter-actions {
+    margin-top: 24px;
+  }
+  
+  .btn-clear-filters {
+    width: 100%;
+    padding: 12px;
+    background: white;
+    border: 2px solid var(--primary, #1d4035);
+    color: var(--primary, #1d4035);
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-clear-filters:hover {
+    background: var(--primary, #1d4035);
+    color: white;
+  }
+  
+  /* Results Grid */
+  .search-results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  
+  .search-result-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+  }
+  
+  .search-result-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+  }
+  
+  .card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  
+  .card-image {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+    background: #f3f4f6;
+    overflow: hidden;
+  }
+  
+  .card-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .search-result-card:hover .card-image img {
+    transform: scale(1.05);
+  }
+  
+  .sold-out-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 6px 12px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 4px;
+  }
+  
+  .card-content {
+    padding: 20px;
+  }
+  
+  .card-vendor {
+    font-size: 0.875rem;
+    color: var(--accent, #b85a1f);
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .card-title {
+    font-size: 1.125rem;
+    color: var(--primary, #1d4035);
+    font-weight: 700;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  
+  .card-product-type {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 12px;
+  }
+  
+  .card-price {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  
+  .price-regular,
+  .price-sale {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent, #b85a1f);
+  }
+  
+  .price-compare {
+    font-size: 1rem;
+    color: #9ca3af;
+    text-decoration: line-through;
+  }
+  
+  .sale-badge {
+    padding: 4px 8px;
+    background: #dc2626;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+  
+  .btn-view-product {
+    width: 100%;
+    padding: 12px;
+    background: var(--accent, #b85a1f);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-view-product:hover {
+    background: var(--primary, #1d4035);
+  }
+  
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .card-badge {
+    padding: 4px 12px;
+    background: var(--primary, #1d4035);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 4px;
+  }
+  
+  .card-date,
+  .card-author {
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+  
+  .card-excerpt {
+    font-size: 0.9375rem;
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  
+  .btn-read-more {
+    color: var(--accent, #b85a1f);
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  /* Empty States */
+  .no-results-state,
+  .search-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    text-align: center;
+  }
+  
+  .no-results-state svg,
+  .search-empty-state svg {
+    color: #d1d5db;
+    margin-bottom: 24px;
+  }
+  
+  .no-results-state h3,
+  .search-empty-state h3 {
+    font-size: 2rem;
+    color: var(--primary, #1d4035);
+    margin-bottom: 12px;
+  }
+  
+  .no-results-state p,
+  .search-empty-state p {
+    font-size: 1.125rem;
+    color: #6b7280;
+    margin-bottom: 32px;
+  }
+  
+  .no-results-actions {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .btn-primary,
+  .btn-secondary {
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary {
+    background: var(--accent, #b85a1f);
+    color: white;
+    border: 2px solid var(--accent, #b85a1f);
+  }
+  
+  .btn-primary:hover {
+    background: var(--primary, #1d4035);
+    border-color: var(--primary, #1d4035);
+  }
+  
+  .btn-secondary {
+    background: white;
+    color: var(--primary, #1d4035);
+    border: 2px solid var(--primary, #1d4035);
+  }
+  
+  .btn-secondary:hover {
+    background: var(--primary, #1d4035);
+    color: white;
+  }
+  
+  /* Pagination */
+  .search-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    margin-top: 60px;
+  }
+  
+  .pagination-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: white;
+    border: 2px solid var(--primary, #1d4035);
+    color: var(--primary, #1d4035);
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  
+  .pagination-btn:hover {
+    background: var(--primary, #1d4035);
+    color: white;
+  }
+  
+  .pagination-info {
+    font-weight: 600;
+    color: #6b7280;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .search-results-container {
+      grid-template-columns: 1fr;
+    }
+    
+    .search-filters {
+      position: fixed;
+      top: 0;
+      left: -100%;
+      width: 320px;
+      max-width: 90%;
+      height: 100vh;
+      z-index: 1000;
+      transition: left 0.3s ease;
+      box-shadow: 0 0 0 0 rgba(0,0,0,0);
+    }
+    
+    .search-filters.active {
+      left: 0;
+      box-shadow: 0 0 0 9999px rgba(0,0,0,0.5);
+    }
+    
+    .filters-close {
+      display: block;
+    }
+    
+    .filters-toggle-btn {
+      display: flex;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .search-results-header {
+      flex-direction: column;
+    }
+    
+    .search-controls {
+      width: 100%;
+      justify-content: space-between;
+    }
+    
+    .results-title {
+      font-size: 1.5rem;
+    }
+    
+    .search-results-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .no-results-actions {
+      flex-direction: column;
+      width: 100%;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+      width: 100%;
+      text-align: center;
+    }
   }
 </style>
 
-{%- liquid
-  assign sort_by = search.sort_by | default: search.default_sort_by
-  assign terms = search.terms | escape
-  assign search_url = '?q=' | append: terms | append: '&options%5Bprefix%5D=last&sort_by=' | append: sort_by
--%}
-
-{%- style -%}
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-  }
-
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
-  }
-{%- endstyle -%}
-
-{% paginate search.results by 24 %}
-  <div class="template-search{% unless search.performed and search.results_count > 0 %} template-search--empty{% endunless %} section-{{ section.id }}-padding">
-    <div class="template-search__header page-width{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
-      <h1 class="h2 center">
-        {%- if search.performed -%}
-          {{- 'templates.search.title' | t -}}
-        {%- else -%}
-          {{- 'general.search.search' | t -}}
-        {%- endif -%}
-      </h1>
-      <div class="template-search__search">
-        {%- if settings.predictive_search_enabled -%}
-          <predictive-search data-loading-text="{{ 'accessibility.loading' | t }}">
-        {%- endif -%}
-        <main-search>
-          <form action="{{ routes.search_url }}" method="get" role="search" class="search">
-            <div class="field">
-              <input
-                class="search__input field__input"
-                id="Search-In-Template"
-                type="search"
-                name="q"
-                value="{{ search.terms | escape }}"
-                placeholder="{{ 'general.search.search' | t }}"
-                {%- if settings.predictive_search_enabled -%}
-                  role="combobox"
-                  aria-expanded="false"
-                  aria-owns="predictive-search-results"
-                  aria-controls="predictive-search-results"
-                  aria-haspopup="listbox"
-                  aria-autocomplete="list"
-                  autocorrect="off"
-                  autocomplete="off"
-                  autocapitalize="off"
-                  spellcheck="false"
-                {%- endif -%}
-              >
-              <label class="field__label" for="Search-In-Template">{{ 'general.search.search' | t }}</label>
-              <input name="options[prefix]" type="hidden" value="last">
-
-              {%- if settings.predictive_search_enabled -%}
-                <div class="predictive-search predictive-search--search-template" tabindex="-1" data-predictive-search>
-                  {%- render 'loading-spinner', class: 'predictive-search__loading-state' -%}
-                </div>
-
-                <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
-              {%- endif -%}
-
-              <button
-                type="reset"
-                class="reset__button field__button{% if search.terms == blank %} hidden{% endif %}"
-                aria-label="{{ 'general.search.reset' | t }}"
-              >
-                <span class="svg-wrapper">
-                  {{- 'icon-reset.svg' | inline_asset_content -}}
-                </span>
-              </button>
-              <button type="submit" class="search__button field__button" aria-label="{{ 'general.search.search' | t }}">
-                <span class="svg-wrapper">
-                  {{- 'icon-search.svg' | inline_asset_content -}}
-                </span>
-              </button>
-            </div>
-          </form>
-        </main-search>
-        {%- if settings.predictive_search_enabled -%}
-          </predictive-search>
-        {%- endif -%}
-      </div>
-      {%- if search.performed -%}
-        {%- unless section.settings.enable_filtering or section.settings.enable_sorting -%}
-          {%- if search.results_count > 0 -%}
-            <p role="status">
-              {{ 'templates.search.results_with_count_and_term' | t: terms: search.terms, count: search.results_count }}
-            </p>
-          {%- endif -%}
-        {%- endunless -%}
-        {%- if search.results_count == 0 and search.filters == empty -%}
-          <p role="status">{{ 'templates.search.no_results' | t: terms: search.terms }}</p>
-        {%- endif -%}
-      {%- endif -%}
-    </div>
-    {%- if search.performed -%}
-      {%- if section.settings.enable_sorting
-        and section.settings.filter_type == 'vertical'
-        and search.filters != empty
-      -%}
-        <facet-filters-form class="facets facets-vertical-sort page-width small-hide">
-          <form class="facets-vertical-form" id="FacetSortForm">
-            <div class="facet-filters sorting caption">
-              <div class="facet-filters__field">
-                <h2 class="facet-filters__label caption-large text-body">
-                  <label for="SortBy">{{ 'products.facets.sort_by_label' | t }}</label>
-                </h2>
-                <div class="select">
-                  {%- assign sort_by = search.sort_by | default: search.default_sort_by -%}
-                  <select
-                    name="sort_by"
-                    class="facet-filters__sort select__select caption-large"
-                    id="SortBy"
-                    aria-describedby="a11y-refresh-page-message"
-                  >
-                    {%- for option in search.sort_options -%}
-                      <option
-                        value="{{ option.value | escape }}"
-                        {% if option.value == sort_by %}
-                          selected="selected"
-                        {% endif %}
-                      >
-                        {{ option.name | escape }}
-                      </option>
-                    {%- endfor -%}
-                  </select>
-                  <span class="svg-wrapper">
-                    {{- 'icon-caret.svg' | inline_asset_content -}}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div class="product-count-vertical light" role="status">
-              <h2 class="product-count__text text-body">
-                <span id="ProductCountDesktop">
-                  {%- if search.results_count -%}
-                    {{ 'templates.search.results_with_count' | t: terms: search.terms, count: search.results_count }}
-                  {%- elsif search.products_count == search.all_products_count -%}
-                    {{ 'products.facets.product_count_simple' | t: count: search.products_count }}
-                  {%- else -%}
-                    {{
-                      'products.facets.product_count'
-                      | t: product_count: search.products_count, count: search.all_products_count
-                    }}
-                  {%- endif -%}
-                </span>
-              </h2>
-              {%- render 'loading-spinner' -%}
-            </div>
-          </form>
-        </facet-filters-form>
-      {%- endif -%}
-      <div
-        {% if section.settings.filter_type == 'vertical' %}
-          class="facets-vertical page-width"
-        {% endif %}
-      >
-        {%- if search.filters != empty -%}
-          {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
-            <aside
-              aria-labelledby="verticalTitle"
-              class="facets-wrapper{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
-              id="main-search-filters"
-              data-id="{{ section.id }}"
-            >
-              {% render 'facets',
-                results: search,
-                enable_filtering: section.settings.enable_filtering,
-                enable_sorting: section.settings.enable_sorting,
-                filter_type: section.settings.filter_type,
-                paginate: paginate
-              %}
-            </aside>
-          {%- endif -%}
-        {%- endif -%}
-        <div class="product-grid-container" id="ProductGridContainer">
-          {%- if search.results.size == 0 and search.filters != empty -%}
-            <div
-              class="template-search__results collection collection--empty{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
-              id="product-grid"
-              data-id="{{ section.id }}"
-            >
-              <div class="loading-overlay gradient"></div>
-              <div class="title-wrapper center">
-                <h2 class="title title--primary">
-                  {{ 'sections.collection_template.empty' | t -}}
-                  <br>
-                  {{
-                    'sections.collection_template.use_fewer_filters_html'
-                    | t: link: search_url, class: 'underlined-link link'
-                  }}
-                </h2>
-              </div>
-            </div>
-          {%- else -%}
-            <div
-              class="template-search__results collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
-              id="product-grid"
-              data-id="{{ section.id }}"
-            >
-              <div class="loading-overlay gradient"></div>
-              <ul
-                class="grid product-grid  grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop"
-                role="list"
-              >
-                {%- assign skip_card_product_styles = false -%}
-                {%- for item in search.results -%}
-                  {% assign lazy_load = false %}
-                  {%- if forloop.index > 2 -%}
-                    {%- assign lazy_load = true -%}
-                  {%- endif -%}
-
-                  <li
-                    class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-                    {% if settings.animations_reveal_on_scroll %}
-                      data-cascade
-                    {% endif %}
-                  >
-                    {%- case item.object_type -%}
-                      {%- when 'product' -%}
-                        {%- capture product_settings -%}{%- if section.settings.product_show_vendor -%}vendor,{%- endif -%}title,price{%- endcapture -%}
-                        {% render 'card-product',
-                          card_product: item,
-                          media_aspect_ratio: section.settings.image_ratio,
-                          image_shape: section.settings.image_shape,
-                          show_secondary_image: section.settings.show_secondary_image,
-                          show_vendor: section.settings.show_vendor,
-                          show_rating: section.settings.show_rating,
-                          lazy_load: lazy_load,
-                          skip_styles: skip_card_product_styles
-                        %}
-                        {%- assign skip_card_product_styles = true -%}
-                      {%- when 'article' -%}
-                        {% render 'article-card',
-                          article: item,
-                          show_image: true,
-                          show_date: section.settings.article_show_date,
-                          show_author: section.settings.article_show_author,
-                          show_badge: true,
-                          media_aspect_ratio: 1,
-                          lazy_load: lazy_load
-                        %}
-                      {%- when 'page' -%}
-                        <div class="article-card-wrapper card-wrapper underline-links-hover">
-                          <div
-                            class="card card--card card--text ratio color-{{ settings.blog_card_color_scheme }}"
-                            style="--ratio-percent: 100%;"
-                          >
-                            <div class="card__content">
-                              <div class="card__information">
-                                <h3 class="card__heading">
-                                  <a href="{{ item.url }}" class="full-unstyled-link">
-                                    {{ item.title | truncate: 50 | escape }}
-                                  </a>
-                                </h3>
-                              </div>
-                              <div class="card__badge {{ settings.badge_position }}">
-                                <span class="badge color-{{ settings.color_schemes | first }}">
-                                  {{- 'templates.search.page' | t -}}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                    {%- endcase -%}
-                  </li>
-                {%- endfor -%}
-              </ul>
-              {%- if paginate.pages > 1 -%}
-                {% render 'pagination', paginate: paginate %}
-              {%- endif -%}
-            </div>
-          {%- endif -%}
-        </div>
-      </div>
-    {%- endif -%}
-  </div>
-{% endpaginate %}
-{% if section.settings.image_shape == 'arch' %}
-  {{ 'mask-arch.svg' | inline_asset_content }}
-{%- endif -%}
-
 {% schema %}
 {
-  "name": "t:sections.main-search.name",
-  "tag": "section",
-  "class": "section",
+  "name": "Main Search Results",
   "settings": [
     {
       "type": "range",
-      "id": "columns_desktop",
-      "min": 1,
-      "max": 6,
+      "id": "products_per_row",
+      "min": 2,
+      "max": 4,
       "step": 1,
-      "default": 4,
-      "label": "t:sections.main-search.settings.columns_desktop.label"
+      "label": "Products per row",
+      "default": 3
     },
     {
-      "type": "select",
-      "id": "columns_mobile",
-      "default": "2",
-      "label": "t:sections.main-search.settings.columns_mobile.label",
-      "options": [
-        {
-          "value": "1",
-          "label": "t:sections.main-search.settings.columns_mobile.options__1.label"
-        },
-        {
-          "value": "2",
-          "label": "t:sections.main-search.settings.columns_mobile.options__2.label"
-        }
-      ]
-    },    
-    {
-      "type": "header",
-      "content": "t:sections.main-search.settings.header__1.content"
-    },
-    {
-      "type": "select",
-      "id": "image_ratio",
-      "options": [
-        {
-          "value": "adapt",
-          "label": "t:sections.main-search.settings.image_ratio.options__1.label"
-        },
-        {
-          "value": "portrait",
-          "label": "t:sections.main-search.settings.image_ratio.options__2.label"
-        },
-        {
-          "value": "square",
-          "label": "t:sections.main-search.settings.image_ratio.options__3.label"
-        }
-      ],
-      "default": "adapt",
-      "label": "t:sections.main-search.settings.image_ratio.label"
-    },
-    {
-      "type": "select",
-      "id": "image_shape",
-      "options": [
-        {
-          "value": "default",
-          "label": "t:sections.all.image_shape.options__1.label"
-        },
-        {
-          "value": "arch",
-          "label": "t:sections.all.image_shape.options__2.label"
-        },
-        {
-          "value": "blob",
-          "label": "t:sections.all.image_shape.options__3.label"
-        },
-        {
-          "value": "chevronleft",
-          "label": "t:sections.all.image_shape.options__4.label"
-        },
-        {
-          "value": "chevronright",
-          "label": "t:sections.all.image_shape.options__5.label"
-        },
-        {
-          "value": "diamond",
-          "label": "t:sections.all.image_shape.options__6.label"
-        },
-        {
-          "value": "parallelogram",
-          "label": "t:sections.all.image_shape.options__7.label"
-        },
-        {
-          "value": "round",
-          "label": "t:sections.all.image_shape.options__8.label"
-        }
-      ],
-      "default": "default",
-      "label": "t:sections.all.image_shape.label"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_secondary_image",
-      "default": false,
-      "label": "t:sections.main-search.settings.show_secondary_image.label"
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 24,
+      "step": 4,
+      "label": "Products per page",
+      "default": 12
     },
     {
       "type": "checkbox",
       "id": "show_vendor",
-      "default": false,
-      "label": "t:sections.main-search.settings.show_vendor.label"
+      "label": "Show product vendor",
+      "default": true
     },
     {
       "type": "checkbox",
-      "id": "show_rating",
-      "default": false,
-      "label": "t:sections.main-search.settings.show_rating.label",
-      "info": "t:sections.main-search.settings.show_rating.info"
-    },
-    {
-      "type": "header",
-      "content": "t:sections.main-collection-product-grid.settings.header__1.content"
+      "id": "show_product_type",
+      "label": "Show product type",
+      "default": true
     },
     {
       "type": "checkbox",
       "id": "enable_filtering",
-      "default": true,
-      "label": "t:sections.main-collection-product-grid.settings.enable_filtering.label",
-      "info": "t:sections.main-collection-product-grid.settings.enable_filtering.info"
-    },
-    {
-      "type": "select",
-      "id": "filter_type",
-      "options": [
-        {
-          "value": "horizontal",
-          "label": "t:sections.main-collection-product-grid.settings.filter_type.options__1.label"
-        },
-        {
-          "value": "vertical",
-          "label": "t:sections.main-collection-product-grid.settings.filter_type.options__2.label"
-        },
-        {
-          "value": "drawer",
-          "label": "t:sections.main-collection-product-grid.settings.filter_type.options__3.label"
-        }
-      ],
-      "default": "horizontal",
-      "label": "t:sections.main-collection-product-grid.settings.filter_type.label"
+      "label": "Enable filtering",
+      "default": true
     },
     {
       "type": "checkbox",
       "id": "enable_sorting",
-      "default": true,
-      "label": "t:sections.main-collection-product-grid.settings.enable_sorting.label"
-    },
+      "label": "Enable sorting",
+      "default": true
+    }
+  ],
+  "presets": [
     {
-      "type": "header",
-      "content": "t:sections.main-search.settings.header__2.content"
-    },
-    {
-      "type": "checkbox",
-      "id": "article_show_date",
-      "default": true,
-      "label": "t:sections.main-search.settings.article_show_date.label"
-    },
-    {
-      "type": "checkbox",
-      "id": "article_show_author",
-      "default": false,
-      "label": "t:sections.main-search.settings.article_show_author.label"
-    },
-    {
-      "type": "header",
-      "content": "t:sections.all.padding.section_padding_heading"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "t:sections.all.padding.padding_top",
-      "default": 36
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "t:sections.all.padding.padding_bottom",
-      "default": 36
+      "name": "Main Search Results"
     }
   ]
 }
