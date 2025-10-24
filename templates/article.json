@@ -1,40 +1,61 @@
 {
   "sections": {
-    "main": {
+    "article-header": {
+      "type": "everyday-ai-article-header"
+    },
+    "main-article": {
       "type": "main-article",
       "blocks": {
-        "featured_image": {
-          "type": "featured_image",
-          "settings": {
-            "image_height": "adapt"
-          }
-        },
         "title": {
-          "type": "title",
-          "settings": {
-            "blog_show_date": true,
-            "blog_show_author": false
-          }
+          "type": "title"
         },
-        "share": {
-          "type": "share",
-          "settings": {
-            "share_label": "Share"
-          }
+        "author": {
+          "type": "author"
+        },
+        "published_date": {
+          "type": "published_date"
         },
         "content": {
           "type": "content"
+        },
+        "share": {
+          "type": "share"
         }
       },
       "block_order": [
-        "featured_image",
         "title",
-        "share",
-        "content"
+        "author",
+        "published_date",
+        "content",
+        "share"
       ]
+    },
+    "keith-author-bio": {
+      "type": "keith-author-bio",
+      "settings": {
+        "show_bio": true
+      }
+    },
+    "related-posts": {
+      "type": "related-blog-posts",
+      "settings": {
+        "posts_to_show": 3,
+        "title": "Related Articles"
+      }
+    },
+    "article-newsletter": {
+      "type": "newsletter-signup",
+      "settings": {
+        "title": "Want More AI Insights?",
+        "description": "Join our newsletter for weekly AI tips and updates"
+      }
     }
   },
   "order": [
-    "main"
+    "article-header",
+    "main-article",
+    "keith-author-bio",
+    "related-posts",
+    "article-newsletter"
   ]
 }

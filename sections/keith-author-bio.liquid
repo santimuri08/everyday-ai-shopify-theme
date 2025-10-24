@@ -1,0 +1,229 @@
+{% comment %}
+  Keith Williams Author Bio Section
+  Displays author information for blog posts
+{% endcomment %}
+
+{% if article.author contains 'Keith' or section.settings.show_bio %}
+<section class="keith-author-bio">
+  <div class="page-width">
+    <div class="author-bio-container">
+      <div class="author-bio-image">
+        {% if section.settings.author_image %}
+          <img 
+            src="{{ section.settings.author_image | image_url: width: 200 }}" 
+            alt="Keith Williams"
+            loading="lazy"
+          >
+        {% else %}
+          <div class="author-placeholder">
+            <i class="fas fa-user"></i>
+          </div>
+        {% endif %}
+      </div>
+      
+      <div class="author-bio-content">
+        <h3 class="author-bio-name">
+          {{ section.settings.author_name | default: 'Keith Williams' }}
+        </h3>
+        
+        <p class="author-bio-title">
+          {{ section.settings.author_title | default: 'AI Educator & Everyday AI Founder' }}
+        </p>
+        
+        <div class="author-bio-description">
+          {{ section.settings.author_bio | default: 'Keith Williams is dedicated to making AI accessible to everyone through practical education and community engagement.' }}
+        </div>
+        
+        {% if section.settings.show_social_links %}
+        <div class="author-social-links">
+          {% if section.settings.twitter_url != blank %}
+            <a href="{{ section.settings.twitter_url }}" target="_blank" rel="noopener" aria-label="Twitter">
+              <i class="fab fa-twitter"></i>
+            </a>
+          {% endif %}
+          
+          {% if section.settings.linkedin_url != blank %}
+            <a href="{{ section.settings.linkedin_url }}" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <i class="fab fa-linkedin"></i>
+            </a>
+          {% endif %}
+          
+          {% if section.settings.website_url != blank %}
+            <a href="{{ section.settings.website_url }}" target="_blank" rel="noopener" aria-label="Website">
+              <i class="fas fa-globe"></i>
+            </a>
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<style>
+  .keith-author-bio {
+    background: var(--surface);
+    padding: 60px 0;
+    margin: 60px 0;
+    border-top: 3px solid var(--primary);
+    border-bottom: 3px solid var(--primary);
+  }
+  
+  .author-bio-container {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+  
+  .author-bio-image img,
+  .author-placeholder {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--primary);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+  
+  .author-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary);
+    color: white;
+    font-size: 4rem;
+  }
+  
+  .author-bio-name {
+    font-size: 2rem;
+    color: var(--primary);
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  
+  .author-bio-title {
+    font-size: 1.125rem;
+    color: var(--accent);
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  
+  .author-bio-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 24px;
+  }
+  
+  .author-social-links {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .author-social-links a {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 1.25rem;
+  }
+  
+  .author-social-links a:hover {
+    background: var(--accent);
+    transform: translateY(-3px);
+  }
+  
+  @media (max-width: 768px) {
+    .author-bio-container {
+      grid-template-columns: 1fr;
+      text-align: center;
+      gap: 24px;
+    }
+    
+    .author-bio-image img,
+    .author-placeholder {
+      margin: 0 auto;
+      width: 150px;
+      height: 150px;
+    }
+    
+    .author-social-links {
+      justify-content: center;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Keith Author Bio",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_bio",
+      "label": "Show Author Bio",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "author_image",
+      "label": "Author Photo"
+    },
+    {
+      "type": "text",
+      "id": "author_name",
+      "label": "Author Name",
+      "default": "Keith Williams"
+    },
+    {
+      "type": "text",
+      "id": "author_title",
+      "label": "Author Title",
+      "default": "AI Educator & Everyday AI Founder"
+    },
+    {
+      "type": "richtext",
+      "id": "author_bio",
+      "label": "Author Bio",
+      "default": "<p>Keith Williams is dedicated to making AI accessible to everyone through practical education and community engagement. Host of monthly AI Town Halls in Newark, NJ.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Social Links"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_links",
+      "label": "Show Social Links",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "twitter_url",
+      "label": "Twitter URL"
+    },
+    {
+      "type": "url",
+      "id": "linkedin_url",
+      "label": "LinkedIn URL"
+    },
+    {
+      "type": "url",
+      "id": "website_url",
+      "label": "Website URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Keith Author Bio"
+    }
+  ]
+}
+{% endschema %}

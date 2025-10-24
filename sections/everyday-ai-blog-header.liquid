@@ -1,0 +1,137 @@
+{% comment %}
+  Everyday AI Blog Header Section
+  Branded header for blog listing page
+{% endcomment %}
+
+<section class="everyday-ai-blog-header">
+  <div class="page-width">
+    <div class="blog-header-content">
+      <h1 class="blog-header-title">{{ section.settings.title }}</h1>
+      
+      {% if section.settings.subtitle != blank %}
+        <p class="blog-header-subtitle">{{ section.settings.subtitle }}</p>
+      {% endif %}
+      
+      {% if section.settings.show_search %}
+        <div class="blog-search-wrapper">
+          <form action="{{ routes.search_url }}" method="get" class="blog-search-form">
+            <input type="hidden" name="type" value="article">
+            <input 
+              type="search" 
+              name="q" 
+              placeholder="Search articles..." 
+              class="blog-search-input"
+              aria-label="Search blog articles"
+            >
+            <button type="submit" class="blog-search-button" aria-label="Search">
+              <i class="fas fa-search"></i>
+            </button>
+          </form>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .everyday-ai-blog-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    padding: 80px 0 60px;
+    text-align: center;
+    color: white;
+  }
+  
+  .blog-header-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+  
+  .blog-header-subtitle {
+    font-size: 1.25rem;
+    margin-bottom: 32px;
+    opacity: 0.95;
+  }
+  
+  .blog-search-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .blog-search-form {
+    display: flex;
+    gap: 8px;
+    background: white;
+    padding: 8px;
+    border-radius: 50px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  }
+  
+  .blog-search-input {
+    flex: 1;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1rem;
+    outline: none;
+    background: transparent;
+    color: var(--primary);
+  }
+  
+  .blog-search-button {
+    background: var(--accent);
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+  }
+  
+  .blog-search-button:hover {
+    background: var(--primary);
+    transform: scale(1.05);
+  }
+  
+  @media (max-width: 768px) {
+    .blog-header-title {
+      font-size: 2rem;
+    }
+    
+    .blog-header-subtitle {
+      font-size: 1rem;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Everyday AI Blog Header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Blog Title",
+      "default": "Everyday AI Insights"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Blog Subtitle",
+      "default": "Practical AI Knowledge from Keith Williams"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show Search Bar",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Everyday AI Blog Header"
+    }
+  ]
+}
+{% endschema %}
