@@ -1,0 +1,211 @@
+<section class="customer-register-section">
+  <div class="register-container">
+    <div class="register-header">
+      <h1>Join StudyFuel! 🎓</h1>
+      <p>Start eating better and saving money today</p>
+    </div>
+    
+    <div class="register-form-wrapper">
+      {% form 'create_customer' %}
+        {{ form.errors | default_errors }}
+        
+        <div class="form-group">
+          <label for="RegisterFirstName">First Name</label>
+          <input
+            type="text"
+            name="customer[first_name]"
+            id="RegisterFirstName"
+            autocomplete="given-name"
+            placeholder="Your first name"
+            required
+          >
+        </div>
+        
+        <div class="form-group">
+          <label for="RegisterLastName">Last Name</label>
+          <input
+            type="text"
+            name="customer[last_name]"
+            id="RegisterLastName"
+            autocomplete="family-name"
+            placeholder="Your last name"
+            required
+          >
+        </div>
+        
+        <div class="form-group">
+          <label for="RegisterEmail">Email Address</label>
+          <input
+            type="email"
+            name="customer[email]"
+            id="RegisterEmail"
+            autocomplete="email"
+            placeholder="your.email@example.com"
+            required
+          >
+        </div>
+        
+        <div class="form-group">
+          <label for="RegisterPassword">Password</label>
+          <input
+            type="password"
+            name="customer[password]"
+            id="RegisterPassword"
+            autocomplete="new-password"
+            placeholder="Create a password (min. 6 characters)"
+            required
+          >
+          <small>Password must be at least 6 characters long</small>
+        </div>
+        
+        <button type="submit" class="btn-register-submit">
+          Create Account
+        </button>
+      {% endform %}
+      
+      <div class="login-prompt">
+        <p>Already have an account?</p>
+        <a href="{{ routes.account_login_url }}" class="btn-login-link">
+          Sign In
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .customer-register-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #b85a1f 0%, #1d4035 100%);
+  }
+  
+  .register-container {
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .register-header {
+    text-align: center;
+    color: white;
+    margin-bottom: 40px;
+  }
+  
+  .register-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  
+  .register-header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+  }
+  
+  .register-form-wrapper {
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  }
+  
+  .form-group {
+    margin-bottom: 25px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #1d4035;
+    font-weight: 600;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  
+  .form-group input:focus {
+    outline: none;
+    border-color: #b85a1f;
+  }
+  
+  .form-group small {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+    font-size: 0.85rem;
+  }
+  
+  .btn-register-submit {
+    width: 100%;
+    padding: 15px;
+    background: #b85a1f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-register-submit:hover {
+    background: #1d4035;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+  
+  .login-prompt {
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 1px solid #eee;
+    text-align: center;
+  }
+  
+  .login-prompt p {
+    color: #666;
+    margin-bottom: 15px;
+  }
+  
+  .btn-login-link {
+    display: inline-block;
+    padding: 12px 30px;
+    background: white;
+    color: #1d4035;
+    border: 2px solid #1d4035;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-login-link:hover {
+    background: #1d4035;
+    color: white;
+  }
+  
+  @media (max-width: 768px) {
+    .register-header h1 {
+      font-size: 2rem;
+    }
+    
+    .register-form-wrapper {
+      padding: 30px 20px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "SF Register",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,307 @@
+<section class="customer-dashboard">
+  <div class="dashboard-container">
+    <div class="dashboard-header">
+      <h1>Welcome back, {{ customer.first_name }}! 👋</h1>
+      <p>Your StudyFuel Dashboard</p>
+    </div>
+    
+    <div class="dashboard-grid">
+      <!-- Account Info -->
+      <div class="dashboard-card">
+        <div class="card-header">
+          <i class="fas fa-user"></i>
+          <h2>Account Details</h2>
+        </div>
+        <div class="card-content">
+          <p><strong>Name:</strong> {{ customer.first_name }} {{ customer.last_name }}</p>
+          <p><strong>Email:</strong> {{ customer.email }}</p>
+          <a href="{{ routes.account_url }}/addresses" class="card-link">Manage Addresses →</a>
+        </div>
+      </div>
+      
+      <!-- Recent Orders -->
+      <div class="dashboard-card">
+        <div class="card-header">
+          <i class="fas fa-shopping-bag"></i>
+          <h2>Recent Orders</h2>
+        </div>
+        <div class="card-content">
+          {% if customer.orders.size > 0 %}
+            <div class="orders-list">
+              {% for order in customer.orders limit: 3 %}
+                <div class="order-item">
+                  <div class="order-info">
+                    <strong>Order #{{ order.name }}</strong>
+                    <span class="order-date">{{ order.created_at | date: "%B %d, %Y" }}</span>
+                  </div>
+                  <div class="order-price">{{ order.total_price | money }}</div>
+                </div>
+              {% endfor %}
+            </div>
+            <a href="{{ routes.account_url }}" class="card-link">View All Orders →</a>
+          {% else %}
+            <p>You haven't placed any orders yet.</p>
+            <a href="/pages/plans" class="btn-cta">Browse Meal Plans</a>
+          {% endif %}
+        </div>
+      </div>
+      
+      <!-- Wishlist -->
+      <div class="dashboard-card">
+        <div class="card-header">
+          <i class="fas fa-heart"></i>
+          <h2>My Wishlist</h2>
+        </div>
+        <div class="card-content">
+          <div id="wishlist-items">
+            <p>Loading wishlist...</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Quick Actions -->
+      <div class="dashboard-card">
+        <div class="card-header">
+          <i class="fas fa-bolt"></i>
+          <h2>Quick Actions</h2>
+        </div>
+        <div class="card-content">
+          <div class="quick-actions">
+            <a href="/pages/recipes" class="action-button">
+              <i class="fas fa-utensils"></i>
+              Browse Recipes
+            </a>
+            <a href="/pages/plans" class="action-button">
+              <i class="fas fa-calendar-alt"></i>
+              View Plans
+            </a>
+            <a href="/blogs/nutrition" class="action-button">
+              <i class="fas fa-book"></i>
+              Read Blog
+            </a>
+            <a href="{{ routes.account_logout_url }}" class="action-button logout">
+              <i class="fas fa-sign-out-alt"></i>
+              Sign Out
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .customer-dashboard {
+    padding: 60px 20px;
+    background: #fefdfb;
+    min-height: 100vh;
+  }
+  
+  .dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .dashboard-header {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  
+  .dashboard-header h1 {
+    font-size: 2.5rem;
+    color: #1d4035;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  
+  .dashboard-header p {
+    font-size: 1.2rem;
+    color: #666;
+  }
+  
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+  }
+  
+  .dashboard-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+  }
+  
+  .dashboard-card:hover {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+  
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f7f5f0;
+  }
+  
+  .card-header i {
+    font-size: 1.5rem;
+    color: #b85a1f;
+  }
+  
+  .card-header h2 {
+    font-size: 1.5rem;
+    color: #1d4035;
+    margin: 0;
+  }
+  
+  .card-content p {
+    color: #666;
+    line-height: 1.8;
+    margin-bottom: 10px;
+  }
+  
+  .card-link {
+    display: inline-block;
+    margin-top: 15px;
+    color: #b85a1f;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  
+  .card-link:hover {
+    color: #1d4035;
+  }
+  
+  .orders-list {
+    margin-bottom: 20px;
+  }
+  
+  .order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: #f7f5f0;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .order-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .order-date {
+    font-size: 0.85rem;
+    color: #666;
+  }
+  
+  .order-price {
+    font-weight: 700;
+    color: #1d4035;
+    font-size: 1.1rem;
+  }
+  
+  .quick-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  
+  .action-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+    background: #f7f5f0;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #1d4035;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-align: center;
+  }
+  
+  .action-button:hover {
+    background: #b85a1f;
+    color: white;
+    transform: translateY(-3px);
+  }
+  
+  .action-button.logout {
+    background: #fee;
+    color: #c33;
+  }
+  
+  .action-button.logout:hover {
+    background: #c33;
+    color: white;
+  }
+  
+  .action-button i {
+    font-size: 1.5rem;
+  }
+  
+  .btn-cta {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 12px 25px;
+    background: #b85a1f;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-cta:hover {
+    background: #1d4035;
+    transform: translateY(-2px);
+  }
+  
+  @media (max-width: 768px) {
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .quick-actions {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  // Wishlist Functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    loadWishlist();
+    
+    function loadWishlist() {
+      const wishlist = JSON.parse(localStorage.getItem('studyfuel_wishlist') || '[]');
+      const container = document.getElementById('wishlist-items');
+      
+      if (wishlist.length === 0) {
+        container.innerHTML = '<p>Your wishlist is empty.</p><a href="/collections/all" class="card-link">Browse Meal Plans →</a>';
+      } else {
+        container.innerHTML = `
+          <div class="wishlist-count">
+            <p>You have ${wishlist.length} item${wishlist.length > 1 ? 's' : ''} in your wishlist</p>
+          </div>
+          <a href="/pages/wishlist" class="card-link">View Wishlist →</a>
+        `;
+      }
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "SF Dashboard",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "main": {
+      "type": "plan-signup",
+      "settings": {
+        "plan_name": "Free Starter",
+        "price": "0",
+        "tagline": "Start your healthy eating journey today - completely free!",
+        "features": "<ul><li>✓ 3-minute meal preference quiz</li><li>✓ Personalized weekly recipe suggestions</li><li>✓ Basic grocery lists</li><li>✓ Quick-prep meal ideas (under 10 min)</li><li>✓ Email support</li></ul>",
+        "show_testimonial": true,
+        "testimonial_text": "The free plan helped me realize I can actually cook! Now I'm ready to upgrade.",
+        "testimonial_author": "Emma, NYU Freshman"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "sections": {
+    "blog_header": {
+      "type": "studyfuel-blog-header",
+      "settings": {
+        "title": "StudyFuel Nutrition Blog",
+        "subtitle": "Quick recipes, nutrition tips, and student meal hacks",
+        "show_search": true
+      }
+    },
+    "main_blog": {
+      "type": "main-blog",
+      "settings": {
+        "show_image": true,
+        "show_date": true,
+        "show_author": false,
+        "show_excerpt": true,
+        "posts_per_page": 12
+      }
+    }
+  },
+  "order": [
+    "blog_header",
+    "main_blog"
+  ]
+}

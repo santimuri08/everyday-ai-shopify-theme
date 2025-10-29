@@ -1,0 +1,178 @@
+<section class="author-bio-section">
+  <div class="author-bio-container">
+    {% if section.settings.author_image %}
+      <div class="author-image">
+        <img src="{{ section.settings.author_image | img_url: '150x150' }}" alt="{{ section.settings.author_name }}">
+      </div>
+    {% endif %}
+    
+    <div class="author-content">
+      <h3 class="author-name">{{ section.settings.author_name }}</h3>
+      <p class="author-title">{{ section.settings.author_title }}</p>
+      <div class="author-bio">
+        {{ section.settings.author_bio }}
+      </div>
+      
+      {% if section.settings.show_social_links %}
+        <div class="author-social">
+          {% if section.settings.twitter_url != blank %}
+            <a href="{{ section.settings.twitter_url }}" target="_blank" rel="noopener">
+              <i class="fab fa-twitter"></i>
+            </a>
+          {% endif %}
+          {% if section.settings.instagram_url != blank %}
+            <a href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener">
+              <i class="fab fa-instagram"></i>
+            </a>
+          {% endif %}
+          {% if section.settings.tiktok_url != blank %}
+            <a href="{{ section.settings.tiktok_url }}" target="_blank" rel="noopener">
+              <i class="fab fa-tiktok"></i>
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .author-bio-section {
+    background: #f7f5f0;
+    padding: 40px 20px;
+    margin: 40px 0;
+    border-radius: 12px;
+  }
+  
+  .author-bio-container {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+  }
+  
+  .author-image img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  
+  .author-content {
+    flex: 1;
+  }
+  
+  .author-name {
+    font-size: 1.8rem;
+    color: #1d4035;
+    margin-bottom: 5px;
+    font-weight: 700;
+  }
+  
+  .author-title {
+    font-size: 1rem;
+    color: #b85a1f;
+    margin-bottom: 15px;
+    font-weight: 600;
+  }
+  
+  .author-bio {
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  
+  .author-social {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .author-social a {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #1d4035;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+  
+  .author-social a:hover {
+    background: #b85a1f;
+    transform: translateY(-3px);
+  }
+  
+  @media (max-width: 768px) {
+    .author-bio-container {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .author-social {
+      justify-content: center;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Author Bio",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "author_image",
+      "label": "Author Image"
+    },
+    {
+      "type": "text",
+      "id": "author_name",
+      "label": "Author Name",
+      "default": "StudyFuel Team"
+    },
+    {
+      "type": "text",
+      "id": "author_title",
+      "label": "Author Title",
+      "default": "Student Nutrition Experts"
+    },
+    {
+      "type": "richtext",
+      "id": "author_bio",
+      "label": "Author Bio",
+      "default": "<p>We're a team of nutritionists and student food enthusiasts dedicated to helping college students eat better on a budget.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_links",
+      "label": "Show Social Links",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "twitter_url",
+      "label": "Twitter URL"
+    },
+    {
+      "type": "text",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "text",
+      "id": "tiktok_url",
+      "label": "TikTok URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Author Bio"
+    }
+  ]
+}
+{% endschema %}

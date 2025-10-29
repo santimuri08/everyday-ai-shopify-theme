@@ -1,0 +1,196 @@
+<section class="studyfuel-hero">
+  <div class="hero-container">
+    <div class="hero-content">
+      <h1 class="hero-title">{{ section.settings.title }}</h1>
+      <p class="hero-subtitle">{{ section.settings.subtitle }}</p>
+      <p class="hero-description">{{ section.settings.description }}</p>
+      
+      {% if section.settings.show_cta %}
+        <div class="hero-actions">
+          <a href="{{ section.settings.cta_link }}" class="btn-primary">
+            {{ section.settings.cta_text }}
+          </a>
+          {% if section.settings.show_secondary_cta %}
+            <a href="{{ section.settings.secondary_cta_link }}" class="btn-secondary">
+              {{ section.settings.secondary_cta_text }}
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .studyfuel-hero {
+    background: linear-gradient(135deg, #1d4035 0%, #b85a1f 100%);
+    padding: 100px 20px;
+    text-align: center;
+    color: white;
+  }
+  
+  .hero-container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    opacity: 0.95;
+  }
+  
+  .hero-description {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    opacity: 0.9;
+    line-height: 1.6;
+  }
+  
+  .hero-actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .btn-primary {
+    background: white;
+    color: #1d4035;
+    padding: 15px 40px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+  
+  .btn-secondary {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    padding: 13px 38px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+  
+  .btn-secondary:hover {
+    background: white;
+    color: #1d4035;
+    transform: translateY(-3px);
+  }
+  
+  @media (max-width: 768px) {
+    .studyfuel-hero {
+      padding: 60px 20px;
+    }
+    
+    .hero-title {
+      font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+      font-size: 1.2rem;
+    }
+    
+    .hero-description {
+      font-size: 1rem;
+    }
+    
+    .hero-actions {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "StudyFuel Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Hero Title",
+      "default": "StudyFuel"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "QUICK MEALS FOR BUSY STUDENTS"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Save time, eat healthier, and fuel your studies with fast, affordable recipes designed for student life."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Show Call-to-Action Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Button Text",
+      "default": "Choose Your Plan"
+    },
+    {
+      "type": "text",
+      "id": "cta_link",
+      "label": "CTA Button Link",
+      "default": "/pages/plans"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_cta",
+      "label": "Show Secondary Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "secondary_cta_text",
+      "label": "Secondary Button Text",
+      "default": "Take Free Quiz"
+    },
+    {
+      "type": "text",
+      "id": "secondary_cta_link",
+      "label": "Secondary Button Link",
+      "default": "/pages/quiz"
+    }
+  ],
+  "presets": [
+    {
+      "name": "StudyFuel Hero"
+    }
+  ]
+}
+{% endschema %}

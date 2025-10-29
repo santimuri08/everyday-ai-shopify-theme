@@ -1,30 +1,46 @@
 {
   "sections": {
     "hero": {
-      "type": "everyday-ai-hero",
+      "type": "studyfuel-hero",
       "settings": {
-        "title": "Everyday AI",
-        "subtitle": "WITH KEITH WILLIAMS",
-        "description": "Free Monthly Town Hall - Newark, NJ & Online",
+        "title": "StudyFuel",
+        "subtitle": "QUICK MEALS FOR BUSY STUDENTS",
+        "description": "Save time, eat healthier, and fuel your studies with fast, affordable recipes designed for dorm and apartment kitchens.",
         "show_cta": true,
-        "cta_text": "Shop Merch",
-        "cta_link": "/collections/all",
+        "cta_text": "Choose Your Plan",
+        "cta_link": "/pages/plans",
         "show_secondary_cta": true,
-        "secondary_cta_text": "Learn More",
-        "secondary_cta_link": "/pages/about"
+        "secondary_cta_text": "Take Free Quiz",
+        "secondary_cta_link": "/pages/quiz"
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
+    "about_studyfuel": {
+      "type": "about-studyfuel",
       "settings": {
-        "title": "Shop Our Merch",
-        "collection": "all"
+        "name": "StudyFuel",
+        "title": "Save time, eat healthier, fuel your studies",
+        "bio": "<p>We understand the struggle of being a busy student. Between classes, studying, work, and social life, finding time to cook healthy meals seems impossible. That's why we created StudyFuel.</p><p>Our quick-prep recipes are designed specifically for dorm and apartment kitchens, with budget-friendly ingredients you can find at any store. No expensive meal kits, no complicated equipment – just delicious, nutritious food that fits your student lifestyle.</p><p>Join thousands of students who are eating better, saving money, and staying energized for their studies with StudyFuel.</p>",
+        "show_social": true,
+        "tiktok_url": "",
+        "instagram_url": "",
+        "youtube_url": ""
+      }
+    },
+    "meal_plans": {
+      "type": "meal-plans",
+      "settings": {
+        "title": "Choose Your Plan",
+        "subtitle": "Fast, affordable nutrition solutions tailored for student life",
+        "free_plan_link": "/pages/signup-free",
+        "entry_plan_link": "/pages/signup-entry",
+        "flagship_plan_link": "/pages/signup-flagship",
+        "premium_plan_link": "/pages/signup-premium"
       }
     }
   },
   "order": [
     "hero",
-
-    "featured_collection"
+    "about_studyfuel",
+    "meal_plans"
   ]
 }

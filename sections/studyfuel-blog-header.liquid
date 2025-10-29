@@ -1,0 +1,130 @@
+<section class="studyfuel-blog-header">
+  <div class="blog-header-container">
+    <h1 class="blog-header-title">{{ section.settings.title }}</h1>
+    <p class="blog-header-subtitle">{{ section.settings.subtitle }}</p>
+    
+    {% if section.settings.show_search %}
+      <div class="blog-search">
+        <form action="{{ routes.search_url }}" method="get" role="search">
+          <input type="hidden" name="type" value="article">
+          <input 
+            type="search" 
+            name="q" 
+            placeholder="Search recipes, tips, and nutrition advice..."
+            class="blog-search-input"
+          >
+          <button type="submit" class="blog-search-button">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .studyfuel-blog-header {
+    background: linear-gradient(135deg, #1d4035 0%, #b85a1f 100%);
+    padding: 80px 20px 60px;
+    text-align: center;
+    color: white;
+  }
+  
+  .blog-header-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .blog-header-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+  
+  .blog-header-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    opacity: 0.9;
+  }
+  
+  .blog-search {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .blog-search form {
+    display: flex;
+    gap: 10px;
+    background: white;
+    padding: 8px;
+    border-radius: 50px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  }
+  
+  .blog-search-input {
+    flex: 1;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1rem;
+    outline: none;
+    background: transparent;
+    color: #1d4035;
+  }
+  
+  .blog-search-button {
+    background: #b85a1f;
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+  }
+  
+  .blog-search-button:hover {
+    background: #1d4035;
+    transform: scale(1.05);
+  }
+  
+  @media (max-width: 768px) {
+    .blog-header-title {
+      font-size: 2rem;
+    }
+    
+    .blog-header-subtitle {
+      font-size: 1rem;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "StudyFuel Blog Header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Blog Title",
+      "default": "StudyFuel Nutrition Blog"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Blog Subtitle",
+      "default": "Quick recipes, nutrition tips, and student meal hacks"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show Search Bar",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "StudyFuel Blog Header"
+    }
+  ]
+}
+{% endschema %}

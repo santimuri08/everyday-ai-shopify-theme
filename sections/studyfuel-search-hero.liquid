@@ -1,0 +1,177 @@
+<section class="studyfuel-search-hero">
+  <div class="search-hero-container">
+    <h1 class="search-title">{{ section.settings.title }}</h1>
+    <p class="search-subtitle">{{ section.settings.subtitle }}</p>
+    
+    <form action="{{ routes.search_url }}" method="get" class="search-form-main">
+      <input 
+        type="search" 
+        name="q" 
+        value="{{ search.terms | escape }}"
+        placeholder="Search recipes, meal plans, tips..."
+        class="search-input-main"
+        autofocus
+      >
+      <button type="submit" class="search-button-main">
+        <i class="fas fa-search"></i> Search
+      </button>
+    </form>
+    
+    {% if section.settings.show_trending_searches %}
+      <div class="trending-searches">
+        <p>Popular searches:</p>
+        <div class="trending-tags">
+          <a href="{{ routes.search_url }}?q=quick+meals" class="trending-tag">Quick Meals</a>
+          <a href="{{ routes.search_url }}?q=budget+recipes" class="trending-tag">Budget Recipes</a>
+          <a href="{{ routes.search_url }}?q=dorm+cooking" class="trending-tag">Dorm Cooking</a>
+          <a href="{{ routes.search_url }}?q=meal+prep" class="trending-tag">Meal Prep</a>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .studyfuel-search-hero {
+    background: linear-gradient(135deg, #1d4035 0%, #b85a1f 100%);
+    padding: 80px 20px 60px;
+    text-align: center;
+    color: white;
+  }
+  
+  .search-hero-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .search-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+  
+  .search-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    opacity: 0.9;
+  }
+  
+  .search-form-main {
+    display: flex;
+    gap: 10px;
+    max-width: 600px;
+    margin: 0 auto 30px;
+    background: white;
+    padding: 8px;
+    border-radius: 50px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  }
+  
+  .search-input-main {
+    flex: 1;
+    border: none;
+    padding: 15px 25px;
+    font-size: 1.1rem;
+    outline: none;
+    background: transparent;
+    color: #1d4035;
+  }
+  
+  .search-button-main {
+    background: #b85a1f;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  
+  .search-button-main:hover {
+    background: #1d4035;
+    transform: scale(1.05);
+  }
+  
+  .trending-searches {
+    text-align: center;
+  }
+  
+  .trending-searches p {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    opacity: 0.8;
+  }
+  
+  .trending-tags {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .trending-tag {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+  
+  .trending-tag:hover {
+    background: white;
+    color: #1d4035;
+    transform: translateY(-2px);
+  }
+  
+  @media (max-width: 768px) {
+    .search-title {
+      font-size: 2rem;
+    }
+    
+    .search-form-main {
+      flex-direction: column;
+      padding: 15px;
+      border-radius: 15px;
+    }
+    
+    .search-button-main {
+      width: 100%;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "StudyFuel Search Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Search StudyFuel"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Find recipes, meal plans, and nutrition tips"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trending_searches",
+      "label": "Show Trending Searches",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "StudyFuel Search Hero"
+    }
+  ]
+}
+{% endschema %}

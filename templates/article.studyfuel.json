@@ -1,0 +1,34 @@
+{
+  "sections": {
+    "main_article": {
+      "type": "main-article",
+      "settings": {
+        "show_date": true,
+        "show_author": true,
+        "show_share_buttons": true
+      }
+    },
+    "author_bio": {
+      "type": "author-bio",
+      "settings": {
+        "author_name": "StudyFuel Team",
+        "author_title": "Student Nutrition Experts",
+        "author_bio": "<p>We're dedicated to helping college students eat better on a budget with quick, healthy recipes.</p>",
+        "show_social_links": true,
+        "instagram_url": "",
+        "tiktok_url": ""
+      }
+    },
+    "related_posts": {
+      "type": "related-posts",
+      "settings": {
+        "title": "More Student Nutrition Tips"
+      }
+    }
+  },
+  "order": [
+    "main_article",
+    "author_bio",
+    "related_posts"
+  ]
+}

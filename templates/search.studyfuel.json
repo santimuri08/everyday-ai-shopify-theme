@@ -1,0 +1,20 @@
+{
+  "sections": {
+    "search_hero": {
+      "type": "studyfuel-search-hero",
+      "settings": {
+        "title": "Search StudyFuel",
+        "subtitle": "Find recipes, meal plans, and nutrition tips",
+        "show_trending_searches": true
+      }
+    },
+    "search_results": {
+      "type": "search-results-filtered",
+      "settings": {}
+    }
+  },
+  "order": [
+    "search_hero",
+    "search_results"
+  ]
+}

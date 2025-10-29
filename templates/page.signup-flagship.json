@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "main": {
+      "type": "plan-signup",
+      "settings": {
+        "plan_name": "Full Semester Plan",
+        "price": "12",
+        "tagline": "Everything you need for healthy eating all semester long",
+        "features": "<ul><li>✓ Everything in Quick Prep Pack</li><li>✓ Full 16-week semester meal planner</li><li>✓ 200+ recipes with video tutorials</li><li>✓ Dorm-friendly & apartment recipes</li><li>✓ Weekly automated shopping schedules</li><li>✓ Detailed nutrition breakdowns</li><li>✓ Student community access (Discord)</li><li>✓ Monthly live cooking workshops</li><li>✓ Exam week survival guides</li></ul>",
+        "show_testimonial": true,
+        "testimonial_text": "This is THE plan for college students. I meal prep on Sundays and I'm set for the week. My roommates are jealous!",
+        "testimonial_author": "Maya, UC Berkeley Junior"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

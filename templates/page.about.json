@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "main": {
+      "type": "about-studyfuel-full",
+      "settings": {
+        "title": "About StudyFuel",
+        "subtitle": "We're on a mission to help college students eat better, save money, and stress less about meals.",
+        "mission": "Our mission is simple: make healthy eating accessible, affordable, and actually enjoyable for every college student."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

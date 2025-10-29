@@ -1,0 +1,352 @@
+<section class="about-studyfuel-full">
+  <div class="about-container-full">
+    <!-- Hero -->
+    <div class="about-hero">
+      <h1>{{ section.settings.title }}</h1>
+      <p class="about-lead">{{ section.settings.subtitle }}</p>
+    </div>
+    
+    <!-- Story -->
+    <div class="about-story">
+      <div class="story-content">
+        <h2>Our Story</h2>
+        <div class="story-text">
+          {{ section.settings.story }}
+        </div>
+      </div>
+      
+      {% if section.settings.story_image %}
+        <div class="story-image">
+          <img src="{{ section.settings.story_image | img_url: '800x600' }}" alt="StudyFuel Story">
+        </div>
+      {% endif %}
+    </div>
+    
+    <!-- Mission -->
+    <div class="mission-section">
+      <h2>Our Mission</h2>
+      <p class="mission-text">{{ section.settings.mission }}</p>
+      
+      <div class="values-grid">
+        <div class="value-card">
+          <i class="fas fa-dollar-sign"></i>
+          <h3>Affordable</h3>
+          <p>Healthy eating shouldn't break your budget</p>
+        </div>
+        <div class="value-card">
+          <i class="fas fa-clock"></i>
+          <h3>Time-Saving</h3>
+          <p>Quick recipes that fit your busy schedule</p>
+        </div>
+        <div class="value-card">
+          <i class="fas fa-heart"></i>
+          <h3>Healthy</h3>
+          <p>Nutritious meals that fuel your studies</p>
+        </div>
+        <div class="value-card">
+          <i class="fas fa-users"></i>
+          <h3>Community</h3>
+          <p>Connect with fellow student foodies</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Stats -->
+    <div class="stats-section">
+      <div class="stat-item">
+        <div class="stat-number">10,000+</div>
+        <div class="stat-label">Students Served</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">500+</div>
+        <div class="stat-label">Quick Recipes</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">$150</div>
+        <div class="stat-label">Avg. Monthly Savings</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">4.9★</div>
+        <div class="stat-label">Student Rating</div>
+      </div>
+    </div>
+    
+    <!-- CTA -->
+    <div class="about-cta">
+      <h2>Ready to Transform Your Student Eating?</h2>
+      <p>Join thousands of students who are eating better, saving money, and loving it.</p>
+      <div class="cta-buttons">
+        <a href="/pages/quiz" class="btn-primary">Take Our Quiz</a>
+        <a href="/pages/plans" class="btn-secondary">View Plans</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-studyfuel-full {
+    padding: 80px 20px;
+    background: #fefdfb;
+  }
+  
+  .about-container-full {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .about-hero {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+  
+  .about-hero h1 {
+    font-size: 4rem;
+    color: #1d4035;
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+  
+  .about-lead {
+    font-size: 1.5rem;
+    color: #666;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  
+  .about-story {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    margin-bottom: 100px;
+  }
+  
+  .story-content h2 {
+    font-size: 2.5rem;
+    color: #1d4035;
+    margin-bottom: 25px;
+    font-weight: 700;
+  }
+  
+  .story-text {
+    color: #666;
+    line-height: 1.8;
+    font-size: 1.1rem;
+  }
+  
+  .story-image img {
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  }
+  
+  .mission-section {
+    text-align: center;
+    margin-bottom: 100px;
+  }
+  
+  .mission-section h2 {
+    font-size: 2.5rem;
+    color: #1d4035;
+    margin-bottom: 25px;
+    font-weight: 700;
+  }
+  
+  .mission-text {
+    font-size: 1.2rem;
+    color: #666;
+    max-width: 800px;
+    margin: 0 auto 60px;
+    line-height: 1.6;
+  }
+  
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+  }
+  
+  .value-card {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+  }
+  
+  .value-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+  
+  .value-card i {
+    font-size: 2.5rem;
+    color: #b85a1f;
+    margin-bottom: 20px;
+  }
+  
+  .value-card h3 {
+    font-size: 1.5rem;
+    color: #1d4035;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  
+  .value-card p {
+    color: #666;
+  }
+  
+  .stats-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    padding: 60px;
+    background: linear-gradient(135deg, #1d4035 0%, #b85a1f 100%);
+    border-radius: 20px;
+    margin-bottom: 100px;
+  }
+  
+  .stat-item {
+    text-align: center;
+    color: white;
+  }
+  
+  .stat-number {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  
+  .stat-label {
+    font-size: 1.1rem;
+    opacity: 0.9;
+  }
+  
+  .about-cta {
+    text-align: center;
+    padding: 80px 20px;
+    background: #f7f5f0;
+    border-radius: 20px;
+  }
+  
+  .about-cta h2 {
+    font-size: 2.5rem;
+    color: #1d4035;
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+  
+  .about-cta p {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 40px;
+  }
+  
+  .cta-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .btn-primary {
+    padding: 18px 40px;
+    background: #b85a1f;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    background: #1d4035;
+    transform: translateY(-3px);
+  }
+  
+  .btn-secondary {
+    padding: 18px 40px;
+    background: white;
+    color: #1d4035;
+    border: 2px solid #1d4035;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-secondary:hover {
+    background: #1d4035;
+    color: white;
+  }
+  
+  @media (max-width: 968px) {
+    .about-hero h1 {
+      font-size: 2.5rem;
+    }
+    
+    .about-story {
+      grid-template-columns: 1fr;
+    }
+    
+    .stats-section {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .cta-buttons {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "About StudyFuel Full",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "About StudyFuel"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "We're on a mission to help college students eat better, save money, and stress less about meals."
+    },
+    {
+      "type": "richtext",
+      "id": "story",
+      "label": "Our Story",
+      "default": "<p>StudyFuel was born from a simple observation: college students want to eat healthy, but they're busy, broke, and often don't know where to start.</p><p>We've been there. Late-night pizza runs, skipping meals, spending way too much on takeout - it's the college experience. But it doesn't have to be.</p><p>Our team of nutritionists and student food enthusiasts created StudyFuel to bridge the gap between wanting to eat well and actually making it happen.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "story_image",
+      "label": "Story Image"
+    },
+    {
+      "type": "textarea",
+      "id": "mission",
+      "label": "Mission Statement",
+      "default": "Our mission is simple: make healthy eating accessible, affordable, and actually enjoyable for every college student."
+    }
+  ],
+  "presets": [
+    {
+      "name": "About StudyFuel Full"
+    }
+  ]
+}
+{% endschema %}

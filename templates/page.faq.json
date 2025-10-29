@@ -1,0 +1,82 @@
+{
+  "sections": {
+    "main": {
+      "type": "faq-accordion",
+      "settings": {
+        "title": "Frequently Asked Questions",
+        "subtitle": "Everything you need to know about StudyFuel"
+      },
+      "blocks": {
+        "faq_1": {
+          "type": "faq",
+          "settings": {
+            "question": "How much does StudyFuel cost?",
+            "answer": "<p>We have 4 plans: Free ($0), Quick Prep Pack ($5/month), Full Semester Plan ($12/month), and Coaching + Community ($20/month). All paid plans can be cancelled anytime with no fees.</p>"
+          }
+        },
+        "faq_2": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I cancel my subscription anytime?",
+            "answer": "<p>Yes! You can cancel anytime with one click. No questions asked, no cancellation fees. If you cancel within 30 days, we'll refund your payment.</p>"
+          }
+        },
+        "faq_3": {
+          "type": "faq",
+          "settings": {
+            "question": "What equipment do I need?",
+            "answer": "<p>Most of our recipes work with just a microwave! We label recipes by equipment needed: microwave-only, hot plate, or full kitchen. You can filter recipes based on what you have available.</p>"
+          }
+        },
+        "faq_4": {
+          "type": "faq",
+          "settings": {
+            "question": "Are the recipes really quick?",
+            "answer": "<p>Absolutely! We know you're busy. Most recipes take 5-15 minutes. We include prep time and difficulty level for every recipe. Our Quick Prep Pack specializes in meals under 15 minutes.</p>"
+          }
+        },
+        "faq_5": {
+          "type": "faq",
+          "settings": {
+            "question": "Do you accommodate dietary restrictions?",
+            "answer": "<p>Yes! You can filter recipes for vegetarian, vegan, gluten-free, dairy-free, and other common restrictions. Our quiz helps identify the best plan for your dietary needs.</p>"
+          }
+        },
+        "faq_6": {
+          "type": "faq",
+          "settings": {
+            "question": "What if I don't like the recommended plan?",
+            "answer": "<p>No problem! The quiz is just a suggestion. You can choose any plan you want, and you can switch between plans anytime. We want you in the plan that fits YOUR needs.</p>"
+          }
+        },
+        "faq_7": {
+          "type": "faq",
+          "settings": {
+            "question": "Is there a student discount?",
+            "answer": "<p>Our entire service is already designed with student budgets in mind! Our most popular plan is just $12/month - less than two Chipotle burritos. Plus, the money you save on groceries more than pays for itself.</p>"
+          }
+        },
+        "faq_8": {
+          "type": "faq",
+          "settings": {
+            "question": "How do I access my recipes?",
+            "answer": "<p>Once you sign up, you'll get immediate access to your member dashboard. You can view recipes on any device - phone, tablet, or computer. All recipes are mobile-optimized for cooking.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_1",
+        "faq_2",
+        "faq_3",
+        "faq_4",
+        "faq_5",
+        "faq_6",
+        "faq_7",
+        "faq_8"
+      ]
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

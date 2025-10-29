@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "main": {
+      "type": "plan-signup",
+      "settings": {
+        "plan_name": "Coaching + Community",
+        "price": "20",
+        "tagline": "Expert guidance for your complete nutrition transformation",
+        "features": "<ul><li>✓ Everything in Full Semester Plan</li><li>✓ Monthly 1-on-1 nutrition coaching calls</li><li>✓ Custom meal plans based on your goals</li><li>✓ Weekly group coaching sessions</li><li>✓ Community cooking challenges with prizes</li><li>✓ Access to registered dietitian</li><li>✓ Fitness & nutrition goal tracking</li><li>✓ Private VIP community group</li><li>✓ Quarterly meal prep masterclasses</li><li>✓ 24/7 priority support</li></ul>",
+        "show_testimonial": true,
+        "testimonial_text": "The coaching changed everything. I've lost weight, gained energy, and actually enjoy cooking now. Best investment in myself!",
+        "testimonial_author": "Chris, UCLA Senior"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -1,0 +1,155 @@
+{% assign current_article = article %}
+{% assign blog_handle = blog.handle %}
+{% assign related_posts = blog.articles | where_exp: "item", "item.id != current_article.id" | slice: 0, 3 %}
+
+<section class="related-posts-section">
+  <div class="related-posts-container">
+    <h2 class="related-posts-title">{{ section.settings.title }}</h2>
+    
+    <div class="related-posts-grid">
+      {% for article in related_posts %}
+        <article class="related-post-card">
+          {% if article.image %}
+            <a href="{{ article.url }}" class="related-post-image">
+              <img src="{{ article.image | img_url: '400x300', crop: 'center' }}" alt="{{ article.title }}">
+            </a>
+          {% endif %}
+          
+          <div class="related-post-content">
+            <span class="related-post-date">{{ article.published_at | date: "%B %d, %Y" }}</span>
+            <h3 class="related-post-title">
+              <a href="{{ article.url }}">{{ article.title }}</a>
+            </h3>
+            {% if article.excerpt != blank %}
+              <p class="related-post-excerpt">{{ article.excerpt | strip_html | truncate: 100 }}</p>
+            {% endif %}
+            <a href="{{ article.url }}" class="related-post-link">Read More →</a>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .related-posts-section {
+    padding: 60px 20px;
+    background: white;
+  }
+  
+  .related-posts-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .related-posts-title {
+    font-size: 2.5rem;
+    color: #1d4035;
+    text-align: center;
+    margin-bottom: 40px;
+    font-weight: 700;
+  }
+  
+  .related-posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+  }
+  
+  .related-post-card {
+    background: #f7f5f0;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .related-post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+  
+  .related-post-image {
+    display: block;
+    overflow: hidden;
+  }
+  
+  .related-post-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .related-post-card:hover .related-post-image img {
+    transform: scale(1.05);
+  }
+  
+  .related-post-content {
+    padding: 25px;
+  }
+  
+  .related-post-date {
+    display: block;
+    font-size: 0.85rem;
+    color: #b85a1f;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  
+  .related-post-title {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+  }
+  
+  .related-post-title a {
+    color: #1d4035;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .related-post-title a:hover {
+    color: #b85a1f;
+  }
+  
+  .related-post-excerpt {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+  }
+  
+  .related-post-link {
+    color: #b85a1f;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  
+  .related-post-link:hover {
+    color: #1d4035;
+  }
+  
+  @media (max-width: 768px) {
+    .related-posts-title {
+      font-size: 2rem;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Related Posts",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "More Student Nutrition Tips"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Related Posts"
+    }
+  ]
+}
+{% endschema %}

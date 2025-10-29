@@ -1,0 +1,433 @@
+<section class="plan-signup-page">
+  <div class="signup-container">
+    <div class="signup-header">
+      <a href="/pages/plans" class="back-link">← Back to Plans</a>
+      <h1>{{ section.settings.plan_name }}</h1>
+      <div class="plan-price-large">
+        <span class="price-symbol">$</span>
+        <span class="price-amount">{{ section.settings.price }}</span>
+        <span class="price-period">/month</span>
+      </div>
+      <p class="plan-tagline">{{ section.settings.tagline }}</p>
+    </div>
+    
+    <div class="signup-content">
+      <div class="plan-details">
+        <h2>What's Included:</h2>
+        <div class="features-list">
+          {{ section.settings.features }}
+        </div>
+        
+        {% if section.settings.show_testimonial %}
+          <div class="testimonial">
+            <p>"{{ section.settings.testimonial_text }}"</p>
+            <span class="testimonial-author">- {{ section.settings.testimonial_author }}</span>
+          </div>
+        {% endif %}
+        
+        <div class="guarantee-badge">
+          <i class="fas fa-shield-alt"></i>
+          <div>
+            <strong>30-Day Money-Back Guarantee</strong>
+            <p>Try risk-free. Cancel anytime.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="signup-form-card">
+        <h3>Start Your {{ section.settings.plan_name }}</h3>
+        <p class="form-subtitle">Join thousands of students eating better</p>
+        
+        <form class="studyfuel-signup-form" action="/cart/add" method="post">
+          <div class="form-group">
+            <label for="signup-email">Email Address</label>
+            <input 
+              type="email" 
+              id="signup-email" 
+              name="email" 
+              required 
+              placeholder="your.email@university.edu"
+            >
+          </div>
+          
+          <div class="form-group">
+            <label for="signup-name">Full Name</label>
+            <input 
+              type="text" 
+              id="signup-name" 
+              name="name" 
+              required 
+              placeholder="John Smith"
+            >
+          </div>
+          
+          <div class="form-group">
+            <label for="signup-university">University</label>
+            <input 
+              type="text" 
+              id="signup-university" 
+              name="university" 
+              placeholder="Your University (optional)"
+            >
+          </div>
+          
+          <div class="pricing-summary">
+            <div class="summary-row">
+              <span>{{ section.settings.plan_name }}</span>
+              <span>${{ section.settings.price }}/month</span>
+            </div>
+            <div class="summary-row total">
+              <strong>Due Today</strong>
+              <strong>${{ section.settings.price }}</strong>
+            </div>
+          </div>
+          
+          <button type="submit" class="btn-subscribe">
+            Subscribe for ${{ section.settings.price }}/month
+          </button>
+          
+          <p class="form-note">
+            <i class="fas fa-lock"></i> Secure checkout. Cancel anytime.
+          </p>
+        </form>
+        
+        <div class="payment-methods">
+          <img src="https://cdn.shopify.com/s/files/1/0070/7032/files/payment-methods.png" alt="Payment methods">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .plan-signup-page {
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+    background: #fefdfb;
+  }
+  
+  .signup-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .signup-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  
+  .back-link {
+    display: inline-block;
+    color: #b85a1f;
+    text-decoration: none;
+    font-weight: 600;
+    margin-bottom: 20px;
+    transition: color 0.3s ease;
+  }
+  
+  .back-link:hover {
+    color: #1d4035;
+  }
+  
+  .signup-header h1 {
+    font-size: 3rem;
+    color: #1d4035;
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+  
+  .plan-price-large {
+    margin-bottom: 15px;
+  }
+  
+  .price-symbol {
+    font-size: 2rem;
+    color: #b85a1f;
+    vertical-align: super;
+  }
+  
+  .price-amount {
+    font-size: 5rem;
+    color: #1d4035;
+    font-weight: 700;
+  }
+  
+  .price-period {
+    font-size: 1.5rem;
+    color: #666;
+  }
+  
+  .plan-tagline {
+    font-size: 1.3rem;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .signup-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+  
+  .plan-details h2 {
+    font-size: 2rem;
+    color: #1d4035;
+    margin-bottom: 25px;
+    font-weight: 700;
+  }
+  
+  .features-list {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+  }
+  
+  .features-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .features-list li {
+    padding: 12px 0;
+    color: #1d4035;
+    font-size: 1.05rem;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  
+  .features-list li:last-child {
+    border-bottom: none;
+  }
+  
+  .testimonial {
+    background: #f7f5f0;
+    padding: 25px;
+    border-radius: 12px;
+    border-left: 4px solid #b85a1f;
+    margin-bottom: 30px;
+  }
+  
+  .testimonial p {
+    font-style: italic;
+    color: #333;
+    margin-bottom: 10px;
+    line-height: 1.6;
+  }
+  
+  .testimonial-author {
+    color: #666;
+    font-size: 0.9rem;
+  }
+  
+  .guarantee-badge {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: white;
+    border: 2px solid #1d4035;
+    border-radius: 12px;
+  }
+  
+  .guarantee-badge i {
+    font-size: 2rem;
+    color: #1d4035;
+  }
+  
+  .guarantee-badge strong {
+    display: block;
+    color: #1d4035;
+    margin-bottom: 5px;
+  }
+  
+  .guarantee-badge p {
+    color: #666;
+    margin: 0;
+    font-size: 0.9rem;
+  }
+  
+  .signup-form-card {
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 20px;
+  }
+  
+  .signup-form-card h3 {
+    font-size: 1.8rem;
+    color: #1d4035;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  
+  .form-subtitle {
+    color: #666;
+    margin-bottom: 30px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    color: #1d4035;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  
+  .form-group input:focus {
+    outline: none;
+    border-color: #b85a1f;
+  }
+  
+  .pricing-summary {
+    background: #f7f5f0;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 25px 0;
+  }
+  
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    color: #666;
+  }
+  
+  .summary-row.total {
+    padding-top: 15px;
+    border-top: 2px solid #ddd;
+    color: #1d4035;
+    font-size: 1.2rem;
+  }
+  
+  .btn-subscribe {
+    width: 100%;
+    padding: 18px;
+    background: #b85a1f;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-subscribe:hover {
+    background: #1d4035;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  }
+  
+  .form-note {
+    text-align: center;
+    color: #666;
+    font-size: 0.9rem;
+    margin-top: 15px;
+  }
+  
+  .form-note i {
+    color: #1d4035;
+  }
+  
+  .payment-methods {
+    text-align: center;
+    margin-top: 20px;
+    opacity: 0.7;
+  }
+  
+  .payment-methods img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  @media (max-width: 968px) {
+    .signup-content {
+      grid-template-columns: 1fr;
+    }
+    
+    .signup-form-card {
+      position: static;
+    }
+    
+    .signup-header h1 {
+      font-size: 2rem;
+    }
+    
+    .price-amount {
+      font-size: 3.5rem;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Plan Signup",
+  "settings": [
+    {
+      "type": "text",
+      "id": "plan_name",
+      "label": "Plan Name",
+      "default": "Full Semester Plan"
+    },
+    {
+      "type": "text",
+      "id": "price",
+      "label": "Price (numbers only)",
+      "default": "12"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Everything you need for healthy eating all semester long"
+    },
+    {
+      "type": "richtext",
+      "id": "features",
+      "label": "Features List",
+      "default": "<ul><li>✓ Feature 1</li><li>✓ Feature 2</li><li>✓ Feature 3</li></ul>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_testimonial",
+      "label": "Show Testimonial",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "testimonial_text",
+      "label": "Testimonial Text",
+      "default": "StudyFuel saved me so much time and money! I actually look forward to cooking now."
+    },
+    {
+      "type": "text",
+      "id": "testimonial_author",
+      "label": "Testimonial Author",
+      "default": "Sarah, UCLA Student"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Plan Signup"
+    }
+  ]
+}
+{% endschema %}

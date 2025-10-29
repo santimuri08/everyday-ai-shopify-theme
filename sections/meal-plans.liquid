@@ -1,0 +1,301 @@
+<section class="meal-plans-section">
+  <div class="plans-container">
+    <h2 class="plans-title">{{ section.settings.title }}</h2>
+    <p class="plans-subtitle">{{ section.settings.subtitle }}</p>
+    
+    <div class="plans-grid">
+      <!-- Free Plan -->
+      <div class="plan-card">
+        <div class="plan-badge">🎓 Student Favorite</div>
+        <h3 class="plan-name">Free Starter</h3>
+        <div class="plan-price">
+          <span class="price-amount">$0</span>
+          <span class="price-period">/month</span>
+        </div>
+        <ul class="plan-features">
+          <li>✓ 3-min meal quiz</li>
+          <li>✓ Personalized weekly recipes</li>
+          <li>✓ Basic grocery lists</li>
+          <li>✓ Quick-prep meal ideas</li>
+        </ul>
+        <a href="{{ section.settings.free_plan_link }}" class="plan-button plan-button-secondary">Get Started Free</a>
+      </div>
+      
+      <!-- Entry Plan -->
+      <div class="plan-card">
+        <h3 class="plan-name">Quick Prep Pack</h3>
+        <div class="plan-price">
+          <span class="price-amount">$5</span>
+          <span class="price-period">/month</span>
+        </div>
+        <ul class="plan-features">
+          <li>✓ Everything in Free</li>
+          <li>✓ AI-generated grocery lists</li>
+          <li>✓ 20+ quick-prep recipes</li>
+          <li>✓ Budget optimization tools</li>
+          <li>✓ Nutrition tracking</li>
+        </ul>
+        <a href="{{ section.settings.entry_plan_link }}" class="plan-button plan-button-primary">Choose This Plan</a>
+      </div>
+      
+      <!-- Flagship Plan -->
+      <div class="plan-card plan-card-featured">
+        <div class="plan-badge">⭐ Best Value</div>
+        <h3 class="plan-name">Full Semester Plan</h3>
+        <div class="plan-price">
+          <span class="price-amount">$12</span>
+          <span class="price-period">/month</span>
+        </div>
+        <ul class="plan-features">
+          <li>✓ Everything in Quick Prep</li>
+          <li>✓ Full semester meal planner</li>
+          <li>✓ Video cooking tutorials</li>
+          <li>✓ Dorm-friendly recipes</li>
+          <li>✓ Weekly shopping schedules</li>
+          <li>✓ Student community access</li>
+        </ul>
+        <a href="{{ section.settings.flagship_plan_link }}" class="plan-button plan-button-primary">Start Semester Plan</a>
+      </div>
+      
+      <!-- Upsell Plan -->
+      <div class="plan-card">
+        <div class="plan-badge">🏆 Premium</div>
+        <h3 class="plan-name">Coaching + Community</h3>
+        <div class="plan-price">
+          <span class="price-amount">$20</span>
+          <span class="price-period">/month</span>
+        </div>
+        <ul class="plan-features">
+          <li>✓ Everything in Semester Plan</li>
+          <li>✓ 1-on-1 nutrition coaching</li>
+          <li>✓ Community cooking challenges</li>
+          <li>✓ Live Q&A sessions</li>
+          <li>✓ Meal prep masterclasses</li>
+          <li>✓ Priority support</li>
+        </ul>
+        <a href="{{ section.settings.premium_plan_link }}" class="plan-button plan-button-primary">Go Premium</a>
+      </div>
+    </div>
+    
+    <div class="plans-guarantee">
+      <p>💚 <strong>Money-Back Guarantee:</strong> Try any plan risk-free for 30 days</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .meal-plans-section {
+    padding: 80px 20px;
+    background: #f7f5f0;
+  }
+  
+  .plans-container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  .plans-title {
+    font-size: 3rem;
+    color: #1d4035;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 700;
+  }
+  
+  .plans-subtitle {
+    font-size: 1.2rem;
+    color: #b85a1f;
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  
+  .plans-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+  
+  .plan-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .plan-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  }
+  
+  .plan-card-featured {
+    border: 3px solid #b85a1f;
+    transform: scale(1.05);
+  }
+  
+  .plan-badge {
+    position: absolute;
+    top: -12px;
+    right: 20px;
+    background: #b85a1f;
+    color: white;
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+  
+  .plan-name {
+    font-size: 1.6rem;
+    color: #1d4035;
+    margin-bottom: 15px;
+    font-weight: 700;
+  }
+  
+  .plan-price {
+    margin-bottom: 25px;
+  }
+  
+  .price-amount {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #1d4035;
+  }
+  
+  .price-period {
+    font-size: 1.1rem;
+    color: #666;
+  }
+  
+  .plan-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 30px 0;
+    flex-grow: 1;
+  }
+  
+  .plan-features li {
+    padding: 10px 0;
+    color: #1d4035;
+    font-size: 1rem;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .plan-features li:last-child {
+    border-bottom: none;
+  }
+  
+  .plan-button {
+    display: block;
+    text-align: center;
+    padding: 15px 30px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    margin-top: auto;
+  }
+  
+  .plan-button-primary {
+    background: #b85a1f;
+    color: white;
+  }
+  
+  .plan-button-primary:hover {
+    background: #1d4035;
+    transform: scale(1.05);
+  }
+  
+  .plan-button-secondary {
+    background: white;
+    color: #1d4035;
+    border: 2px solid #1d4035;
+  }
+  
+  .plan-button-secondary:hover {
+    background: #1d4035;
+    color: white;
+  }
+  
+  .plans-guarantee {
+    text-align: center;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  }
+  
+  .plans-guarantee p {
+    margin: 0;
+    color: #1d4035;
+    font-size: 1.1rem;
+  }
+  
+  @media (max-width: 968px) {
+    .plans-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .plan-card-featured {
+      transform: scale(1);
+    }
+    
+    .plans-title {
+      font-size: 2.2rem;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Meal Plans",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Choose Your Plan"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "default": "Fast, affordable nutrition solutions for busy students"
+    },
+    {
+      "type": "text",
+      "id": "free_plan_link",
+      "label": "Free Plan Link",
+      "default": "/pages/signup-free"
+    },
+    {
+      "type": "text",
+      "id": "entry_plan_link",
+      "label": "Entry Plan Link",
+      "default": "/pages/signup-entry"
+    },
+    {
+      "type": "text",
+      "id": "flagship_plan_link",
+      "label": "Flagship Plan Link",
+      "default": "/pages/signup-flagship"
+    },
+    {
+      "type": "text",
+      "id": "premium_plan_link",
+      "label": "Premium Plan Link",
+      "default": "/pages/signup-premium"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Meal Plans"
+    }
+  ]
+}
+{% endschema %}

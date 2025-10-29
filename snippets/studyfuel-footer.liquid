@@ -1,0 +1,193 @@
+<footer class="studyfuel-footer">
+  <div class="footer-container">
+    <div class="footer-section">
+      <h3>🍽️ StudyFuel</h3>
+      <p>Quick, affordable meals designed for busy students. Save time, eat healthier, and fuel your studies.</p>
+    </div>
+    
+    <div class="footer-section">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="/pages/plans">Meal Plans</a></li>
+        <li><a href="/pages/recipes">Recipes</a></li>
+        <li><a href="/pages/about">About Us</a></li>
+        <li><a href="/pages/quiz">Free Quiz</a></li>
+        <li><a href="/pages/faq">FAQ</a></li>
+      </ul>
+    </div>
+    
+    <div class="footer-section">
+      <h3>Resources</h3>
+      <ul>
+        <li><a href="/pages/dorm-cooking-tips">Dorm Cooking Tips</a></li>
+        <li><a href="/pages/budget-guide">Budget Guide</a></li>
+        <li><a href="/pages/meal-prep">Meal Prep 101</a></li>
+        <li><a href="/blogs/student-nutrition">Blog</a></li>
+      </ul>
+    </div>
+    
+    <div class="footer-section">
+      <h3>Connect With Us</h3>
+      <ul class="social-links">
+        <li><a href="#" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a></li>
+        <li><a href="#" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></li>
+        <li><a href="#" target="_blank"><i class="fab fa-youtube"></i> YouTube</a></li>
+      </ul>
+      <div class="newsletter-signup">
+        <h4>Weekly Recipes</h4>
+        <form action="/contact#newsletter" method="post" class="newsletter-form">
+          <input type="email" name="contact[email]" placeholder="Your email" required>
+          <button type="submit" class="btn-subscribe">Subscribe</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer-bottom">
+    <p>&copy; {{ 'now' | date: "%Y" }} StudyFuel. All rights reserved. Made with 💚 for students.</p>
+    <div class="footer-legal">
+      <a href="/pages/privacy-policy">Privacy Policy</a>
+      <span>|</span>
+      <a href="/pages/terms-of-service">Terms of Service</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .studyfuel-footer {
+    background: #1d4035;
+    color: white;
+    padding: 60px 20px 20px;
+  }
+  
+  .footer-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+  
+  .footer-section h3 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+  
+  .footer-section p {
+    line-height: 1.6;
+    opacity: 0.9;
+  }
+  
+  .footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .footer-section ul li {
+    margin-bottom: 12px;
+  }
+  
+  .footer-section a {
+    color: white;
+    text-decoration: none;
+    opacity: 0.85;
+    transition: opacity 0.3s ease;
+  }
+  
+  .footer-section a:hover {
+    opacity: 1;
+  }
+  
+  .social-links a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .newsletter-signup {
+    margin-top: 25px;
+  }
+  
+  .newsletter-signup h4 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  
+  .newsletter-form {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .newsletter-form input {
+    flex: 1;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.95rem;
+  }
+  
+  .btn-subscribe {
+    background: #b85a1f;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-subscribe:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  }
+  
+  .footer-bottom {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    text-align: center;
+  }
+  
+  .footer-bottom p {
+    margin-bottom: 10px;
+    opacity: 0.8;
+  }
+  
+  .footer-legal {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.7;
+    font-size: 0.9rem;
+  }
+  
+  .footer-legal a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .footer-legal a:hover {
+    text-decoration: underline;
+  }
+  
+  @media (max-width: 768px) {
+    .footer-container {
+      grid-template-columns: 1fr;
+    }
+    
+    .newsletter-form {
+      flex-direction: column;
+    }
+    
+    .btn-subscribe {
+      width: 100%;
+    }
+  }
+</style>

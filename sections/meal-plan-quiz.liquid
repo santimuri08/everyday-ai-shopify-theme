@@ -1,0 +1,602 @@
+<section class="meal-plan-quiz">
+  <div class="quiz-container">
+    <div class="quiz-header">
+      <h1>🍽️ Find Your Perfect Meal Plan</h1>
+      <p>Answer 5 quick questions to discover which plan fits your student lifestyle</p>
+    </div>
+    
+    <div id="quiz-content">
+      <!-- Question 1 -->
+      <div class="quiz-question active" data-question="1">
+        <h2>How much time do you have for meal prep?</h2>
+        <div class="quiz-options">
+          <button class="quiz-option" data-value="minimal" data-next="2">
+            <i class="fas fa-clock"></i>
+            <strong>Under 10 min/day</strong>
+            <span>I'm super busy with classes</span>
+          </button>
+          <button class="quiz-option" data-value="moderate" data-next="2">
+            <i class="fas fa-hourglass-half"></i>
+            <strong>10-30 min/day</strong>
+            <span>I can dedicate some time</span>
+          </button>
+          <button class="quiz-option" data-value="ample" data-next="2">
+            <i class="fas fa-calendar-check"></i>
+            <strong>30+ min/day</strong>
+            <span>I enjoy cooking</span>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Question 2 -->
+      <div class="quiz-question" data-question="2">
+        <h2>What's your monthly food budget?</h2>
+        <div class="quiz-options">
+          <button class="quiz-option" data-value="tight" data-next="3">
+            <i class="fas fa-piggy-bank"></i>
+            <strong>Under $150</strong>
+            <span>Need to save every dollar</span>
+          </button>
+          <button class="quiz-option" data-value="moderate" data-next="3">
+            <i class="fas fa-wallet"></i>
+            <strong>$150-$300</strong>
+            <span>Reasonable budget</span>
+          </button>
+          <button class="quiz-option" data-value="flexible" data-next="3">
+            <i class="fas fa-credit-card"></i>
+            <strong>$300+</strong>
+            <span>Quality matters most</span>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Question 3 -->
+      <div class="quiz-question" data-question="3">
+        <h2>What's your cooking setup?</h2>
+        <div class="quiz-options">
+          <button class="quiz-option" data-value="microwave" data-next="4">
+            <i class="fas fa-microwave"></i>
+            <strong>Microwave only</strong>
+            <span>Dorm life</span>
+          </button>
+          <button class="quiz-option" data-value="basic" data-next="4">
+            <i class="fas fa-fire-burner"></i>
+            <strong>Microwave + hot plate</strong>
+            <span>Basic setup</span>
+          </button>
+          <button class="quiz-option" data-value="full" data-next="4">
+            <i class="fas fa-kitchen-set"></i>
+            <strong>Full kitchen</strong>
+            <span>Apartment living</span>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Question 4 -->
+      <div class="quiz-question" data-question="4">
+        <h2>What's your main goal?</h2>
+        <div class="quiz-options">
+          <button class="quiz-option" data-value="time" data-next="5">
+            <i class="fas fa-bolt"></i>
+            <strong>Save time</strong>
+            <span>Speed is everything</span>
+          </button>
+          <button class="quiz-option" data-value="money" data-next="5">
+            <i class="fas fa-dollar-sign"></i>
+            <strong>Save money</strong>
+            <span>Budget is tight</span>
+          </button>
+          <button class="quiz-option" data-value="health" data-next="5">
+            <i class="fas fa-heartbeat"></i>
+            <strong>Eat healthier</strong>
+            <span>Fuel my body right</span>
+          </button>
+          <button class="quiz-option" data-value="variety" data-next="5">
+            <i class="fas fa-utensils"></i>
+            <strong>Learn to cook</strong>
+            <span>Expand my skills</span>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Question 5 -->
+      <div class="quiz-question" data-question="5">
+        <h2>How much support do you need?</h2>
+        <div class="quiz-options">
+          <button class="quiz-option" data-value="independent" data-next="result">
+            <i class="fas fa-user"></i>
+            <strong>I'm self-sufficient</strong>
+            <span>Just need recipes</span>
+          </button>
+          <button class="quiz-option" data-value="moderate" data-next="result">
+            <i class="fas fa-users"></i>
+            <strong>Some guidance</strong>
+            <span>Community helps</span>
+          </button>
+          <button class="quiz-option" data-value="full" data-next="result">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <strong>Full coaching</strong>
+            <span>I want expert help</span>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Results -->
+      <div class="quiz-result" id="quiz-result">
+        <div class="result-content">
+          <h2>Your Perfect Match:</h2>
+          <div class="recommended-plan">
+            <div class="plan-badge">✨ Recommended for You</div>
+            <h3 id="result-plan-name">Loading...</h3>
+            <div class="plan-price">
+              <span class="price-amount" id="result-price">$0</span>
+              <span class="price-period">/month</span>
+            </div>
+            <p id="result-description">Loading...</p>
+            <ul class="result-features" id="result-features">
+              <!-- Features will be added by JavaScript -->
+            </ul>
+            <a href="#" id="result-cta" class="btn-get-plan">Get This Plan</a>
+          </div>
+          
+          <div class="other-plans">
+            <p>Not quite right? <a href="/pages/plans">View all plans</a></p>
+          </div>
+          
+          <button class="btn-retake" onclick="restartQuiz()">
+            <i class="fas fa-redo"></i> Retake Quiz
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="quiz-progress">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <p class="progress-text"><span id="current-question">1</span> of 5</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .meal-plan-quiz {
+    min-height: 100vh;
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #1d4035 0%, #b85a1f 100%);
+  }
+  
+  .quiz-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .quiz-header {
+    text-align: center;
+    color: white;
+    margin-bottom: 50px;
+  }
+  
+  .quiz-header h1 {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+  }
+  
+  .quiz-header p {
+    font-size: 1.2rem;
+    opacity: 0.95;
+  }
+  
+  #quiz-content {
+    background: white;
+    border-radius: 20px;
+    padding: 50px;
+    box-shadow: 0 10px 50px rgba(0,0,0,0.2);
+    min-height: 500px;
+    position: relative;
+  }
+  
+  .quiz-question {
+    display: none;
+  }
+  
+  .quiz-question.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .quiz-question h2 {
+    font-size: 2rem;
+    color: #1d4035;
+    margin-bottom: 40px;
+    text-align: center;
+    font-weight: 700;
+  }
+  
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .quiz-option {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 25px;
+    background: #f7f5f0;
+    border: 3px solid transparent;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+  }
+  
+  .quiz-option:hover {
+    border-color: #b85a1f;
+    background: white;
+    transform: translateX(10px);
+  }
+  
+  .quiz-option i {
+    font-size: 2rem;
+    color: #b85a1f;
+    min-width: 40px;
+  }
+  
+  .quiz-option strong {
+    display: block;
+    font-size: 1.3rem;
+    color: #1d4035;
+    margin-bottom: 5px;
+  }
+  
+  .quiz-option span {
+    display: block;
+    color: #666;
+    font-size: 0.95rem;
+  }
+  
+  .quiz-result {
+    display: none;
+    text-align: center;
+  }
+  
+  .quiz-result.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+  }
+  
+  .result-content h2 {
+    font-size: 2.5rem;
+    color: #1d4035;
+    margin-bottom: 40px;
+    font-weight: 700;
+  }
+  
+  .recommended-plan {
+    background: linear-gradient(135deg, #1d4035 0%, #b85a1f 100%);
+    color: white;
+    padding: 40px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+    position: relative;
+  }
+  
+  .plan-badge {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ffd700;
+    color: #1d4035;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  
+  .recommended-plan h3 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+  
+  .plan-price {
+    margin-bottom: 20px;
+  }
+  
+  .price-amount {
+    font-size: 3.5rem;
+    font-weight: 700;
+  }
+  
+  .price-period {
+    font-size: 1.2rem;
+    opacity: 0.9;
+  }
+  
+  .recommended-plan p {
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+    opacity: 0.95;
+  }
+  
+  .result-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 30px 0;
+    text-align: left;
+  }
+  
+  .result-features li {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    font-size: 1.05rem;
+  }
+  
+  .result-features li:last-child {
+    border-bottom: none;
+  }
+  
+  .btn-get-plan {
+    display: inline-block;
+    padding: 18px 50px;
+    background: white;
+    color: #1d4035;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-get-plan:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+  
+  .other-plans {
+    margin: 30px 0;
+    color: #666;
+  }
+  
+  .other-plans a {
+    color: #b85a1f;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  
+  .btn-retake {
+    background: #f7f5f0;
+    border: 2px solid #1d4035;
+    color: #1d4035;
+    padding: 12px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-retake:hover {
+    background: #1d4035;
+    color: white;
+  }
+  
+  .quiz-progress {
+    margin-top: 30px;
+    text-align: center;
+  }
+  
+  .progress-bar {
+    background: rgba(255,255,255,0.3);
+    height: 8px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  
+  .progress-fill {
+    background: white;
+    height: 100%;
+    width: 20%;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+  }
+  
+  .progress-text {
+    color: white;
+    font-weight: 600;
+  }
+  
+  @media (max-width: 768px) {
+    #quiz-content {
+      padding: 30px 20px;
+    }
+    
+    .quiz-header h1 {
+      font-size: 2rem;
+    }
+    
+    .quiz-question h2 {
+      font-size: 1.5rem;
+    }
+    
+    .quiz-option {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+</style>
+
+<script>
+  let quizAnswers = {
+    time: '',
+    budget: '',
+    setup: '',
+    goal: '',
+    support: ''
+  };
+  
+  const questionKeys = ['time', 'budget', 'setup', 'goal', 'support'];
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    const options = document.querySelectorAll('.quiz-option');
+    
+    options.forEach(option => {
+      option.addEventListener('click', function() {
+        const questionNum = this.closest('.quiz-question').dataset.question;
+        const value = this.dataset.value;
+        const nextQuestion = this.dataset.next;
+        
+        // Store answer
+        const questionKey = questionKeys[parseInt(questionNum) - 1];
+        quizAnswers[questionKey] = value;
+        
+        // Hide current question
+        document.querySelector('.quiz-question.active').classList.remove('active');
+        
+        // Show next question or result
+        if (nextQuestion === 'result') {
+          showResult();
+        } else {
+          document.querySelector(`[data-question="${nextQuestion}"]`).classList.add('active');
+          updateProgress(nextQuestion);
+        }
+      });
+    });
+  });
+  
+  function updateProgress(questionNum) {
+    const progress = (questionNum / 5) * 100;
+    document.getElementById('progress-fill').style.width = progress + '%';
+    document.getElementById('current-question').textContent = questionNum;
+  }
+  
+  function showResult() {
+    document.getElementById('progress-fill').style.width = '100%';
+    document.getElementById('current-question').textContent = '5';
+    
+    const plan = calculatePlan();
+    displayPlan(plan);
+    
+    document.getElementById('quiz-result').classList.add('active');
+  }
+  
+  function calculatePlan() {
+    // Logic to determine best plan based on answers
+    const { time, budget, setup, goal, support } = quizAnswers;
+    
+    // Free Plan: tight budget, minimal time, independent
+    if (budget === 'tight' && time === 'minimal' && support === 'independent') {
+      return {
+        name: 'Free Starter',
+        price: '0',
+        description: 'Perfect for students who need basic recipes and meal ideas without breaking the bank.',
+        features: [
+          '✓ 3-min meal quiz',
+          '✓ Personalized weekly recipes',
+          '✓ Basic grocery lists',
+          '✓ Quick-prep meal ideas'
+        ],
+        link: '/pages/signup-free'
+      };
+    }
+    
+    // Entry Plan: moderate budget, some time
+    if ((budget === 'moderate' || budget === 'tight') && (time === 'moderate' || time === 'minimal')) {
+      return {
+        name: 'Quick Prep Pack',
+        price: '5',
+        description: 'Ideal for busy students who want better meals without spending hours cooking.',
+        features: [
+          '✓ Everything in Free',
+          '✓ AI-generated grocery lists',
+          '✓ 20+ quick-prep recipes',
+          '✓ Budget optimization tools',
+          '✓ Nutrition tracking'
+        ],
+        link: '/pages/signup-entry'
+      };
+    }
+    
+    // Premium Plan: wants support and coaching
+    if (support === 'full' || goal === 'variety') {
+      return {
+        name: 'Coaching + Community',
+        price: '20',
+        description: 'For students who want expert guidance and a supportive community.',
+        features: [
+          '✓ Everything in Semester Plan',
+          '✓ 1-on-1 nutrition coaching',
+          '✓ Community cooking challenges',
+          '✓ Live Q&A sessions',
+          '✓ Meal prep masterclasses',
+          '✓ Priority support'
+        ],
+        link: '/pages/signup-premium'
+      };
+    }
+    
+    // Default to Flagship Plan
+    return {
+      name: 'Full Semester Plan',
+      price: '12',
+      description: 'The complete solution for students who want healthy eating made easy all semester long.',
+      features: [
+        '✓ Everything in Quick Prep',
+        '✓ Full semester meal planner',
+        '✓ Video cooking tutorials',
+        '✓ Dorm-friendly recipes',
+        '✓ Weekly shopping schedules',
+        '✓ Student community access'
+      ],
+      link: '/pages/signup-flagship'
+    };
+  }
+  
+  function displayPlan(plan) {
+    document.getElementById('result-plan-name').textContent = plan.name;
+    document.getElementById('result-price').textContent = '$' + plan.price;
+    document.getElementById('result-description').textContent = plan.description;
+    document.getElementById('result-cta').href = plan.link;
+    
+    const featuresList = document.getElementById('result-features');
+    featuresList.innerHTML = '';
+    plan.features.forEach(feature => {
+      const li = document.createElement('li');
+      li.textContent = feature;
+      featuresList.appendChild(li);
+    });
+  }
+  
+  function restartQuiz() {
+    quizAnswers = {
+      time: '',
+      budget: '',
+      setup: '',
+      goal: '',
+      support: ''
+    };
+    
+    document.getElementById('quiz-result').classList.remove('active');
+    document.querySelectorAll('.quiz-question').forEach(q => q.classList.remove('active'));
+    document.querySelector('[data-question="1"]').classList.add('active');
+    
+    document.getElementById('progress-fill').style.width = '20%';
+    document.getElementById('current-question').textContent = '1';
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Meal Plan Quiz",
+  "settings": []
+}
+{% endschema %}

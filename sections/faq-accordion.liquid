@@ -1,0 +1,303 @@
+<section class="faq-section">
+  <div class="faq-container">
+    <div class="faq-header">
+      <h1>{{ section.settings.title }}</h1>
+      <p>{{ section.settings.subtitle }}</p>
+    </div>
+    
+    <div class="faq-content">
+      <div class="faq-accordion">
+        {% for block in section.blocks %}
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>{{ block.settings.question }}</span>
+              <i class="fas fa-plus faq-icon"></i>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-content">
+                {{ block.settings.answer }}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      
+      <div class="faq-sidebar">
+        <div class="help-card">
+          <h3>Still have questions?</h3>
+          <p>We're here to help! Reach out to our student support team.</p>
+          <a href="/pages/contact" class="btn-contact">Contact Us</a>
+        </div>
+        
+        <div class="popular-links">
+          <h4>Popular Resources</h4>
+          <ul>
+            <li><a href="/pages/plans">View All Plans</a></li>
+            <li><a href="/pages/recipes">Browse Recipes</a></li>
+            <li><a href="/pages/quiz">Take Our Quiz</a></li>
+            <li><a href="/blogs/nutrition">Read Our Blog</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-section {
+    padding: 80px 20px;
+    background: #fefdfb;
+  }
+  
+  .faq-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .faq-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  
+  .faq-header h1 {
+    font-size: 3.5rem;
+    color: #1d4035;
+    margin-bottom: 15px;
+    font-weight: 700;
+  }
+  
+  .faq-header p {
+    font-size: 1.2rem;
+    color: #666;
+  }
+  
+  .faq-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 60px;
+  }
+  
+  .faq-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .faq-item {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  }
+  
+  .faq-question {
+    width: 100%;
+    padding: 25px;
+    background: white;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1d4035;
+    transition: all 0.3s ease;
+  }
+  
+  .faq-question:hover {
+    background: #f7f5f0;
+  }
+  
+  .faq-icon {
+    font-size: 1.2rem;
+    color: #b85a1f;
+    transition: transform 0.3s ease;
+  }
+  
+  .faq-item.active .faq-icon {
+    transform: rotate(45deg);
+  }
+  
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  
+  .faq-item.active .faq-answer {
+    max-height: 500px;
+  }
+  
+  .faq-answer-content {
+    padding: 0 25px 25px 25px;
+    color: #666;
+    line-height: 1.8;
+  }
+  
+  .faq-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .help-card {
+    background: linear-gradient(135deg, #1d4035 0%, #b85a1f 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+  }
+  
+  .help-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  
+  .help-card p {
+    margin-bottom: 20px;
+    opacity: 0.95;
+  }
+  
+  .btn-contact {
+    display: inline-block;
+    padding: 12px 30px;
+    background: white;
+    color: #1d4035;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-contact:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  }
+  
+  .popular-links {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  }
+  
+  .popular-links h4 {
+    font-size: 1.2rem;
+    color: #1d4035;
+    margin-bottom: 15px;
+    font-weight: 700;
+  }
+  
+  .popular-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .popular-links li {
+    margin-bottom: 12px;
+  }
+  
+  .popular-links a {
+    color: #b85a1f;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  
+  .popular-links a:hover {
+    color: #1d4035;
+  }
+  
+  @media (max-width: 968px) {
+    .faq-content {
+      grid-template-columns: 1fr;
+    }
+    
+    .faq-header h1 {
+      font-size: 2.5rem;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    
+    faqQuestions.forEach(question => {
+      question.addEventListener('click', function() {
+        const faqItem = this.closest('.faq-item');
+        const wasActive = faqItem.classList.contains('active');
+        
+        // Close all FAQ items
+        document.querySelectorAll('.faq-item').forEach(item => {
+          item.classList.remove('active');
+        });
+        
+        // Open clicked item if it wasn't already active
+        if (!wasActive) {
+          faqItem.classList.add('active');
+        }
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "FAQ Accordion",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Everything you need to know about StudyFuel"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "What is StudyFuel?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>StudyFuel is a meal planning service designed specifically for college students. We provide quick, affordable recipes and meal plans that fit your busy schedule and tight budget.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Accordion",
+      "blocks": [
+        {
+          "type": "faq"
+        },
+        {
+          "type": "faq"
+        },
+        {
+          "type": "faq"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

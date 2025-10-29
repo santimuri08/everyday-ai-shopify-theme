@@ -1,0 +1,217 @@
+<section class="customer-login-section">
+  <div class="login-container">
+    <div class="login-header">
+      <h1>Welcome Back to StudyFuel! 🍽️</h1>
+      <p>Sign in to access your meal plans and recipes</p>
+    </div>
+    
+    <div class="login-form-wrapper">
+      {% form 'customer_login' %}
+        {{ form.errors | default_errors }}
+        
+        <div class="form-group">
+          <label for="CustomerEmail">Email Address</label>
+          <input
+            type="email"
+            name="customer[email]"
+            id="CustomerEmail"
+            autocomplete="email"
+            {% if form.errors %}
+              aria-invalid="true"
+              aria-describedby="CustomerEmail-error"
+              autofocus
+            {% endif %}
+            placeholder="your.email@example.com"
+            required
+          >
+        </div>
+        
+        {% if form.password_needed %}
+          <div class="form-group">
+            <label for="CustomerPassword">Password</label>
+            <input
+              type="password"
+              name="customer[password]"
+              id="CustomerPassword"
+              autocomplete="current-password"
+              placeholder="Enter your password"
+              required
+            >
+          </div>
+          
+          <div class="form-footer">
+            <a href="{{ routes.account_recover_url }}" class="forgot-password">
+              Forgot password?
+            </a>
+          </div>
+        {% endif %}
+        
+        <button type="submit" class="btn-login">
+          Sign In
+        </button>
+      {% endform %}
+      
+      <div class="register-prompt">
+        <p>New to StudyFuel?</p>
+        <a href="{{ routes.account_register_url }}" class="btn-register">
+          Create Account
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .customer-login-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #1d4035 0%, #b85a1f 100%);
+  }
+  
+  .login-container {
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .login-header {
+    text-align: center;
+    color: white;
+    margin-bottom: 40px;
+  }
+  
+  .login-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  
+  .login-header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+  }
+  
+  .login-form-wrapper {
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  }
+  
+  .form-group {
+    margin-bottom: 25px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #1d4035;
+    font-weight: 600;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  
+  .form-group input:focus {
+    outline: none;
+    border-color: #b85a1f;
+  }
+  
+  .form-footer {
+    margin-bottom: 25px;
+    text-align: right;
+  }
+  
+  .forgot-password {
+    color: #b85a1f;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+  }
+  
+  .forgot-password:hover {
+    color: #1d4035;
+  }
+  
+  .btn-login {
+    width: 100%;
+    padding: 15px;
+    background: #b85a1f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-login:hover {
+    background: #1d4035;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+  
+  .register-prompt {
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 1px solid #eee;
+    text-align: center;
+  }
+  
+  .register-prompt p {
+    color: #666;
+    margin-bottom: 15px;
+  }
+  
+  .btn-register {
+    display: inline-block;
+    padding: 12px 30px;
+    background: white;
+    color: #1d4035;
+    border: 2px solid #1d4035;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-register:hover {
+    background: #1d4035;
+    color: white;
+  }
+  
+  .errors {
+    background: #fee;
+    border: 1px solid #fcc;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    color: #c33;
+  }
+  
+  @media (max-width: 768px) {
+    .login-header h1 {
+      font-size: 2rem;
+    }
+    
+    .login-form-wrapper {
+      padding: 30px 20px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "SF Login",
+  "settings": []
+}
+{% endschema %}

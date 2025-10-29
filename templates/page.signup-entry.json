@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "main": {
+      "type": "plan-signup",
+      "settings": {
+        "plan_name": "Quick Prep Pack",
+        "price": "5",
+        "tagline": "Perfect for busy students who want better meals fast",
+        "features": "<ul><li>✓ Everything in Free Starter</li><li>✓ AI-powered personalized grocery lists</li><li>✓ 50+ quick-prep recipes (5-15 min)</li><li>✓ Budget optimization calculator</li><li>✓ Basic nutrition tracking</li><li>✓ Weekly meal planning templates</li><li>✓ Priority email support</li></ul>",
+        "show_testimonial": true,
+        "testimonial_text": "For $5 a month, I'm saving over $100 on food! Total no-brainer.",
+        "testimonial_author": "Jake, USC Sophomore"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

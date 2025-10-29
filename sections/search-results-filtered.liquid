@@ -1,0 +1,321 @@
+<section class="search-results-section">
+  <div class="search-container">
+    {% if search.performed %}
+      <div class="search-info">
+        <h2>Search Results for "{{ search.terms }}"</h2>
+        <p>{{ search.results_count }} {% if search.results_count == 1 %}result{% else %}results{% endif %} found</p>
+      </div>
+      
+      {% if search.results_count > 0 %}
+        <div class="search-layout">
+          <!-- Filters Sidebar -->
+          <aside class="search-filters">
+            <h3>Filter by Type</h3>
+            <div class="filter-group">
+              <label class="filter-item">
+                <input type="radio" name="search_type" value="all" checked>
+                <span>All Results ({{ search.results_count }})</span>
+              </label>
+              <label class="filter-item">
+                <input type="radio" name="search_type" value="product">
+                <span>Meal Plans</span>
+              </label>
+              <label class="filter-item">
+                <input type="radio" name="search_type" value="article">
+                <span>Blog Posts</span>
+              </label>
+              <label class="filter-item">
+                <input type="radio" name="search_type" value="page">
+                <span>Pages</span>
+              </label>
+            </div>
+          </aside>
+          
+          <!-- Results Grid -->
+          <div class="search-results-grid">
+            {% for item in search.results %}
+              <article class="search-result-card" data-type="{{ item.object_type }}">
+                {% if item.image %}
+                  <div class="result-image">
+                    <img src="{{ item.image | img_url: '300x200', crop: 'center' }}" alt="{{ item.title }}">
+                  </div>
+                {% endif %}
+                
+                <div class="result-content">
+                  <span class="result-type">
+                    {% if item.object_type == 'product' %}
+                      🍽️ Meal Plan
+                    {% elsif item.object_type == 'article' %}
+                      📝 Blog Post
+                    {% elsif item.object_type == 'page' %}
+                      📄 Page
+                    {% endif %}
+                  </span>
+                  
+                  <h3 class="result-title">
+                    <a href="{{ item.url }}">{{ item.title }}</a>
+                  </h3>
+                  
+                  {% if item.price %}
+                    <p class="result-price">{{ item.price | money }}</p>
+                  {% endif %}
+                  
+                  {% if item.content != blank %}
+                    <p class="result-excerpt">{{ item.content | strip_html | truncate: 150 }}</p>
+                  {% endif %}
+                  
+                  <a href="{{ item.url }}" class="result-link">View Details →</a>
+                </div>
+              </article>
+            {% endfor %}
+          </div>
+        </div>
+      {% else %}
+        <div class="no-results">
+          <i class="fas fa-search" style="font-size: 3rem; color: #b85a1f; margin-bottom: 20px;"></i>
+          <h3>No results found for "{{ search.terms }}"</h3>
+          <p>Try different keywords or browse our popular content:</p>
+          <div class="suggestions">
+            <a href="/pages/recipes" class="suggestion-link">Browse Recipes</a>
+            <a href="/pages/plans" class="suggestion-link">View Meal Plans</a>
+            <a href="/blogs/nutrition" class="suggestion-link">Read Blog</a>
+          </div>
+        </div>
+      {% endif %}
+    {% else %}
+      <div class="search-prompt">
+        <p>Enter a search term above to find recipes, meal plans, and nutrition tips.</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .search-results-section {
+    padding: 60px 20px;
+    min-height: 500px;
+  }
+  
+  .search-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .search-info {
+    margin-bottom: 40px;
+  }
+  
+  .search-info h2 {
+    font-size: 2rem;
+    color: #1d4035;
+    margin-bottom: 10px;
+  }
+  
+  .search-info p {
+    color: #666;
+  }
+  
+  .search-layout {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 40px;
+  }
+  
+  .search-filters {
+    background: #f7f5f0;
+    padding: 25px;
+    border-radius: 12px;
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+  }
+  
+  .search-filters h3 {
+    font-size: 1.2rem;
+    color: #1d4035;
+    margin-bottom: 20px;
+  }
+  
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .filter-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 6px;
+    transition: background 0.3s ease;
+  }
+  
+  .filter-item:hover {
+    background: white;
+  }
+  
+  .filter-item input {
+    cursor: pointer;
+  }
+  
+  .search-results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+  }
+  
+  .search-result-card {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .search-result-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+  
+  .result-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .result-content {
+    padding: 20px;
+  }
+  
+  .result-type {
+    display: inline-block;
+    font-size: 0.85rem;
+    color: #b85a1f;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  
+  .result-title {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+  }
+  
+  .result-title a {
+    color: #1d4035;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .result-title a:hover {
+    color: #b85a1f;
+  }
+  
+  .result-price {
+    font-size: 1.2rem;
+    color: #b85a1f;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  
+  .result-excerpt {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+  }
+  
+  .result-link {
+    color: #b85a1f;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  
+  .result-link:hover {
+    color: #1d4035;
+  }
+  
+  .no-results {
+    text-align: center;
+    padding: 80px 20px;
+  }
+  
+  .no-results h3 {
+    font-size: 1.8rem;
+    color: #1d4035;
+    margin-bottom: 15px;
+  }
+  
+  .no-results p {
+    color: #666;
+    margin-bottom: 30px;
+  }
+  
+  .suggestions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .suggestion-link {
+    background: #b85a1f;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .suggestion-link:hover {
+    background: #1d4035;
+    transform: translateY(-2px);
+  }
+  
+  .search-prompt {
+    text-align: center;
+    padding: 80px 20px;
+    color: #666;
+  }
+  
+  @media (max-width: 968px) {
+    .search-layout {
+      grid-template-columns: 1fr;
+    }
+    
+    .search-filters {
+      position: static;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const filterRadios = document.querySelectorAll('input[name="search_type"]');
+    const resultCards = document.querySelectorAll('.search-result-card');
+    
+    filterRadios.forEach(radio => {
+      radio.addEventListener('change', function() {
+        const filterValue = this.value;
+        
+        resultCards.forEach(card => {
+          if (filterValue === 'all') {
+            card.style.display = 'block';
+          } else {
+            const cardType = card.getAttribute('data-type');
+            card.style.display = cardType === filterValue ? 'block' : 'none';
+          }
+        });
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Search Results Filtered",
+  "settings": []
+}
+{% endschema %}

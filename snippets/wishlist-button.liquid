@@ -1,0 +1,115 @@
+<button 
+  class="wishlist-btn" 
+  data-product-id="{{ product.id }}"
+  data-product-title="{{ product.title }}"
+  data-product-url="{{ product.url }}"
+  data-product-image="{{ product.featured_image | img_url: '300x300' }}"
+  data-product-price="{{ product.price | money }}"
+  aria-label="Add to wishlist"
+>
+  <i class="far fa-heart"></i>
+  <span>Add to Wishlist</span>
+</button>
+
+<style>
+  .wishlist-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: white;
+    border: 2px solid #1d4035;
+    color: #1d4035;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .wishlist-btn:hover {
+    background: #1d4035;
+    color: white;
+  }
+  
+  .wishlist-btn.in-wishlist {
+    background: #b85a1f;
+    border-color: #b85a1f;
+    color: white;
+  }
+  
+  .wishlist-btn.in-wishlist i {
+    font-weight: 900;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const wishlistButtons = document.querySelectorAll('.wishlist-btn');
+    
+    wishlistButtons.forEach(button => {
+      const productId = button.dataset.productId;
+      
+      // Check if in wishlist
+      const wishlist = JSON.parse(localStorage.getItem('studyfuel_wishlist') || '[]');
+      if (wishlist.some(item => item.id === productId)) {
+        button.classList.add('in-wishlist');
+        button.querySelector('span').textContent = 'In Wishlist';
+      }
+      
+      button.addEventListener('click', function() {
+        toggleWishlist(this);
+      });
+    });
+    
+    function toggleWishlist(button) {
+      const productData = {
+        id: button.dataset.productId,
+        title: button.dataset.productTitle,
+        url: button.dataset.productUrl,
+        image: button.dataset.productImage,
+        price: button.dataset.productPrice
+      };
+      
+      let wishlist = JSON.parse(localStorage.getItem('studyfuel_wishlist') || '[]');
+      const index = wishlist.findIndex(item => item.id === productData.id);
+      
+      if (index > -1) {
+        // Remove from wishlist
+        wishlist.splice(index, 1);
+        button.classList.remove('in-wishlist');
+        button.querySelector('span').textContent = 'Add to Wishlist';
+        showNotification('Removed from wishlist');
+      } else {
+        // Add to wishlist
+        wishlist.push(productData);
+        button.classList.add('in-wishlist');
+        button.querySelector('span').textContent = 'In Wishlist';
+        showNotification('Added to wishlist!');
+      }
+      
+      localStorage.setItem('studyfuel_wishlist', JSON.stringify(wishlist));
+    }
+    
+    function showNotification(message) {
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #1d4035;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 8px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        z-index: 10000;
+        animation: slideIn 0.3s ease;
+      `;
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+  });
+</script>

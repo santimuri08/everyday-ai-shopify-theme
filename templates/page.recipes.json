@@ -1,0 +1,102 @@
+{
+  "sections": {
+    "main": {
+      "type": "recipes-showcase",
+      "settings": {
+        "title": "Quick Student Recipes",
+        "subtitle": "Fast, affordable meals perfect for dorm kitchens and busy schedules"
+      },
+      "blocks": {
+        "recipe_1": {
+          "type": "recipe",
+          "settings": {
+            "title": "5-Minute Protein Bowl",
+            "prep_time": "5 min",
+            "difficulty": "Easy",
+            "cost": "3.50",
+            "description": "Perfect for busy mornings! This protein-packed bowl uses just 4 ingredients and can be made with a microwave.",
+            "tags": "High Protein, Quick Prep, Budget-Friendly",
+            "show_cta": true,
+            "cta_link": "/pages/plans"
+          }
+        },
+        "recipe_2": {
+          "type": "recipe",
+          "settings": {
+            "title": "Dorm Room Pasta",
+            "prep_time": "10 min",
+            "difficulty": "Easy",
+            "cost": "2.75",
+            "description": "All you need is a microwave and a bowl! This creamy pasta is a game-changer for dorm life.",
+            "tags": "Microwave Only, Budget-Friendly, Comfort Food",
+            "show_cta": true,
+            "cta_link": "/pages/plans"
+          }
+        },
+        "recipe_3": {
+          "type": "recipe",
+          "settings": {
+            "title": "Study Snack Smoothie",
+            "prep_time": "3 min",
+            "difficulty": "Easy",
+            "cost": "2.00",
+            "description": "Brain-boosting ingredients that keep you energized through long study sessions.",
+            "tags": "Quick Prep, Healthy, Energy Boost",
+            "show_cta": true,
+            "cta_link": "/pages/plans"
+          }
+        },
+        "recipe_4": {
+          "type": "recipe",
+          "settings": {
+            "title": "Budget Burrito Bowl",
+            "prep_time": "15 min",
+            "difficulty": "Easy",
+            "cost": "4.00",
+            "description": "Restaurant-quality burrito bowl for a fraction of the price. Makes great leftovers!",
+            "tags": "Meal Prep, High Protein, Budget-Friendly",
+            "show_cta": true,
+            "cta_link": "/pages/plans"
+          }
+        },
+        "recipe_5": {
+          "type": "recipe",
+          "settings": {
+            "title": "Quick Stir-Fry",
+            "prep_time": "12 min",
+            "difficulty": "Medium",
+            "cost": "5.00",
+            "description": "Perfect for your hot plate! Use whatever veggies you have on hand.",
+            "tags": "Veggie-Packed, Quick Prep, Flexible",
+            "show_cta": true,
+            "cta_link": "/pages/plans"
+          }
+        },
+        "recipe_6": {
+          "type": "recipe",
+          "settings": {
+            "title": "No-Cook Overnight Oats",
+            "prep_time": "2 min",
+            "difficulty": "Easy",
+            "cost": "1.50",
+            "description": "Prep before bed, grab and go in the morning. Customize with your favorite toppings!",
+            "tags": "No Cooking, Meal Prep, Budget-Friendly",
+            "show_cta": true,
+            "cta_link": "/pages/plans"
+          }
+        }
+      },
+      "block_order": [
+        "recipe_1",
+        "recipe_2",
+        "recipe_3",
+        "recipe_4",
+        "recipe_5",
+        "recipe_6"
+      ]
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

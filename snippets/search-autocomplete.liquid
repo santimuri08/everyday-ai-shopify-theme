@@ -1,0 +1,212 @@
+<div class="search-autocomplete-wrapper">
+  <input 
+    type="search" 
+    class="search-autocomplete-input"
+    placeholder="Search recipes, meals, tips..."
+    autocomplete="off"
+  >
+  <div class="search-autocomplete-results" style="display: none;">
+    <div class="autocomplete-loading">Searching...</div>
+    <div class="autocomplete-items"></div>
+  </div>
+</div>
+
+<style>
+  .search-autocomplete-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  .search-autocomplete-input {
+    width: 100%;
+    padding: 12px 20px;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  
+  .search-autocomplete-input:focus {
+    outline: none;
+    border-color: #b85a1f;
+  }
+  
+  .search-autocomplete-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    margin-top: 5px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+  }
+  
+  .autocomplete-loading {
+    padding: 20px;
+    text-align: center;
+    color: #666;
+  }
+  
+  .autocomplete-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 15px;
+    border-bottom: 1px solid #f5f5f5;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .autocomplete-item:hover {
+    background: #f7f5f0;
+  }
+  
+  .autocomplete-item:last-child {
+    border-bottom: none;
+  }
+  
+  .autocomplete-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+  
+  .autocomplete-content {
+    flex: 1;
+  }
+  
+  .autocomplete-title {
+    font-weight: 600;
+    color: #1d4035;
+    margin-bottom: 3px;
+  }
+  
+  .autocomplete-type {
+    font-size: 0.85rem;
+    color: #b85a1f;
+  }
+</style>
+
+<script>
+  (function() {
+    const input = document.querySelector('.search-autocomplete-input');
+    const resultsContainer = document.querySelector('.search-autocomplete-results');
+    const itemsContainer = document.querySelector('.autocomplete-items');
+    const loading = document.querySelector('.autocomplete-loading');
+    
+    let debounceTimer;
+    
+    input.addEventListener('input', function() {
+      const query = this.value.trim();
+      
+      clearTimeout(debounceTimer);
+      
+      if (query.length < 2) {
+        resultsContainer.style.display = 'none';
+        return;
+      }
+      
+      resultsContainer.style.display = 'block';
+      loading.style.display = 'block';
+      itemsContainer.innerHTML = '';
+      
+      debounceTimer = setTimeout(() => {
+        fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product,article,page&resources[limit]=5`)
+          .then(response => response.json())
+          .then(data => {
+            loading.style.display = 'none';
+            
+            const results = data.resources.results;
+            
+            if (results.products || results.articles || results.pages) {
+              itemsContainer.innerHTML = '';
+              
+              // Products
+              if (results.products) {
+                results.products.forEach(product => {
+                  const item = createAutocompleteItem(
+                    product.url,
+                    product.image,
+                    product.title,
+                    '🍽️ Meal Plan'
+                  );
+                  itemsContainer.appendChild(item);
+                });
+              }
+              
+              // Articles
+              if (results.articles) {
+                results.articles.forEach(article => {
+                  const item = createAutocompleteItem(
+                    article.url,
+                    article.image,
+                    article.title,
+                    '📝 Blog Post'
+                  );
+                  itemsContainer.appendChild(item);
+                });
+              }
+              
+              // Pages
+              if (results.pages) {
+                results.pages.forEach(page => {
+                  const item = createAutocompleteItem(
+                    page.url,
+                    null,
+                    page.title,
+                    '📄 Page'
+                  );
+                  itemsContainer.appendChild(item);
+                });
+              }
+            } else {
+              itemsContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;">No results found</div>';
+            }
+          })
+          .catch(error => {
+            console.error('Search error:', error);
+            loading.style.display = 'none';
+            itemsContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;">Error loading results</div>';
+          });
+      }, 300);
+    });
+    
+    function createAutocompleteItem(url, image, title, type) {
+      const link = document.createElement('a');
+      link.href = url;
+      link.className = 'autocomplete-item';
+      
+      let html = '';
+      
+      if (image) {
+        html += `<img src="${image}" alt="${title}" class="autocomplete-image">`;
+      }
+      
+      html += `
+        <div class="autocomplete-content">
+          <div class="autocomplete-title">${title}</div>
+          <div class="autocomplete-type">${type}</div>
+        </div>
+      `;
+      
+      link.innerHTML = html;
+      return link;
+    }
+    
+    // Close results when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.search-autocomplete-wrapper')) {
+        resultsContainer.style.display = 'none';
+      }
+    });
+  })();
+</script>

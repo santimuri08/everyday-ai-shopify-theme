@@ -1,0 +1,364 @@
+<section class="recipes-showcase">
+  <div class="recipes-container">
+    <div class="recipes-header">
+      <h1>{{ section.settings.title }}</h1>
+      <p class="recipes-subtitle">{{ section.settings.subtitle }}</p>
+    </div>
+    
+    <div class="recipes-grid">
+      {% for block in section.blocks %}
+        <article class="recipe-card">
+          {% if block.settings.image %}
+            <div class="recipe-image">
+              <img src="{{ block.settings.image | img_url: '600x400', crop: 'center' }}" alt="{{ block.settings.title }}">
+              <div class="recipe-time">
+                <i class="fas fa-clock"></i> {{ block.settings.prep_time }}
+              </div>
+            </div>
+          {% endif %}
+          
+          <div class="recipe-content">
+            <h3 class="recipe-title">{{ block.settings.title }}</h3>
+            
+            <div class="recipe-meta">
+              <span class="recipe-difficulty">{{ block.settings.difficulty }}</span>
+              <span class="recipe-cost">${{ block.settings.cost }}</span>
+            </div>
+            
+            <p class="recipe-description">{{ block.settings.description }}</p>
+            
+            <div class="recipe-tags">
+              {% assign tags = block.settings.tags | split: ',' %}
+              {% for tag in tags %}
+                <span class="recipe-tag">{{ tag | strip }}</span>
+              {% endfor %}
+            </div>
+            
+            {% if block.settings.show_cta %}
+              <a href="{{ block.settings.cta_link }}" class="recipe-cta">
+                Get Full Recipe →
+              </a>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+    
+    <div class="recipes-footer">
+      <h2>Want Access to 100+ Student Recipes?</h2>
+      <p>Join a meal plan to unlock our complete recipe library</p>
+      <a href="/pages/plans" class="btn-plans">View Meal Plans</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .recipes-showcase {
+    padding: 80px 20px;
+    background: #fefdfb;
+  }
+  
+  .recipes-container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  .recipes-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  
+  .recipes-header h1 {
+    font-size: 3.5rem;
+    color: #1d4035;
+    margin-bottom: 15px;
+    font-weight: 700;
+  }
+  
+  .recipes-subtitle {
+    font-size: 1.3rem;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .recipes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 40px;
+    margin-bottom: 80px;
+  }
+  
+  .recipe-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+  }
+  
+  .recipe-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+  }
+  
+  .recipe-image {
+    position: relative;
+    overflow: hidden;
+    height: 250px;
+  }
+  
+  .recipe-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .recipe-card:hover .recipe-image img {
+    transform: scale(1.1);
+  }
+  
+  .recipe-time {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(29, 64, 53, 0.95);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  
+  .recipe-content {
+    padding: 25px;
+  }
+  
+  .recipe-title {
+    font-size: 1.6rem;
+    color: #1d4035;
+    margin-bottom: 15px;
+    font-weight: 700;
+  }
+  
+  .recipe-meta {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .recipe-difficulty {
+    background: #f7f5f0;
+    color: #1d4035;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  
+  .recipe-cost {
+    background: #b85a1f;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  
+  .recipe-description {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  
+  .recipe-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .recipe-tag {
+    background: #e8f5e9;
+    color: #1d4035;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  
+  .recipe-cta {
+    display: inline-block;
+    color: #b85a1f;
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.3s ease;
+  }
+  
+  .recipe-cta:hover {
+    color: #1d4035;
+  }
+  
+  .recipes-footer {
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #1d4035 0%, #b85a1f 100%);
+    border-radius: 20px;
+    color: white;
+  }
+  
+  .recipes-footer h2 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+  }
+  
+  .recipes-footer p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    opacity: 0.95;
+  }
+  
+  .btn-plans {
+    display: inline-block;
+    padding: 15px 40px;
+    background: white;
+    color: #1d4035;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-plans:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+  
+  @media (max-width: 768px) {
+    .recipes-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .recipes-header h1 {
+      font-size: 2.5rem;
+    }
+    
+    .recipes-footer h2 {
+      font-size: 2rem;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Recipes Showcase",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Quick Student Recipes"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Fast, affordable meals perfect for dorm kitchens and busy schedules"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "recipe",
+      "name": "Recipe",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Recipe Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Recipe Name",
+          "default": "5-Minute Protein Bowl"
+        },
+        {
+          "type": "text",
+          "id": "prep_time",
+          "label": "Prep Time",
+          "default": "5 min"
+        },
+        {
+          "type": "select",
+          "id": "difficulty",
+          "label": "Difficulty",
+          "options": [
+            {
+              "value": "Easy",
+              "label": "Easy"
+            },
+            {
+              "value": "Medium",
+              "label": "Medium"
+            },
+            {
+              "value": "Advanced",
+              "label": "Advanced"
+            }
+          ],
+          "default": "Easy"
+        },
+        {
+          "type": "text",
+          "id": "cost",
+          "label": "Cost per Serving",
+          "default": "3.50"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Perfect for busy mornings! This protein-packed bowl uses just 4 ingredients and can be made with a microwave."
+        },
+        {
+          "type": "text",
+          "id": "tags",
+          "label": "Tags (comma separated)",
+          "default": "High Protein, Quick Prep, Budget-Friendly"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_cta",
+          "label": "Show CTA Button",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "cta_link",
+          "label": "CTA Link",
+          "default": "/pages/plans"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Recipes Showcase",
+      "blocks": [
+        {
+          "type": "recipe"
+        },
+        {
+          "type": "recipe"
+        },
+        {
+          "type": "recipe"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

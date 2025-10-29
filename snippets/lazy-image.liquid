@@ -1,0 +1,63 @@
+{% comment %}
+  Usage: {% render 'lazy-image', image: product.featured_image, alt: product.title, size: '800x600' %}
+{% endcomment %}
+
+<img 
+  data-src="{{ image | img_url: size }}" 
+  alt="{{ alt | escape }}"
+  class="lazy-image"
+  loading="lazy"
+>
+
+<noscript>
+  <img src="{{ image | img_url: size }}" alt="{{ alt | escape }}">
+</noscript>
+
+<style>
+  .lazy-image {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .lazy-image.loaded {
+    opacity: 1;
+  }
+  
+  .lazy-image[data-src] {
+    background: #f5f5f5;
+  }
+</style>
+
+<script>
+  if ('loading' in HTMLImageElement.prototype) {
+    // Browser supports native lazy loading
+    document.querySelectorAll('.lazy-image').forEach(img => {
+      img.src = img.dataset.src;
+      img.classList.add('loaded');
+    });
+  } else {
+    // Fallback to Intersection Observer
+    const lazyImages = document.querySelectorAll('.lazy-image');
+    
+    if ('IntersectionObserver' in window) {
+      const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.src;
+            img.classList.add('loaded');
+            observer.unobserve(img);
+          }
+        });
+      });
+      
+      lazyImages.forEach(img => imageObserver.observe(img));
+    } else {
+      // Fallback for older browsers
+      lazyImages.forEach(img => {
+        img.src = img.dataset.src;
+        img.classList.add('loaded');
+      });
+    }
+  }
+</script>
