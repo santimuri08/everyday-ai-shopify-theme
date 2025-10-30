@@ -1,11 +1,11 @@
 {
   "sections": {
-    "main": {
+    "quiz_section": {
       "type": "meal-plan-quiz",
       "settings": {}
     }
   },
   "order": [
-    "main"
+    "quiz_section"
   ]
 }
