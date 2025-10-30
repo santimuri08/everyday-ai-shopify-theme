@@ -12,18 +12,24 @@
         <div class="quiz-options">
           <button class="quiz-option" data-value="minimal" data-next="2">
             <i class="fas fa-clock"></i>
-            <strong>Under 10 min/day</strong>
-            <span>I'm super busy with classes</span>
+            <div>
+              <strong>Under 10 min/day</strong>
+              <span>I'm super busy with classes</span>
+            </div>
           </button>
           <button class="quiz-option" data-value="moderate" data-next="2">
             <i class="fas fa-hourglass-half"></i>
-            <strong>10-30 min/day</strong>
-            <span>I can dedicate some time</span>
+            <div>
+              <strong>10-30 min/day</strong>
+              <span>I can dedicate some time</span>
+            </div>
           </button>
           <button class="quiz-option" data-value="ample" data-next="2">
             <i class="fas fa-calendar-check"></i>
-            <strong>30+ min/day</strong>
-            <span>I enjoy cooking</span>
+            <div>
+              <strong>30+ min/day</strong>
+              <span>I enjoy cooking</span>
+            </div>
           </button>
         </div>
       </div>
@@ -34,18 +40,24 @@
         <div class="quiz-options">
           <button class="quiz-option" data-value="tight" data-next="3">
             <i class="fas fa-piggy-bank"></i>
-            <strong>Under $150</strong>
-            <span>Need to save every dollar</span>
+            <div>
+              <strong>Under $150</strong>
+              <span>Need to save every dollar</span>
+            </div>
           </button>
           <button class="quiz-option" data-value="moderate" data-next="3">
             <i class="fas fa-wallet"></i>
-            <strong>$150-$300</strong>
-            <span>Reasonable budget</span>
+            <div>
+              <strong>$150-$300</strong>
+              <span>Reasonable budget</span>
+            </div>
           </button>
           <button class="quiz-option" data-value="flexible" data-next="3">
             <i class="fas fa-credit-card"></i>
-            <strong>$300+</strong>
-            <span>Quality matters most</span>
+            <div>
+              <strong>$300+</strong>
+              <span>Quality matters most</span>
+            </div>
           </button>
         </div>
       </div>
@@ -56,18 +68,24 @@
         <div class="quiz-options">
           <button class="quiz-option" data-value="microwave" data-next="4">
             <i class="fas fa-microwave"></i>
-            <strong>Microwave only</strong>
-            <span>Dorm life</span>
+            <div>
+              <strong>Microwave only</strong>
+              <span>Dorm life</span>
+            </div>
           </button>
           <button class="quiz-option" data-value="basic" data-next="4">
             <i class="fas fa-fire-burner"></i>
-            <strong>Microwave + hot plate</strong>
-            <span>Basic setup</span>
+            <div>
+              <strong>Microwave + hot plate</strong>
+              <span>Basic setup</span>
+            </div>
           </button>
           <button class="quiz-option" data-value="full" data-next="4">
             <i class="fas fa-kitchen-set"></i>
-            <strong>Full kitchen</strong>
-            <span>Apartment living</span>
+            <div>
+              <strong>Full kitchen</strong>
+              <span>Apartment living</span>
+            </div>
           </button>
         </div>
       </div>
@@ -78,23 +96,31 @@
         <div class="quiz-options">
           <button class="quiz-option" data-value="time" data-next="5">
             <i class="fas fa-bolt"></i>
-            <strong>Save time</strong>
-            <span>Speed is everything</span>
+            <div>
+              <strong>Save time</strong>
+              <span>Speed is everything</span>
+            </div>
           </button>
           <button class="quiz-option" data-value="money" data-next="5">
             <i class="fas fa-dollar-sign"></i>
-            <strong>Save money</strong>
-            <span>Budget is tight</span>
+            <div>
+              <strong>Save money</strong>
+              <span>Budget is tight</span>
+            </div>
           </button>
           <button class="quiz-option" data-value="health" data-next="5">
             <i class="fas fa-heartbeat"></i>
-            <strong>Eat healthier</strong>
-            <span>Fuel my body right</span>
+            <div>
+              <strong>Eat healthier</strong>
+              <span>Fuel my body right</span>
+            </div>
           </button>
           <button class="quiz-option" data-value="variety" data-next="5">
             <i class="fas fa-utensils"></i>
-            <strong>Learn to cook</strong>
-            <span>Expand my skills</span>
+            <div>
+              <strong>Learn to cook</strong>
+              <span>Expand my skills</span>
+            </div>
           </button>
         </div>
       </div>
@@ -105,18 +131,24 @@
         <div class="quiz-options">
           <button class="quiz-option" data-value="independent" data-next="result">
             <i class="fas fa-user"></i>
-            <strong>I'm self-sufficient</strong>
-            <span>Just need recipes</span>
+            <div>
+              <strong>I'm self-sufficient</strong>
+              <span>Just need recipes</span>
+            </div>
           </button>
           <button class="quiz-option" data-value="moderate" data-next="result">
             <i class="fas fa-users"></i>
-            <strong>Some guidance</strong>
-            <span>Community helps</span>
+            <div>
+              <strong>Some guidance</strong>
+              <span>Community helps</span>
+            </div>
           </button>
           <button class="quiz-option" data-value="full" data-next="result">
             <i class="fas fa-chalkboard-teacher"></i>
-            <strong>Full coaching</strong>
-            <span>I want expert help</span>
+            <div>
+              <strong>Full coaching</strong>
+              <span>I want expert help</span>
+            </div>
           </button>
         </div>
       </div>
@@ -124,23 +156,31 @@
       <!-- Results -->
       <div class="quiz-result" id="quiz-result">
         <div class="result-content">
-          <h2>Your Perfect Match:</h2>
+          <h2>🎉 Your Perfect Match:</h2>
           <div class="recommended-plan">
             <div class="plan-badge">✨ Recommended for You</div>
             <h3 id="result-plan-name">Loading...</h3>
             <div class="plan-price">
-              <span class="price-amount" id="result-price">$0</span>
+              <span class="price-symbol">$</span>
+              <span class="price-amount" id="result-price">0</span>
               <span class="price-period">/month</span>
             </div>
-            <p id="result-description">Loading...</p>
+            <p id="result-description" class="result-desc">Loading...</p>
+            
+            <div class="why-section">
+              <h4>💡 Why This Plan Is Perfect For You:</h4>
+              <p id="result-reasoning">Loading...</p>
+            </div>
+            
+            <h4 style="margin-top: 30px; margin-bottom: 15px;">What You'll Get:</h4>
             <ul class="result-features" id="result-features">
               <!-- Features will be added by JavaScript -->
             </ul>
-            <a href="#" id="result-cta" class="btn-get-plan">Get This Plan</a>
+            <a href="#" id="result-cta" class="btn-get-plan">Get Started Now →</a>
           </div>
           
           <div class="other-plans">
-            <p>Not quite right? <a href="/pages/plans">View all plans</a></p>
+            <p>Not quite right? <a href="/pages/plans">View all plans</a> or take the quiz again.</p>
           </div>
           
           <button class="btn-retake" onclick="restartQuiz()">
@@ -154,7 +194,7 @@
       <div class="progress-bar">
         <div class="progress-fill" id="progress-fill"></div>
       </div>
-      <p class="progress-text"><span id="current-question">1</span> of 5</p>
+      <p class="progress-text">Question <span id="current-question">1</span> of 5</p>
     </div>
   </div>
 </section>
@@ -194,7 +234,6 @@
     padding: 50px;
     box-shadow: 0 10px 50px rgba(0,0,0,0.2);
     min-height: 500px;
-    position: relative;
   }
   
   .quiz-question {
@@ -236,6 +275,7 @@
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: left;
+    width: 100%;
   }
   
   .quiz-option:hover {
@@ -265,7 +305,6 @@
   
   .quiz-result {
     display: none;
-    text-align: center;
   }
   
   .quiz-result.active {
@@ -277,6 +316,7 @@
     font-size: 2.5rem;
     color: #1d4035;
     margin-bottom: 40px;
+    text-align: center;
     font-weight: 700;
   }
   
@@ -306,10 +346,16 @@
     font-size: 2.5rem;
     margin-bottom: 20px;
     font-weight: 700;
+    margin-top: 10px;
   }
   
   .plan-price {
     margin-bottom: 20px;
+  }
+  
+  .price-symbol {
+    font-size: 2rem;
+    vertical-align: super;
   }
   
   .price-amount {
@@ -322,10 +368,29 @@
     opacity: 0.9;
   }
   
-  .recommended-plan p {
-    font-size: 1.1rem;
+  .result-desc {
+    font-size: 1.2rem;
     margin-bottom: 25px;
     opacity: 0.95;
+    line-height: 1.6;
+  }
+  
+  .why-section {
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 12px;
+    margin: 25px 0;
+    border-left: 4px solid #ffd700;
+  }
+  
+  .why-section h4 {
+    margin-bottom: 12px;
+    font-size: 1.3rem;
+  }
+  
+  .why-section p {
+    line-height: 1.7;
+    font-size: 1.05rem;
   }
   
   .result-features {
@@ -365,6 +430,7 @@
   .other-plans {
     margin: 30px 0;
     color: #666;
+    text-align: center;
   }
   
   .other-plans a {
@@ -382,6 +448,8 @@
     cursor: pointer;
     font-weight: 600;
     transition: all 0.3s ease;
+    display: block;
+    margin: 0 auto;
   }
   
   .btn-retake:hover {
@@ -431,6 +499,10 @@
     .quiz-option {
       flex-direction: column;
       text-align: center;
+    }
+    
+    .recommended-plan {
+      padding: 30px 20px;
     }
   }
 </style>
@@ -490,7 +562,6 @@
   }
   
   function calculatePlan() {
-    // Logic to determine best plan based on answers
     const { time, budget, setup, goal, support } = quizAnswers;
     
     // Free Plan: tight budget, minimal time, independent
@@ -499,11 +570,13 @@
         name: 'Free Starter',
         price: '0',
         description: 'Perfect for students who need basic recipes and meal ideas without breaking the bank.',
+        reasoning: 'Based on your tight budget and minimal time, you need quick wins without any financial commitment. The Free Starter plan gives you access to essential recipes and meal planning basics to get started on your healthy eating journey.',
         features: [
-          '✓ 3-min meal quiz',
-          '✓ Personalized weekly recipes',
+          '✓ 3-minute meal preference quiz',
+          '✓ Personalized weekly recipe suggestions',
           '✓ Basic grocery lists',
-          '✓ Quick-prep meal ideas'
+          '✓ Quick-prep meal ideas (under 10 min)',
+          '✓ Email support'
         ],
         link: '/pages/signup-free'
       };
@@ -515,12 +588,15 @@
         name: 'Quick Prep Pack',
         price: '5',
         description: 'Ideal for busy students who want better meals without spending hours cooking.',
+        reasoning: 'You have a reasonable budget and need efficient meal solutions. For just $5/month, you'll get AI-powered tools that save you time and money on groceries - the subscription pays for itself within the first week!',
         features: [
-          '✓ Everything in Free',
-          '✓ AI-generated grocery lists',
-          '✓ 20+ quick-prep recipes',
-          '✓ Budget optimization tools',
-          '✓ Nutrition tracking'
+          '✓ Everything in Free Starter',
+          '✓ AI-powered personalized grocery lists',
+          '✓ 50+ quick-prep recipes (5-15 min)',
+          '✓ Budget optimization calculator',
+          '✓ Basic nutrition tracking',
+          '✓ Weekly meal planning templates',
+          '✓ Priority email support'
         ],
         link: '/pages/signup-entry'
       };
@@ -532,13 +608,17 @@
         name: 'Coaching + Community',
         price: '20',
         description: 'For students who want expert guidance and a supportive community.',
+        reasoning: 'You're ready to invest in your health with personalized support. With 1-on-1 coaching sessions and a vibrant community, you'll get accountability, motivation, and expert guidance to transform your eating habits for life.',
         features: [
-          '✓ Everything in Semester Plan',
-          '✓ 1-on-1 nutrition coaching',
-          '✓ Community cooking challenges',
-          '✓ Live Q&A sessions',
-          '✓ Meal prep masterclasses',
-          '✓ Priority support'
+          '✓ Everything in Full Semester Plan',
+          '✓ Monthly 1-on-1 nutrition coaching calls',
+          '✓ Custom meal plans based on your goals',
+          '✓ Weekly group coaching sessions',
+          '✓ Community cooking challenges with prizes',
+          '✓ Access to registered dietitian',
+          '✓ Fitness & nutrition goal tracking',
+          '✓ Private VIP community group',
+          '✓ 24/7 priority support'
         ],
         link: '/pages/signup-premium'
       };
@@ -549,13 +629,17 @@
       name: 'Full Semester Plan',
       price: '12',
       description: 'The complete solution for students who want healthy eating made easy all semester long.',
+      reasoning: 'You're looking for a comprehensive solution that lasts. The Full Semester Plan gives you everything you need for an entire 16-week semester - from video tutorials to community support - so you can focus on your studies while eating well.',
       features: [
-        '✓ Everything in Quick Prep',
-        '✓ Full semester meal planner',
-        '✓ Video cooking tutorials',
-        '✓ Dorm-friendly recipes',
-        '✓ Weekly shopping schedules',
-        '✓ Student community access'
+        '✓ Everything in Quick Prep Pack',
+        '✓ Full 16-week semester meal planner',
+        '✓ 200+ recipes with video tutorials',
+        '✓ Dorm-friendly & apartment recipes',
+        '✓ Weekly automated shopping schedules',
+        '✓ Detailed nutrition breakdowns',
+        '✓ Student community access (Discord)',
+        '✓ Monthly live cooking workshops',
+        '✓ Exam week survival guides'
       ],
       link: '/pages/signup-flagship'
     };
@@ -563,8 +647,9 @@
   
   function displayPlan(plan) {
     document.getElementById('result-plan-name').textContent = plan.name;
-    document.getElementById('result-price').textContent = '$' + plan.price;
+    document.getElementById('result-price').textContent = plan.price;
     document.getElementById('result-description').textContent = plan.description;
+    document.getElementById('result-reasoning').textContent = plan.reasoning;
     document.getElementById('result-cta').href = plan.link;
     
     const featuresList = document.getElementById('result-features');
@@ -597,6 +682,11 @@
 {% schema %}
 {
   "name": "Meal Plan Quiz",
-  "settings": []
+  "settings": [],
+  "presets": [
+    {
+      "name": "Meal Plan Quiz"
+    }
+  ]
 }
 {% endschema %}
