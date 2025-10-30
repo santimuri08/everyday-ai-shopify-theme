@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
@@ -25,22 +34,10 @@
         "instagram_url": "",
         "youtube_url": ""
       }
-    },
-    "meal_plans": {
-      "type": "meal-plans",
-      "settings": {
-        "title": "Choose Your Plan",
-        "subtitle": "Fast, affordable nutrition solutions tailored for student life",
-        "free_plan_link": "/pages/signup-free",
-        "entry_plan_link": "/pages/signup-entry",
-        "flagship_plan_link": "/pages/signup-flagship",
-        "premium_plan_link": "/pages/signup-premium"
-      }
     }
   },
   "order": [
     "hero",
-    "about_studyfuel",
-    "meal_plans"
+    "about_studyfuel"
   ]
 }
