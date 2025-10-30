@@ -1,19 +1,18 @@
 {
   "sections": {
-    "main": {
-      "type": "main-page",
-      "settings": {}
-    },
-    "plans_hero": {
-      "type": "image-banner",
+    "plans_section": {
+      "type": "meal-plans",
       "settings": {
-        "heading": "Choose Your Perfect Meal Plan",
-        "text": "All plans designed for student budgets and schedules. Cancel anytime."
+        "title": "Choose Your Perfect Meal Plan",
+        "subtitle": "All plans designed for student budgets and schedules. Cancel anytime.",
+        "free_plan_link": "/pages/signup-free",
+        "entry_plan_link": "/pages/signup-entry",
+        "flagship_plan_link": "/pages/signup-flagship",
+        "premium_plan_link": "/pages/signup-premium"
       }
     }
   },
   "order": [
-    "main",
-    "plans_hero"
+    "plans_section"
   ]
 }
