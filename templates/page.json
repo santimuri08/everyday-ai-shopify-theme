@@ -15,15 +15,9 @@
         "padding_top": 28,
         "padding_bottom": 28
       }
-    },
-    "meal_plan_quiz_yAAe6D": {
-      "type": "meal-plan-quiz",
-      "name": "Meal Plan Quiz",
-      "settings": {}
     }
   },
   "order": [
-    "main",
-    "meal_plan_quiz_yAAe6D"
+    "main"
   ]
 }
